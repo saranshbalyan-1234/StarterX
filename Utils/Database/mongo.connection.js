@@ -18,7 +18,7 @@ const registerAllPlugins = async () => {
     const files = getDirectories('.', 'plugin');
 
     for (const file of files) {
-      const schema = await import(file);
+      const schema = await import("../../"+file);
       const defaultFile = schema.default;
       mongoose.plugin(defaultFile);
     };
@@ -65,7 +65,7 @@ const registerAllSchema = async (db) => {
   try {
     const files = getDirectories('.', 'schema');
     for (const file of files) {
-      const schema = await import(file);
+      const schema = await import("../../"+file);
       const defaultFile = schema.default;
 
       const tempAr = file.split('.');
