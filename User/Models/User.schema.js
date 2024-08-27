@@ -9,7 +9,7 @@ const User = BaseSchema({
   email: {
     immutable: true,
     lowercase: true,
-    match: [/^[\w-\.]+@([\w-]+.)+[\w-]{2,4}$/, 'Enter valid email address'],
+    match: [/^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/, 'Enter valid email address'],
     required: 'Email address is required',
     trim: true,
     type: String,

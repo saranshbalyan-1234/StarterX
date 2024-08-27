@@ -3,7 +3,7 @@ import BaseSchema from '#utils/Mongo/BaseSchema.js';
 const Unverified = BaseSchema({
   email: {
     lowercase: true,
-    match: [/^[\w-\.]+@([\w-]+.)+[\w-]{2,4}$/, 'Enter valid email address'],
+    match: [/^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/, 'Enter valid email address'],
     required: 'Email address is required',
     trim: true,
     type: String,
