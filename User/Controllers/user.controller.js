@@ -1,11 +1,11 @@
 // import successConstants from '#constants/success.contant.js';
 import mongoose from 'mongoose';
 
-import { getTenantDB } from '#utils/Database/mongo.connection.js';
 /*
  * import { s3, uploadFile } from '#storage/Service/awsService.js';
  */
 import cache from '#utils/Cache/index.js';
+import { getTenantDB } from '#utils/Database/mongo.connection.js';
 import getError from '#utils/error.js';
 // import { deleteCustomer } from '../Service/database.service.js';
 

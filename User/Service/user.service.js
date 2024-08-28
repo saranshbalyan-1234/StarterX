@@ -1,6 +1,6 @@
 import errorContstants from '#constants/error.constant.js';
-import { getTenantDB } from '#utils/Database/mongo.connection.js';
 import cache from '#utils/Cache/index.js';
+import { getTenantDB } from '#utils/Database/mongo.connection.js';
 import { createToken } from '#utils/jwt.js';
 
 const loginWithCredentals = async ({ email, password, rememberMe, isPassRequired = true, tenant }) => {
@@ -22,7 +22,7 @@ const loginWithCredentals = async ({ email, password, rememberMe, isPassRequired
     if (!isAuthenticated) throw new Error(errorContstants.INCORRECT_PASSWORD);
 
     db = await getTenantDB(currentTenant);
-    const user = await db.models.user.findOne({ email }).populate('roles');
+    const user = await db.models.user.findOneAndUpdate({ email }, { lastLogin: new Date() }, { new: true, timestamps: false, upsert: true }).populate('roles');
     if (!user) throw new Error(errorContstants.RECORD_NOT_FOUND);
     const { _id } = user;
 
