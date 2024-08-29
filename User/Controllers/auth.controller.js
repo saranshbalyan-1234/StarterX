@@ -117,7 +117,7 @@ const resetPassword = async (req, res) => {
         { _id },
         { password: req.body.password },
         { new: true });
-
+      //update incorrectPasswordCount to 0 here
       if (!customer) throw new Error(errorConstants.RECORD_NOT_FOUND);
       return res.status(200).json({ message: successConstants.PASSWORD_RESET_SUCCESSFULL });
     } catch (error) {
