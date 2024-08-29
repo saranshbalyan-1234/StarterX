@@ -19,11 +19,19 @@ const loginWithCredentals = async ({ email, password, rememberMe, isPassRequired
     if (!currentTenant || !customer.tenant.includes(currentTenant)) throw new Error(errorContstants.UNAUTHORIZED_TENANT);
 
     const isAuthenticated = !isPassRequired || customer.password === password;
-    if (!isAuthenticated) throw new Error(errorContstants.INCORRECT_PASSWORD);
 
     db = await getTenantDB(currentTenant);
-    const user = await db.models.user.findOneAndUpdate({ email }, { lastLogin: new Date() }, { new: true, timestamps: false, upsert: true }).populate('roles');
+    const user = await db.models.user.findOne({ email }).populate('roles');
     if (!user) throw new Error(errorContstants.RECORD_NOT_FOUND);
+    if (process.env.INCORRECT_PASS_LIMIT && user.incorrectPasswordCount >= parseInt(process.env.INCORRECT_PASS_LIMIT)) throw new Error(errorContstants.PASSWORD_RESET_REQUIRED);
+
+    if (!isAuthenticated) {
+      await db.models.user.findOneAndUpdate({ email }, { $inc: { incorrectPasswordCount: 1 } }, { timestamps: false });
+      throw new Error(errorContstants.INCORRECT_PASSWORD);
+    }
+
+    await db.models.user.updateOne({ email }, { incorrectPasswordCount: 0, lastLogin: new Date() }, { timestamps: false });
+
     const { _id } = user;
 
     // Below code is to generate token only, no logic

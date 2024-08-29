@@ -15,6 +15,10 @@ const User = BaseSchema({
     type: String,
     unique: true
   },
+  incorrectPasswordCount: {
+    default: 0,
+    type: Number
+  },
   lastLogin: {
     type: Date
   },

@@ -13,6 +13,7 @@ const errorContstants = {
   INVALID_FOLDER: 'Invalid Folder',
   INVALID_PERMISSION: 'Invalid Permission!',
   NOT_AN_ACTIVE_SESSION: 'Not An Active Session!',
+  PASSWORD_RESET_REQUIRED: 'Password Reset Required',
   RECORD_NOT_FOUND: 'Record Not Found!',
   SESSION_OFF: 'Session Is OFF!',
   SOMETHING_WENT_WRONG: 'Something Went Wrong!',

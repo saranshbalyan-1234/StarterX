@@ -4,11 +4,13 @@ const autoIncrementV = function autoIncrementV (schema) {
     this.options.runValidators = true; // trigger validation on update
     this.options.context = 'query'; // trigger validation on upsert
 
-    if (this.getUpdate().$setOnInsert.hasOwnProperty('__v')) return next();
-    const isVersionModified = this.getUpdate().$set.__v;
-    if (isVersionModified) return next();
+    const isTimeStampUpdate = this.getUpdate().$set?.updatedAt;
+    const isUpsert = this.getUpdate().$setOnInsert?.hasOwnProperty('__v');
+    const isVersionModified = this.getUpdate().$set?.__v;
+
+    if (!isTimeStampUpdate || isUpsert || isVersionModified) return next();
     try {
-      this.getUpdate().$inc = { __v: 1 };
+      this.getUpdate().$inc = { ...(this.getUpdate().$inc || {}), __v: 1 };
       next();
     } catch (error) {
       console.log('Error in global preupdate hook', error);
