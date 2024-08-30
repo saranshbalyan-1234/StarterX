@@ -97,9 +97,8 @@ const sendResetPasswordMail = async (req, res) => {
     const { email } = req.body;
     const customer = await req.models.customer.findOne({ email });
     if (!customer) throw new Error(errorConstants.RECORD_NOT_FOUND);
-    const tenant = getTenantFromReq(req);
 
-    await sendMail({ _id: customer._id, email, tenant }, 'reset-password');
+    await sendMail({ _id: customer._id, email }, 'reset-password');
 
     return res.status(200).json({ message: 'Password rest mail sent.' });
   } catch (error) {
@@ -116,7 +115,7 @@ const resetPassword = async (req, res) => {
 
       const customer = await req.models.customer.findOneAndUpdate(
         { _id },
-        { password: req.body.password },
+        { incorrectPasswordCount: 0, password: req.body.password },
         { new: true, session: req.session });
 
       if (!customer) throw new Error(errorConstants.RECORD_NOT_FOUND);

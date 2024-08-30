@@ -10,6 +10,7 @@ const loginWithCredentals = async ({ email, password, rememberMe, isPassRequired
 
     if (customer) {
       if (customer.blocked) throw new Error(errorContstants.ACCOUNT_BLOCKED);
+      if (process.env.INCORRECT_PASS_LIMIT && customer.incorrectPasswordCount >= parseInt(process.env.INCORRECT_PASS_LIMIT)) throw new Error(errorContstants.PASSWORD_RESET_REQUIRED);
     } else {
       const unverifiedUser = await db.models.unverified.findOne({ email });
       if (unverifiedUser) throw new Error(errorContstants.EMAIL_NOT_VERIFIED);
@@ -20,17 +21,16 @@ const loginWithCredentals = async ({ email, password, rememberMe, isPassRequired
 
     const isAuthenticated = !isPassRequired || customer.password === password;
 
-    db = await getTenantDB(currentTenant);
-    const user = await db.models.user.findOne({ email }).populate('roles');
-    if (!user) throw new Error(errorContstants.RECORD_NOT_FOUND);
-    if (process.env.INCORRECT_PASS_LIMIT && user.incorrectPasswordCount >= parseInt(process.env.INCORRECT_PASS_LIMIT)) throw new Error(errorContstants.PASSWORD_RESET_REQUIRED);
-
     if (!isAuthenticated) {
-      await db.models.user.findOneAndUpdate({ email }, { $inc: { incorrectPasswordCount: 1 } }, { timestamps: false });
+      await db.models.customer.findOneAndUpdate({ email }, { $inc: { incorrectPasswordCount: 1 } }, { timestamps: false });
       throw new Error(errorContstants.INCORRECT_PASSWORD);
     }
 
-    await db.models.user.updateOne({ email }, { incorrectPasswordCount: 0, lastLogin: new Date() }, { timestamps: false });
+    await db.models.customer.updateOne({ email }, { incorrectPasswordCount: 0, lastLogin: new Date() }, { timestamps: false });
+
+    db = await getTenantDB(currentTenant);
+    const user = await db.models.user.findOne({ email }).populate('roles');
+    if (!user) throw new Error(errorContstants.RECORD_NOT_FOUND);
 
     const { _id } = user;
 
