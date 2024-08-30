@@ -14,7 +14,7 @@ const { verify } = pkg;
 const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
-    const tenant = req.headers['x-tenant-id'] || process.env.DATABASE_PREFIX + (process.env.MULTI_TENANT === 'false' ? process.env.DATABASE_NAME : email.replace(/[^a-zA-Z0-9 ]/g, ''));
+    const tenant = getTenantFromReq(req);
     const unverifiedUser = await req.models.unverified.create(
       [{ email, name, password, tenant }]
     );
@@ -97,8 +97,9 @@ const sendResetPasswordMail = async (req, res) => {
     const { email } = req.body;
     const customer = await req.models.customer.findOne({ email });
     if (!customer) throw new Error(errorConstants.RECORD_NOT_FOUND);
+    const tenant = getTenantFromReq(req);
 
-    await sendMail({ _id: customer._id, email }, 'reset-password');
+    await sendMail({ _id: customer._id, email, tenant }, 'reset-password');
 
     return res.status(200).json({ message: 'Password rest mail sent.' });
   } catch (error) {
@@ -111,14 +112,19 @@ const resetPassword = async (req, res) => {
     const data = verify(req.params.token, process.env.JWT_RESET_SECRET);
     try {
       if (!req.body.password) throw new Error(errorConstants.INSUFFICIENT_DETAILS);
-      const { _id } = data;
+      const { _id, tenant } = data;
 
       const customer = await req.models.customer.findOneAndUpdate(
         { _id },
         { password: req.body.password },
-        { new: true });
-      //update incorrectPasswordCount to 0 here
+        { new: true, session: req.session });
+
       if (!customer) throw new Error(errorConstants.RECORD_NOT_FOUND);
+
+      //update incorrectPasswordCount to 0 here
+      const db = await getTenantDB(tenant);
+      await db.models.user.findOneAndUpdate({ _id }, { incorrectPasswordCount: 0 }, { timestamps: false });
+
       return res.status(200).json({ message: successConstants.PASSWORD_RESET_SUCCESSFULL });
     } catch (error) {
       getError(error, res);
@@ -147,3 +153,5 @@ const resetPassword = async (req, res) => {
  */
 
 export { login, register, resendVerificationMail, resetPassword, sendResetPasswordMail, verifyCustomer };
+
+const getTenantFromReq = (req) => req.headers['x-tenant-id'] || process.env.DATABASE_PREFIX + (process.env.MULTI_TENANT === 'false' ? process.env.DATABASE_NAME : req.body.email.replace(/[^a-zA-Z0-9 ]/g, ''));

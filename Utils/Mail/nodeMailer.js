@@ -49,7 +49,7 @@ const sendMail = (data, type) => {
         };
         break;
       case 'reset-password':
-        token = createToken({ _id: data._id }, process.env.JWT_RESET_SECRET, process.env.JWT_RESET_EXPIRATION);
+        token = createToken({ _id: data._id, tenant: data.tenant }, process.env.JWT_RESET_SECRET, process.env.JWT_RESET_EXPIRATION);
         link = `${process.env.WEBSITE_HOME}/reset-password/${token}`;
         mailOption = {
           html: resetPasswordHtml(data.email, link),
