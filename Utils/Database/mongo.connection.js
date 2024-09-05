@@ -48,10 +48,11 @@ process.on('SIGINT', () => {
 export const createDbConnection = async (tenant = process.env.DATABASE_PREFIX + process.env.DATABASE_NAME, autoIndex = true) => {
   try {
     console.log(`Establishing ${tenant} db connection`);
+    const isMasterConn = process.env.DATABASE_PREFIX + process.env.DATABASE_NAME;
     const DB_URL = process.env.DATABASE_URL;
     const conn = mongoose.createConnection(DB_URL.at(-1) === '/' ? DB_URL + tenant : `${DB_URL}/${tenant}`, { ...clientOption, autoIndex });
     await conn.$initialConnection; // wait for connection to get established
-    if (autoIndex) await registerAllSchema(conn);
+    if (autoIndex) await registerAllSchema(conn, isMasterConn);
     connectionEvents(conn);
     connectionsObj[tenant] = conn;
     console.debug('Active connections', Object.keys(connectionsObj));
@@ -61,18 +62,21 @@ export const createDbConnection = async (tenant = process.env.DATABASE_PREFIX + 
   }
 };
 
-const registerAllSchema = async (db) => {
+const registerAllSchema = async (db, isMasterConn = false) => {
   try {
     const files = getDirectories('.', 'schema');
+    const onlyMasterSchema = ['customer', 'unverified'];
     for (const file of files) {
-      const schema = await import(`../../${file}`);
-      const defaultFile = schema.default;
+      if (isMasterConn || onlyMasterSchema.some(el => file.includes(el))) {
+        const schema = await import(`../../${file}`);
+        const defaultFile = schema.default;
 
-      const tempAr = file.split('.');
-      const tempAr1 = tempAr[tempAr.length - 3].split('/');
-      const name = tempAr1[tempAr1.length - 1];
+        const tempAr = file.split('.');
+        const tempAr1 = tempAr[tempAr.length - 3].split('/');
+        const name = tempAr1[tempAr1.length - 1];
 
-      await db.model(name.toLowerCase(), defaultFile);
+        await db.model(name.toLowerCase(), defaultFile);
+      }
     };
   } catch (err) {
     console.error(err);

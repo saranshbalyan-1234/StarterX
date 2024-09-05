@@ -139,7 +139,7 @@ const setupValidationErrorInterceptor = (app) => {
     const errorObj = getErrorObj(req, res);
     if (err instanceof ValidationError) {
       const error = err.details.body?.[0].message || err.details.params?.[0].message || err.details.query?.[0].message || err.details.headers?.[0].message;
-      console.error(error);
+      console.error('ValidationError', error);
       return res.status(400).json({ error, ...errorObj });
     }
     next(err);

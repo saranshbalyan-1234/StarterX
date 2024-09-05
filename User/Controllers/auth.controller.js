@@ -14,7 +14,7 @@ const { verify } = pkg;
 const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
-    const tenant = getTenantFromReq(req);
+    const tenant = req.headers['x-tenant-id'] || process.env.DATABASE_PREFIX + process.env.DATABASE_NAME;
     const unverifiedUser = await req.models.unverified.create(
       [{ email, name, password, tenant }]
     );
@@ -148,5 +148,3 @@ const resetPassword = async (req, res) => {
  */
 
 export { login, register, resendVerificationMail, resetPassword, sendResetPasswordMail, verifyCustomer };
-
-const getTenantFromReq = (req) => req.headers['x-tenant-id'] || process.env.DATABASE_PREFIX + (process.env.MULTI_TENANT === 'false' ? process.env.DATABASE_NAME : req.body.email.replace(/[^a-zA-Z0-9 ]/g, ''));

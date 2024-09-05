@@ -2,7 +2,7 @@ const getError = (e, res, tokenType) => {
   console.error(e);
   let message = '';
   if (e.message) {
-    let code = 400;
+    let code = e.statusCode || 400;
     switch (e.name) {
       case 'TokenExpiredError':
         message = `${tokenType || 'Access'} Token Expired`;
