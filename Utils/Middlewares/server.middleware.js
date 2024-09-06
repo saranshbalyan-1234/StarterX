@@ -108,15 +108,12 @@ const setupResponseInterceptor = (app) => {
 };
 
 const setupHtmlErrorInterceptor = (app) => {
-  console.log('ERROR Interceptor is Turned ON');
   app.use((err, req, res, next) => {
     const errorObj = getErrorObj(req, res);
-    const error = String(err);
-    if (error === 'Error: Not allowed by CORS') {
-      return res.status(403).json({
-        error: 'Not allowed by CORS', type: 'CORS', ...errorObj, status: 403
-      });
-    }
+    return res.status(403).json({
+      error: err.message, type: err.message.includes('CORS') ? 'CORS' : err.name, ...errorObj, status: 403
+    });
+    // eslint-disable-next-line no-unreachable
     next(err);
   });
 };
@@ -126,7 +123,6 @@ const setupValidationErrorInterceptor = (app) => {
     const errorObj = getErrorObj(req, res);
     if (err instanceof ValidationError) {
       const error = err.details.body?.[0].message || err.details.params?.[0].message || err.details.query?.[0].message || err.details.headers?.[0].message;
-      console.error('ValidationError', error);
       return res.status(400).json({ error, ...errorObj });
     }
     next(err);
