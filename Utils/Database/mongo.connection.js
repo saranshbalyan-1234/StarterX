@@ -58,7 +58,7 @@ export const createDbConnection = async (tenant = process.env.DATABASE_PREFIX + 
     console.debug('Active connections', Object.keys(connectionsObj));
     return conn;
   } catch (error) {
-    console.log('Error while connecting to DB', error);
+    console.error('Error while connecting to DB', error);
   }
 };
 

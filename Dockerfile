@@ -3,13 +3,6 @@ FROM node:20
 # Create app directory
 WORKDIR /usr/src/app
 
-
-# ENV DATABASE_USER 
-# ENV DATABASE_PASS 
-# ENV DATABASE_HOST
-# ENV DATABASE_NAME automation_master
-# ENV WEBSITE_HOME 
-
 ENV PORT 8080
 
 # Install app dependencies

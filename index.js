@@ -21,7 +21,9 @@ app.use(defaultMiddleware());
 
 overrideConsole();
 
-await getTenantDB();
+await getTenantDB().then(() => { 
+  seedSuperAdmin();
+})
 
 if (process.env.PRINT_ENV === 'true') {
   console.debug('======================ENV======================');
@@ -44,7 +46,6 @@ morgalApiLogger(app);
 setupErrorInterceptor(app);
 setupResponseInterceptor(app);
 
-await seedSuperAdmin();
 await registerRoutes(app);
 
 setupValidationErrorInterceptor(app);
@@ -52,4 +53,8 @@ setupValidationErrorInterceptor(app);
 app.listen(process.env.PORT, () => {
   console.success(`Server started on PORT ${process.env.PORT} PROCESS_ID ${process.pid}`);
   // ScheduleInit();
+});
+
+process.on('uncaughtException', function (err) {
+  // console.log('Caught exception: ', err);
 });
