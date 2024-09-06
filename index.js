@@ -6,7 +6,7 @@ import fileupload from 'express-fileupload';
 import helmet from 'helmet';
 
 import defaultMiddleware from '#middlewares/default.middleware.js';
-import { setupCors, setupErrorInterceptor, setupRateLimiter, setupResponseInterceptor, setupTimeout, setupValidationErrorInterceptor } from '#middlewares/server.middleware.js';
+import { setupCors, setupHtmlErrorInterceptor, setupRateLimiter, setupResponseInterceptor, setupTimeout, setupValidationErrorInterceptor } from '#middlewares/server.middleware.js';
 import seedSuperAdmin from '#user/Seed/superadmin.seed.js';
 import { getTenantDB } from '#utils/Database/mongo.connection.js';
 import morgalApiLogger from '#utils/Logger/api.logger.js';
@@ -21,9 +21,7 @@ app.use(defaultMiddleware());
 
 overrideConsole();
 
-await getTenantDB().then(() => { 
-  seedSuperAdmin();
-})
+await getTenantDB().then(() => seedSuperAdmin());
 
 if (process.env.PRINT_ENV === 'true') {
   console.debug('======================ENV======================');
@@ -43,7 +41,7 @@ setupCors(app);
 setupTimeout(app);
 setupRateLimiter(app);
 morgalApiLogger(app);
-setupErrorInterceptor(app);
+setupHtmlErrorInterceptor(app);
 setupResponseInterceptor(app);
 
 await registerRoutes(app);
@@ -55,6 +53,4 @@ app.listen(process.env.PORT, () => {
   // ScheduleInit();
 });
 
-process.on('uncaughtException', function (err) {
-  // console.log('Caught exception: ', err);
-});
+process.on('uncaughtException', (err) => console.log('Caught uncought exception: ', err));

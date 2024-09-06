@@ -107,27 +107,14 @@ const setupResponseInterceptor = (app) => {
   });
 };
 
-const setupErrorInterceptor = (app) => {
+const setupHtmlErrorInterceptor = (app) => {
   console.log('ERROR Interceptor is Turned ON');
   app.use((err, req, res, next) => {
     const errorObj = getErrorObj(req, res);
     const error = String(err);
     if (error === 'Error: Not allowed by CORS') {
       return res.status(403).json({
-        ...errorObj, error: 'Not allowed by CORS', status: 403
-      });
-    } else if (error) {
-      if (req.session) {
-        // eslint-disable-next-line promise/no-promise-in-callback
-        req.session.abortTransaction().then(() => req.session.endSession()).catch((er) => {
-          console.error(er);
-        });
-      }
-
-      return res.status(400).json({
-        error,
-        errorObj,
-        status: 400
+        error: 'Not allowed by CORS', type: 'CORS', ...errorObj, status: 403
       });
     }
     next(err);
@@ -152,4 +139,4 @@ const getErrorObj = (req, res) => ({
   status: res.statusCode
 });
 
-export { setupCors, setupErrorInterceptor, setupRateLimiter, setupResponseInterceptor, setupTimeout, setupValidationErrorInterceptor };
+export { setupCors, setupHtmlErrorInterceptor, setupRateLimiter, setupResponseInterceptor, setupTimeout, setupValidationErrorInterceptor };
