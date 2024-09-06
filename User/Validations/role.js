@@ -1,15 +1,15 @@
-import joi from '@hapi/joi';
+import { Joi } from 'express-validation';
 
-const updateNameValidation = joi.object({
-  name: joi.string().min(3).max(100).required(),
-  roleId: joi.number().integer().required()
+const updateNameValidation = Joi.object({
+  name: Joi.string().min(3).max(100).required(),
+  roleId: Joi.number().integer().required()
 });
-const updatePermissionValidation = joi.object({
-  add: joi.boolean().required(),
-  delete: joi.boolean().required(),
-  edit: joi.boolean().required(),
-  name: joi.string().min(3).max(100).required(),
-  view: joi.boolean().required()
+const updatePermissionValidation = Joi.object({
+  add: Joi.boolean().required(),
+  delete: Joi.boolean().required(),
+  edit: Joi.boolean().required(),
+  name: Joi.string().min(3).max(100).required(),
+  view: Joi.boolean().required()
 });
 
 export { updateNameValidation, updatePermissionValidation };

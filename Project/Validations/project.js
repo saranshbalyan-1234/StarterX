@@ -1,22 +1,22 @@
-import joi from '@hapi/joi';
+import { Joi } from 'express-validation';
 
-const addProjectValidation = joi.object({
-  description: joi.string().allow(null, '').required(),
-  endDate: joi.string().required(),
-  name: joi.string().min(3).max(100).required(),
-  startDate: joi.string().required()
+const addProjectValidation = Joi.object({
+  description: Joi.string().allow(null, '').required(),
+  endDate: Joi.string().required(),
+  name: Joi.string().min(3).max(100).required(),
+  startDate: Joi.string().required()
 });
-const updateProjectValidation = joi.object({
-  description: joi.string().allow(null, '').required(),
-  endDate: joi.string(),
-  name: joi.string().min(3).max(100),
-  projectId: joi.number().integer().required(),
-  startDate: joi.string()
+const updateProjectValidation = Joi.object({
+  description: Joi.string().allow(null, '').required(),
+  endDate: Joi.string(),
+  name: Joi.string().min(3).max(100),
+  projectId: Joi.number().integer().required(),
+  startDate: Joi.string()
 });
 
-const memberProjectValidation = joi.object({
-  projectId: joi.number().integer().required(),
-  userId: joi.number().integer().required()
+const memberProjectValidation = Joi.object({
+  projectId: Joi.number().integer().required(),
+  userId: Joi.number().integer().required()
 });
 
 export { addProjectValidation, memberProjectValidation, updateProjectValidation };

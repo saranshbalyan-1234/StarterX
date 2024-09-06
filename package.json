@@ -9,7 +9,7 @@
     "swagger": "node ./Utils/Swagger/swagger.js",
     "lint": "eslint . --quiet --cache --cache-location=node_modules/.cache/eslint",
     "lint-fix": "eslint . --fix",
-    "clean": "rimraf node_modules && npm install",
+    "clean": "rimraf node_modules && npm ci",
     "test": "node Test/Api/index.js"
   },
   "author": "",
@@ -17,13 +17,11 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.637.0",
     "@aws-sdk/lib-storage": "^3.620.1",
-    "@hapi/joi": "^17.1.1",
     "axios": "^1.7.5",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.0",
     "chalk": "^5.3.0",
     "cors": "^2.8.5",
-    "crypto": "^1.0.1",
     "express": "^4.18.1",
     "express-fileupload": "^1.5.1",
     "express-rate-limit": "^7.4.0",
