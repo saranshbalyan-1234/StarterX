@@ -1,3 +1,4 @@
+// eslint-disable-next-line  import/no-unresolved
 import crypto from 'node:crypto';
 
 import getError from '#utils/error.js';
