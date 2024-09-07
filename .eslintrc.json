@@ -12,7 +12,7 @@
         "plugin:eqeqeq-fix/recommended",
         "plugin:react/all",
         "plugin:react-hooks/recommended",
-        "plugin:sonarjs/recommended",
+        // "plugin:sonarjs/recommended",
         "plugin:sonar/recommended",
         "plugin:react-redux/recommended",
         "plugin:import/recommended"

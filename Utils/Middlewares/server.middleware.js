@@ -4,6 +4,8 @@ import { ValidationError } from 'express-validation';
 
 import errorContstants from '#constants/error.constant.js';
 import { encryptWithAES } from '#encryption/Service/aes.service.js';
+import { abortSession, commitSession } from '#utils/Mongo/mongo.service.js';
+
 const setupTimeout = (app) => {
   if (!process.env.TIMEOUT) return console.log('Timeout is turned OFF');
   console.log(`Timeout is turned ON with ${process.env.TIMEOUT}`);
@@ -89,16 +91,8 @@ const setupResponseInterceptor = (app) => {
         errorObj.path = req.url;
         errorObj.status = res.statusCode;
         args[0] = JSON.stringify(errorObj);
-        if (req.session) {
-          req.session.abortTransaction().then(() => req.session.endSession()).catch((er) => {
-            console.error(er);
-          });
-        }
-      } else if (req.session) {
-        req.session.commitTransaction().then(() => req.session.endSession()).catch((er) => {
-          console.error(er);
-        });
-      }
+        abortSession(req);
+      } else commitSession(req);
       if (process.env.ENCRYPTION === 'true' && !(req.url.includes('decrypt') || req.url.includes('encrypt'))) args[0] = JSON.stringify(encryptWithAES(args[0]));
       originalSend.apply(res, args);
     };
@@ -109,6 +103,7 @@ const setupResponseInterceptor = (app) => {
 
 const setupHtmlErrorInterceptor = (app) => {
   app.use((err, req, res, next) => {
+    abortSession(req);
     const errorObj = getErrorObj(req, res);
     return res.status(403).json({
       error: err.message, type: err.message.includes('CORS') ? 'CORS' : err.name, ...errorObj, status: 403
