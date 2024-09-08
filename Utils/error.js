@@ -1,24 +1,7 @@
-const getError = (e, res, tokenType) => {
+const getError = (e, res) => {
+  if (res.headersSent) return;
   console.error(e);
-  let message = '';
-  if (e.message) {
-    let code = e.statusCode || 400;
-    switch (e.name) {
-      case 'TokenExpiredError':
-        message = `${tokenType || 'Access'} Token Expired`;
-        code = 403;
-        break;
-      case 'JsonWebTokenError':
-        message = `Invalid ${tokenType || 'Access'} Token`;
-        code = 401;
-        break;
-      default:
-        message = e.message;
-    }
-    const formattedMessage = message.replace('Error: ', '');
-    return res.status(code).json({ error: formattedMessage });
-  }
-  return res.status(500).json(e);
+  return res.status(e.statusCode || 500).json({ error: e.message.replace('Error: ', ''), type: e.customName === 'ApiError' ? 'Error' : e.customName });
 };
 
 export default getError;
