@@ -1,5 +1,4 @@
 // import successConstants from '#constants/success.contant.js';
-import mongoose from 'mongoose';
 
 /*
  * import { s3, uploadFile } from '#storage/Service/awsService.js';
@@ -16,7 +15,6 @@ const getOrUpdateUser = async (req, res) => {
     delete body.type;
 
     const { password } = body;
-    req.body._id ||= new mongoose.Types.ObjectId();
     if (password) {
       const db = await getTenantDB();
       await db.models.customer.findOneAndUpdate(
@@ -93,7 +91,7 @@ const logout = (req, res) => {
 
 /*
  *   try {
- *     if (!req.user.customerAdmin) return res.status(401).json({ message: 'Only customer admin can perform this operation!' });
+ *     if (!req.user.customerAdmin) throw new Error(errorContstants.UNAUTHORIZED);
  */
 
 /*

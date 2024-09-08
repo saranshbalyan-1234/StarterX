@@ -9,11 +9,11 @@ const { verify } = pkg;
 export const validateToken = () => async (req, res, next) => {
   try {
     const token = req.headers.authorization;
-    if (!token) return res.status(401).json({ error: errorContstants.ACCESS_TOKEN_NOT_FOUND });
+    if (!token) throw new Error(errorContstants.ACCESS_TOKEN_NOT_FOUND, 401, 'jsonwebtoken');
     const data = verify(token, process.env.JWT_ACCESS_SECRET);
     if (data) {
       const tokenCheck = handleCachedTokenCheck(data.email, token);
-      if (!tokenCheck) return res.status(401).json({ error: errorContstants.NOT_AN_ACTIVE_SESSION });
+      if (!tokenCheck) throw new Error(errorContstants.ACCESS_TOKEN_NOT_FOUND, 401, 'jsonwebtoken');
 
       const temp = { ...data };
       delete temp.iat;
@@ -31,7 +31,7 @@ export const validateToken = () => async (req, res, next) => {
       next();
     }
   } catch (e) {
-    getError(e, res, 'Access');
+    getError(e, res);
   }
 };
 

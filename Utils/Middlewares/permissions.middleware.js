@@ -6,7 +6,7 @@ const validatePermission = (permissionName, method) => async (req, res, next) =>
   try {
     if (!(req.user.type === 'issuer' || req.user.type === 'admin')) {
       const allowed = await req.user.permissions.some((permission) => permissionName === permission.name && permission[method] === true);
-      if (!allowed) return res.status(401).json({ error: errorContstants.UNAUTHORIZED });
+      if (!allowed) throw new Error(errorContstants.UNAUTHORIZED, 403, 'Permission');
     }
     return next();
   } catch (e) {
@@ -16,7 +16,7 @@ const validatePermission = (permissionName, method) => async (req, res, next) =>
 
 const validateSuperAdmin = () => (req, res, next) => {
   try {
-    if (!req.user.superAdmin) return res.status(401).json({ error: errorContstants.UNAUTHORIZED });
+    if (!req.user.superAdmin) throw new Error(errorContstants.UNAUTHORIZED, 403, 'Permission');
     return next();
   } catch (e) {
     return getError(e, res);
@@ -24,7 +24,7 @@ const validateSuperAdmin = () => (req, res, next) => {
 };
 const validateIssuer = () => (req, res, next) => {
   try {
-    if (!req.user.type === 'issuer') return res.status(401).json({ error: errorContstants.UNAUTHORIZED });
+    if (!req.user.type === 'issuer') throw new Error(errorContstants.UNAUTHORIZED, 403, 'Permission');
     return next();
   } catch (e) {
     return getError(e, res);
@@ -41,7 +41,7 @@ const validateUserProject = () => (req, res, next) => {
      * const userProject = await UserProject.schema(req.database).findOne({
      *   where: { projectId, userId: req.user.id }
      * });
-     * if (!userProject) return res.status(401).json({ error: errorContstants.UNAUTHORIZED });
+     * if (!userProject) throw new Error(errorContstants.UNAUTHORIZED,403,"Permission");
      */
 
     return next();
