@@ -9,11 +9,11 @@ const { verify } = pkg;
 export const validateToken = () => async (req, res, next) => {
   try {
     const token = req.headers.authorization;
-    if (!token) throw new Error(errorContstants.ACCESS_TOKEN_NOT_FOUND, 401, 'jsonwebtoken');
+    if (!token) throw new Error(errorContstants.ACCESS_TOKEN_NOT_FOUND, 401, 'JsonWebTokenError');
     const data = verify(token, process.env.JWT_ACCESS_SECRET);
     if (data) {
       const tokenCheck = handleCachedTokenCheck(data.email, token);
-      if (!tokenCheck) throw new Error(errorContstants.ACCESS_TOKEN_NOT_FOUND, 401, 'jsonwebtoken');
+      if (!tokenCheck) throw new Error(errorContstants.ACCESS_TOKEN_NOT_FOUND, 401, 'JsonWebTokenError');
 
       const temp = { ...data };
       delete temp.iat;
