@@ -21,6 +21,10 @@ const getRoutes = async (app, type) => {
 
 const registerUnprotectedRoutes = async (app) => {
   await getRoutes(app, 'unprotected.routes');
+  app.use('/health', (_req, res) =>
+    res.json('Server is Working')
+  );
+  
 };
 
 const registerProtectedRoutes = async (app) => {
