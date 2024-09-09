@@ -41,7 +41,7 @@ const setupRateLimiter = (app) => {
     // Disable the `X-RateLimit-*` headers.
     message: (req, res) => {
       const errorObj = getErrorObj(req, res);
-      return { error: errorContstants.TOO_MANY_REQUEST, limit: process.env.RATE_LIMIT, limitWindow: `${process.env.RATE_LIMIT_WINDOW}ms`, ...errorObj };
+      return { error: errorContstants.TOO_MANY_REQUEST, limit: process.env.RATE_LIMIT, limitWindow: `${process.env.RATE_LIMIT_WINDOW}ms`, type: 'RateLimitError', ...errorObj };
     },
 
     // Limit each IP to 100 requests per `window` (here, per 10 minutes).
@@ -118,7 +118,7 @@ const setupValidationErrorInterceptor = (app) => {
     const errorObj = getErrorObj(req, res);
     if (err instanceof ValidationError) {
       const error = err.details.body?.[0].message || err.details.params?.[0].message || err.details.query?.[0].message || err.details.headers?.[0].message;
-      return res.status(400).json({ error, ...errorObj });
+      return res.status(400).json({ error, type: 'ValidationError', ...errorObj });
     }
     next(err);
   });
