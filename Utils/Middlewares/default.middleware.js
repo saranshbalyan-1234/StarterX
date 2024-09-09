@@ -1,4 +1,4 @@
-import { getTenantDB } from '#utils/Database/mongo.connection.js';
+import { getTenantDB } from '#utils/Mongo/mongo.connection.js';
 
 const defaultMiddleware = () => async (req, _res, next) => {
   try {

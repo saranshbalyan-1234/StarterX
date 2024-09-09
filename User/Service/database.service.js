@@ -1,5 +1,5 @@
 import errorContstants from '#constants/error.constant.js';
-import { getTenantDB, removeTenantDB } from '#utils/Database/mongo.connection.js';
+import { getTenantDB, removeTenantDB } from '#utils/Mongo/mongo.connection.js';
 // import { deleteBucket } from '#storage/Service/awsService.js';
 
 const deleteCustomer = async (tenant) => {

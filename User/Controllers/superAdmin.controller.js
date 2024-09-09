@@ -2,7 +2,7 @@ import errorContstants from '#constants/error.constant.js';
 import { deleteCustomer } from '#user/Service/database.service.js';
 import { getCachedKeys } from '#utils/Cache/cache.service.js';
 import cache from '#utils/Cache/index.js';
-import { getTenantDB } from '#utils/Database/mongo.connection.js';
+import { getTenantDB } from '#utils/Mongo/mongo.connection.js';
 import getError from '#utils/error.js';
 
 const getAllTenant = async (req, res) => {

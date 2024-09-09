@@ -2,7 +2,7 @@ import pkg from 'jsonwebtoken';
 
 import errorContstants from '#constants/error.constant.js';
 import cache from '#utils/Cache/index.js';
-import { getTenantDB } from '#utils/Database/mongo.connection.js';
+import { getTenantDB } from '#utils/Mongo/mongo.connection.js';
 import getError from '#utils/error.js';
 
 const { verify } = pkg;

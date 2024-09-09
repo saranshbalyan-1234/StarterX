@@ -2,7 +2,7 @@ import pkg from 'jsonwebtoken';
 
 import errorConstants from '#constants/error.constant.js';
 import successConstants from '#constants/success.contant.js';
-import { getTenantDB } from '#utils/Database/mongo.connection.js';
+import { getTenantDB } from '#utils/Mongo/mongo.connection.js';
 // import { createBucket } from '#storage/Service/awsService.js';
 import getError from '#utils/error.js';
 // import { createToken, getTokenError } from '#utils/jwt.js';
