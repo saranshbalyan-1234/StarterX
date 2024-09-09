@@ -8,10 +8,9 @@ import helmet from 'helmet';
 import defaultMiddleware from '#middlewares/default.middleware.js';
 import { setupCors, setupHtmlErrorInterceptor, setupRateLimiter, setupResponseInterceptor, setupTimeout, setupValidationErrorInterceptor } from '#middlewares/server.middleware.js';
 import seedSuperAdmin from '#user/Seed/superadmin.seed.js';
-import { getTenantDB } from '#utils/Mongo/mongo.connection.js';
 import morgalApiLogger from '#utils/Logger/api.logger.js';
 import overrideConsole from '#utils/Logger/console.logger.js';
-
+import { getTenantDB } from '#utils/Mongo/mongo.connection.js';
 import registerRoutes from '#utils/registerRoutes.js';
 // Import { scheduleInit } from "#scheduler/Service/schedulerService.js";
 

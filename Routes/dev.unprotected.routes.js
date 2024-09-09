@@ -6,6 +6,4 @@ Router.get('/health', (_req, res) =>
   res.json('Server is Working')
 );
 
-
-
 export default Router;

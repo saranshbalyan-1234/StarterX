@@ -1,7 +1,7 @@
 import errorContstants from '#constants/error.constant.js';
 import cache from '#utils/Cache/index.js';
-import { getTenantDB } from '#utils/Mongo/mongo.connection.js';
 import { createToken } from '#utils/jwt.js';
+import { getTenantDB } from '#utils/Mongo/mongo.connection.js';
 
 const loginWithCredentals = async ({ email, password, rememberMe, isPassRequired = true, tenant }) => {
   try {

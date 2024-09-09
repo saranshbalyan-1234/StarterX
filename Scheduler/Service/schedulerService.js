@@ -32,7 +32,7 @@ export const scheduleInit = async () => {
   }
 };
 
-export const startManagerJobs = async (manager, tenant) => {
+export const startManagerJobs = (manager, tenant) => {
   try {
     console.log('Starting Manager Active Jobs: ', manager.name);
     if (!manager.active) return console.log('Cannot Start Inactive Manager');
@@ -76,7 +76,6 @@ export const addJob = async (managerId, job, tenant) => {
     console.error(err);
   }
 };
-
 
 export const getJobManagerFromMap = (key) => {
   try {

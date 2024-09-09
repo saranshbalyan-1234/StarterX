@@ -7,7 +7,7 @@ const getRoutes = async (app, type) => {
 
   for (let i = 0; i < files.length; i++) {
     const element = files[i];
-    const route =  await import(`../${element}`);
+    const route = await import(`../${element}`);
     const defaultFile = route.default;
 
     const tempAr = element.split('.');

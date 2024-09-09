@@ -19,7 +19,6 @@ export const createJobManager = async (req, res) => {
      */
 
     const projectId = req.headers['x-project-id'];
-    const { active } = req.body;
 
     const jobManager = await JobManager.schema(req.database).create({ ...req.body, projectId });
     return res.status(200).json(jobManager);
