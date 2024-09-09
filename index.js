@@ -12,7 +12,7 @@ import { getTenantDB } from '#utils/Database/mongo.connection.js';
 import morgalApiLogger from '#utils/Logger/api.logger.js';
 import overrideConsole from '#utils/Logger/console.logger.js';
 
-import registerRoutes from './registerRoutes.js';
+import registerRoutes from '#utils/registerRoutes.js';
 // Import { scheduleInit } from "#scheduler/Service/schedulerService.js";
 
 const app = express();
