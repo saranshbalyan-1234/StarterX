@@ -22,7 +22,7 @@ export const validateToken = () => async (req, res, next) => {
 
       req.currentTenant = temp.currentTenant;
       req.masterTenant = process.env.DATABASE_PREFIX + process.env.DATABASE_NAME;
-      req.isMaster = req.currentTenant == req.masterTenant
+      req.isMaster = req.currentTenant === req.masterTenant;
 
       const db = await getTenantDB(req.currentTenant);
       req.models = db.models;

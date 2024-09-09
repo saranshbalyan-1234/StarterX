@@ -48,7 +48,7 @@ process.on('SIGINT', () => {
 export const createDbConnection = async (tenant = process.env.DATABASE_PREFIX + process.env.DATABASE_NAME, autoIndex = true) => {
   try {
     console.log(`Establishing ${tenant} db connection`);
-    const isMasterConn = process.env.DATABASE_PREFIX + process.env.DATABASE_NAME;
+    const isMasterConn = tenant === process.env.DATABASE_PREFIX + process.env.DATABASE_NAME;
     const DB_URL = process.env.DATABASE_URL;
     const conn = mongoose.createConnection(DB_URL.at(-1) === '/' ? DB_URL + tenant : `${DB_URL}/${tenant}`, { ...clientOption, autoIndex });
     await conn.$initialConnection; // wait for connection to get established

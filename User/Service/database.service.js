@@ -8,7 +8,6 @@ const deleteCustomer = async (tenant) => {
 
     await dropDatabase(tenant);
     await removeTenantDB(tenant);
-    
   } catch (e) {
     console.error(e);
     throw new Error(e);

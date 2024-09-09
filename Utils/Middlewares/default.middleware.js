@@ -9,8 +9,8 @@ const defaultMiddleware = () => async (req, _res, next) => {
     req.models = db.models;
 
     req.currentTenant = process.env.DATABASE_PREFIX + process.env.DATABASE_NAME;
-    req.masterTenant = process.env.DATABASE_PREFIX + process.env.DATABASE_NAME;
-    req.isMaster = true
+    req.masterTenant = req.currentTenant;
+    req.isMaster = true;
 
     const session = await db.startSession();
     session.startTransaction();

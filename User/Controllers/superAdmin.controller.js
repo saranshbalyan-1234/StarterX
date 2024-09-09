@@ -43,8 +43,8 @@ const deleteCustomerByAdmin = async (req, res) => {
     const db = await getTenantDB();
     const customer = await db.models.customer.findOne({ email });
 
-    if(customer.tenant.length==1) await db.models.customer.deleteOne({ email})
-    else  await db.models.customer.updateMany({ tenant: { $elemMatch: { $eq: tenant } } }, { $pull: { tenant } });
+    if (customer.tenant.length === 1) await db.models.customer.deleteOne({ email });
+    else await db.models.customer.updateMany({ tenant: { $elemMatch: { $eq: tenant } } }, { $pull: { tenant } });
     return res.status(200).json({ message: 'Deleted customer!' });
   } catch (error) {
     getError(error, res);

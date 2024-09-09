@@ -24,7 +24,6 @@ const registerUnprotectedRoutes = async (app) => {
   app.use('/health', (_req, res) =>
     res.json('Server is Working')
   );
-  
 };
 
 const registerProtectedRoutes = async (app) => {
