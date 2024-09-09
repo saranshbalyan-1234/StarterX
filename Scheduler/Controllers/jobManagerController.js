@@ -2,12 +2,11 @@ import _ from 'lodash';
 
 import errorContstants from '#constants/error.constant.js';
 import successContstants from '#constants/success.contant.js';
-// import db from '#utils/dataBaseConnection.js';
 import getError from '#utils/error.js';
 import { idValidation } from '#validations/index.js';
 
 // Import { createJobManagerValidation } from "../Validations/scheduler.js";
-import { addToConnectionPool, deleteFromConnectionPool, getJobManagerFromMap, startManagerJobs, stopManager } from '../Service/schedulerService.js';
+import { getJobManagerFromMap, startManagerJobs, stopManager } from '../Service/schedulerService.js';
 const db = {};
 const JobManager = db.jobManagers;
 const Job = db.jobs;
@@ -20,13 +19,9 @@ export const createJobManager = async (req, res) => {
      */
 
     const projectId = req.headers['x-project-id'];
-    const { active, connection } = req.body;
+    const { active } = req.body;
 
     const jobManager = await JobManager.schema(req.database).create({ ...req.body, projectId });
-    if (connection && active) {
-      await addToConnectionPool(jobManager.id, req.user.tenant, req.body.connection);
-    }
-
     return res.status(200).json(jobManager);
   } catch (error) {
     getError(error, res);
@@ -41,8 +36,7 @@ export const updateJobManagerById = async (req, res) => {
 
     const prevJobManager = await JobManager.schema(req.database).findByPk(jobManagerId);
     if (!prevJobManager) return res.status(404).json({ error: errorContstants.RECORD_NOT_FOUND });
-    const prevConnectionData = prevJobManager.dataValues.connection;
-    const { name = prevJobManager.dataValues.name, active = prevJobManager.dataValues.active, connection = prevConnectionData } = req.body;
+    const { name = prevJobManager.dataValues.name, active = prevJobManager.dataValues.active } = req.body;
 
     const payload = _.cloneDeep(req.body);
 
@@ -50,26 +44,9 @@ export const updateJobManagerById = async (req, res) => {
       if (prevJobManager.dataValues.active === false) {
         console.log(`Starting Job Manager: ${prevJobManager.dataValues.id}`);
         const jobs = await Job.schema(req.database).findAll({ where: { jobManagerId } });
-        await startManagerJobs({ active, connection, jobs, name }, req.user.tenant, false);
+        await startManagerJobs({ active, jobs, name }, req.user.tenant, false);
       } else {
         console.log('Job Manager already active');
-        const { host, port, dialect, user, password, db: database } = connection;
-        if (
-          (host && port && dialect && user && password) ||
-          prevConnectionData.host !== host ||
-          prevConnectionData.port !== port ||
-          prevConnectionData.dialect !== dialect ||
-          prevConnectionData.user !== user ||
-          prevConnectionData.password !== password ||
-          prevConnectionData.db !== database
-        ) {
-          console.log('New Connection Found');
-          deleteFromConnectionPool(`${req.user.tenant}_${prevJobManager.dataValues.id}`);
-          await addToConnectionPool(jobManagerId, req.user.tenant, req.body.connection);
-        } else {
-          console.log('Using Old Connection');
-          delete payload.connection;
-        }
       }
     } else {
       console.log('Making Job Manager Inactive');
@@ -86,7 +63,6 @@ export const updateJobManagerById = async (req, res) => {
     if (updatedJobManager.length > 0) {
       /*
        * Console.log(Updated Scheduler Maps")
-       * console.log("Connection Pool: ", connectionPool)
        * console.log("Job Manager: ", jobManagerMap,")
        */
       return res.status(200).json({ message: successContstants.UPDATED });

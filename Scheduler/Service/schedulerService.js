@@ -2,17 +2,11 @@
 
 import { getAllTenant } from '#user/Controllers/superAdmin.controller.js';
 
-// import db, { createDBConnection } from '#utils/dataBaseConnection.js';
-import { executeCurl, executeQuery } from './jobRunner.js';
 const db = {};
-const createDBConnection = (connection) => {
-  console.log('db', connection);
-};
 const JobManager = db.jobManagers;
 const Job = db.jobs;
 
 export const jobManagerMap = {};
-export const connectionPool = {};
 
 const skipTenant = ['demo@yopmail.com', 'saransh2yopmailcom'];
 
@@ -32,7 +26,6 @@ export const scheduleInit = async () => {
         await startManagerJobs(manager, customer.tenantName);
       }
     }
-    // Console.log("Connection Pool: ", console.log(connectionPool))
     console.log('Current Jobs', jobManagerMap);
   } catch (e) {
     console.error(e);
@@ -43,12 +36,6 @@ export const startManagerJobs = async (manager, tenant) => {
   try {
     console.log('Starting Manager Active Jobs: ', manager.name);
     if (!manager.active) return console.log('Cannot Start Inactive Manager');
-    if (manager.connection) {
-      console.log('Starting Manager Connection');
-      await addToConnectionPool(manager.id, tenant, manager.connection);
-    } else console.log('No Connection Found');
-    // JobManagerMap[`${tenant}_${manager.id}`] = new Scheduler();
-
     manager.jobs?.forEach((job) => {
       addJob(manager.id, job, tenant);
     });
@@ -61,7 +48,6 @@ export const stopManager = async (managerId, tenant) => {
   try {
     const manager = jobManagerMap[`${tenant}_${managerId}`];
     await manager.stopAll();
-    delete connectionPool[`${tenant}_${managerId}`];
     delete jobManagerMap[`${tenant}_${managerId}`];
   } catch (err) {
     console.error(err);
@@ -77,16 +63,6 @@ export const addJob = async (managerId, job, tenant) => {
       job.time,
       () => {
         console.log('Job Triggered:', job.name);
-        switch (job.type) {
-          case 'query':
-            executeQuery(connectionPool[`${tenant}_${managerId}`], job);
-            break;
-          case 'curl':
-            executeCurl(job.data);
-            break;
-          default:
-            break;
-        }
       },
       {
         onComplete: () => {
@@ -101,30 +77,6 @@ export const addJob = async (managerId, job, tenant) => {
   }
 };
 
-export const addToConnectionPool = async (managerId, tenant, connection) => {
-  try {
-    connectionPool[`${tenant}_${managerId}`] = await createDBConnection(connection);
-    return true;
-  } catch (err) {
-    console.error(err);
-  }
-};
-
-export const getFromConnectionPool = (key) => {
-  try {
-    return connectionPool[key];
-  } catch (err) {
-    console.error(err);
-  }
-};
-
-export const deleteFromConnectionPool = (key) => {
-  try {
-    delete connectionPool[key];
-  } catch (err) {
-    console.error(err);
-  }
-};
 
 export const getJobManagerFromMap = (key) => {
   try {
