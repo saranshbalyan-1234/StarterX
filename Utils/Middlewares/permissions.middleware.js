@@ -6,7 +6,7 @@ const validatePermission = (permissionName, method) => async (req, res, next) =>
   try {
     if (!(req.user.type === 'issuer' || req.user.type === 'admin')) {
       const allowed = await req.user.permissions.some((permission) => permissionName === permission.name && permission[method] === true);
-      if (!allowed) throw new Error(errorContstants.UNAUTHORIZED, 403, 'Permission');
+      if (!allowed) throw new Error(errorContstants.UNAUTHORIZED, 403, 'PermissionError');
     }
     return next();
   } catch (e) {
@@ -16,7 +16,7 @@ const validatePermission = (permissionName, method) => async (req, res, next) =>
 
 const validateSuperAdmin = () => (req, res, next) => {
   try {
-    if (!req.user.superAdmin) throw new Error(errorContstants.UNAUTHORIZED, 403, 'Permission');
+    if (!req.user.superAdmin) throw new Error(errorContstants.UNAUTHORIZED, 403, 'PermissionError');
     return next();
   } catch (e) {
     return getError(e, res);
@@ -24,7 +24,7 @@ const validateSuperAdmin = () => (req, res, next) => {
 };
 const validateIssuer = () => (req, res, next) => {
   try {
-    if (!req.user.type === 'issuer') throw new Error(errorContstants.UNAUTHORIZED, 403, 'Permission');
+    if (!req.user.type === 'issuer') throw new Error(errorContstants.UNAUTHORIZED, 403, 'PermissionError');
     return next();
   } catch (e) {
     return getError(e, res);

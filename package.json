@@ -10,7 +10,8 @@
     "lint": "eslint . --quiet --cache --cache-location=node_modules/.cache/eslint",
     "lint-fix": "eslint . --fix",
     "clean": "rimraf node_modules && npm ci",
-    "test": "node Test/Api/index.js"
+    "test": "node Test/Api/index.js",
+     "postinstall": "patch-package"
   },
   "author": "",
   "license": "ISC",
@@ -39,6 +40,7 @@
     "passport-http": "^0.3.0",
     "passport-linkedin-oauth2": "^2.0.0",
     "passport-microsoft": "^2.1.0",
+    "patch-package": "^8.0.0",
     "swagger-autogen": "^2.23.7",
     "swagger-ui-express": "^5.0.1"
   },

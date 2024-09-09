@@ -1,0 +1,21 @@
+diff --git a/node_modules/jsonwebtoken/lib/JsonWebTokenError.js b/node_modules/jsonwebtoken/lib/JsonWebTokenError.js
+index e068222..fd5e39d 100644
+--- a/node_modules/jsonwebtoken/lib/JsonWebTokenError.js
++++ b/node_modules/jsonwebtoken/lib/JsonWebTokenError.js
+@@ -1,14 +1,5 @@
+ var JsonWebTokenError = function (message, error) {
+-  Error.call(this, message);
+-  if(Error.captureStackTrace) {
+-    Error.captureStackTrace(this, this.constructor);
+-  }
+-  this.name = 'JsonWebTokenError';
+-  this.message = message;
+-  if (error) this.inner = error;
+-};
+-
+-JsonWebTokenError.prototype = Object.create(Error.prototype);
+-JsonWebTokenError.prototype.constructor = JsonWebTokenError;
++  throw new Error(message, 401, "JsonWebTokenError")
++}
+ 
+ module.exports = JsonWebTokenError;
