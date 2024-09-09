@@ -74,7 +74,7 @@ const verifyCustomer = async (req, res) => {
       getError(error, res);
     }
   } catch (error) {
-    getError(error, res, 'Email Verification');
+    getError(error, res);
   }
 };
 
