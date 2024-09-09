@@ -8,11 +8,7 @@ const deleteCustomer = async (tenant) => {
 
     await dropDatabase(tenant);
     await removeTenantDB(tenant);
-    /*
-     * deleteBucket(database);
-     * if (deletedCustomer > 0) return true;
-     * throw new Error(errorContstants.RECORD_NOT_FOUND);
-     */
+    
   } catch (e) {
     console.error(e);
     throw new Error(e);

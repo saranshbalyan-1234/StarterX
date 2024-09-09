@@ -41,8 +41,11 @@ const deleteCustomerByAdmin = async (req, res) => {
     const tenant = process.env.DATABASE_PREFIX + email.replace(/[^a-zA-Z0-9 ]/g, '').toLowerCase();
     await deleteCustomer(tenant);
     const db = await getTenantDB();
-    const result = await db.models.customer.updateMany({ tenant: { $elemMatch: { $eq: tenant } } }, { $pull: { tenant } });
-    return res.status(200).json({ message: 'Deleted all data!', result });
+    const customer = await db.models.customer.findOne({ email });
+
+    if(customer.tenant.length==1) await db.models.customer.deleteOne({ email})
+    else  await db.models.customer.updateMany({ tenant: { $elemMatch: { $eq: tenant } } }, { $pull: { tenant } });
+    return res.status(200).json({ message: 'Deleted customer!' });
   } catch (error) {
     getError(error, res);
   }
