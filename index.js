@@ -3,6 +3,8 @@ import '#utils/ApiError.js';
 import parser from 'body-parser';
 import express from 'express';
 import fileupload from 'express-fileupload';
+// Import { scheduleInit } from "#scheduler/Service/schedulerService.js";
+import expressListRoutes from 'express-list-routes';
 import helmet from 'helmet';
 
 import defaultMiddleware from '#middlewares/default.middleware.js';
@@ -12,9 +14,6 @@ import morgalApiLogger from '#utils/Logger/api.logger.js';
 import overrideConsole from '#utils/Logger/console.logger.js';
 import { getTenantDB } from '#utils/Mongo/mongo.connection.js';
 import registerRoutes from '#utils/registerRoutes.js';
-// Import { scheduleInit } from "#scheduler/Service/schedulerService.js";
-
-import expressListRoutes from 'express-list-routes';
 
 const app = express();
 
@@ -22,9 +21,11 @@ app.use(defaultMiddleware());
 
 overrideConsole();
 
-// console.debug('======================ENV======================');
-// console.debug(process.env);
-// console.debug('======================ENV======================');
+/*
+ * console.debug('======================ENV======================');
+ * console.debug(process.env);
+ * console.debug('======================ENV======================');
+ */
 
 await getTenantDB().then(() => seedSuperAdmin());
 
@@ -42,7 +43,7 @@ setupResponseInterceptor(app);
 
 await registerRoutes(app);
 
-expressListRoutes(app)
+expressListRoutes(app);
 setupValidationErrorInterceptor(app);
 
 app.listen(process.env.PORT, () => {
