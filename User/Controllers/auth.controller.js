@@ -14,7 +14,7 @@ const { verify } = pkg;
 const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
-    const tenant = req.headers['x-tenant-id'] || process.env.DATABASE_NAME
+    const tenant = req.headers['x-tenant-id'] || process.env.DATABASE_NAME;
     const unverifiedUser = await req.models.unverified.create(
       [{ email, name, password, tenant }]
     );
@@ -63,7 +63,7 @@ const verifyCustomer = async (req, res) => {
        */
       const db = await getTenantDB(tenant);
 
-      console.debug(db.models)
+      console.debug(db.models);
       await db.models.user.create([{
         _id: customer._id,
         email,

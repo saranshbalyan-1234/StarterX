@@ -45,12 +45,12 @@ const removeTenant = async (req, res) => {
     await dropDatabase(tenant);
     await removeTenantDB(tenant);
 
-    await db.models.customer.updateMany({ tenant: { $elemMatch: { $eq: tenant } } }, { $pull: { tenant } },{ session: req.session, });
-    await db.models.customer.deleteMany({ tenant: { $exists: true, $size: 0 } },{ session: req.session, });
+    await req.models.customer.updateMany({ tenant: { $elemMatch: { $eq: tenant } } }, { $pull: { tenant } }, { session: req.session });
+    await req.models.customer.deleteMany({ tenant: { $exists: true, $size: 0 } }, { session: req.session });
     return res.status(200).json({ message: 'Deleted Tenant!' });
   } catch (error) {
     getError(error, res);
   }
 };
 
-export { removeTenant, getAllSession, getAllTenant, terminateSession };
+export { getAllSession, getAllTenant, removeTenant, terminateSession };

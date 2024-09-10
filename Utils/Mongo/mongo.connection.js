@@ -63,12 +63,12 @@ export const createDbConnection = async (tenant = process.env.DATABASE_NAME, aut
 };
 
 const registerAllSchema = async (db, isMasterConn = false) => {
-  console.log("Registering Schema")
+  console.log('Registering Schema');
   try {
     const files = getDirectories('.', 'schema');
     const onlyMasterSchema = ['Customer', 'Unverified'];
     for (const file of files) {
-      console.debug(file,onlyMasterSchema.some(el => file.includes(el)))
+      console.debug(file, onlyMasterSchema.some(el => file.includes(el)));
       if (isMasterConn || !onlyMasterSchema.some(el => file.includes(el))) {
         const schema = await import(`../../${file}`);
         const defaultFile = schema.default;
