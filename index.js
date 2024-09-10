@@ -14,15 +14,17 @@ import { getTenantDB } from '#utils/Mongo/mongo.connection.js';
 import registerRoutes from '#utils/registerRoutes.js';
 // Import { scheduleInit } from "#scheduler/Service/schedulerService.js";
 
+import expressListRoutes from 'express-list-routes';
+
 const app = express();
 
 app.use(defaultMiddleware());
 
 overrideConsole();
 
-console.debug('======================ENV======================');
-console.debug(process.env);
-console.debug('======================ENV======================');
+// console.debug('======================ENV======================');
+// console.debug(process.env);
+// console.debug('======================ENV======================');
 
 await getTenantDB().then(() => seedSuperAdmin());
 
@@ -40,6 +42,7 @@ setupResponseInterceptor(app);
 
 await registerRoutes(app);
 
+expressListRoutes(app)
 setupValidationErrorInterceptor(app);
 
 app.listen(process.env.PORT, () => {
