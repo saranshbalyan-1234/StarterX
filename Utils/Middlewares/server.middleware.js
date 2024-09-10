@@ -76,6 +76,7 @@ const setupCors = (app) => {
 
 const setupResponseInterceptor = (app) => {
   console.log('Response Interceptor is Turned ON');
+  process.env.ENCRYPTION === 'true' ? console.log('ENCRYPTION is turned ON') : console.log('ENCRYPTION is turned OFF');
   app.use((req, res, next) => {
     const originalSend = res.send;
 
