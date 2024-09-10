@@ -1,12 +1,6 @@
-// import successConstants from '#constants/success.contant.js';
-
-/*
- * import { s3, uploadFile } from '#storage/Service/awsService.js';
- */
 import cache from '#utils/Cache/index.js';
 import getError from '#utils/error.js';
 import { getTenantDB } from '#utils/Mongo/mongo.connection.js';
-// import { deleteCustomer } from '../Service/database.service.js';
 
 const getOrUpdateUser = async (req, res) => {
   try {

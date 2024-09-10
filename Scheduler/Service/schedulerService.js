@@ -17,8 +17,8 @@ export const scheduleInit = async () => {
     for (let i = 0; i < customers.length; i++) {
       const customer = customers[i];
       if (skipTenant.includes(customer.tenantName)) continue;
-      const jobManagers = await JobManager.schema(process.env.DATABASE_PREFIX + customer.tenantName).findAll({
-        include: [{ model: Job.schema(process.env.DATABASE_PREFIX + customer.tenantName) }]
+      const jobManagers = await JobManager.schema(customer.tenantName).findAll({
+        include: [{ model: Job.schema(customer.tenantName) }]
       });
 
       for (let j = 0; j < jobManagers.length; j++) {

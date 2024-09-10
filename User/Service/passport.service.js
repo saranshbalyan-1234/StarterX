@@ -14,7 +14,7 @@ passport.use(new BasicStrategy(
   async (username, password, done) => {
     try {
       // eslint-disable-next-line sonarjs/no-duplicate-string
-      const user = await loginWithCredentals({ email: username, password, rememberMe: true, tenant: process.env.DATABASE_PREFIX + process.env.DATABASE_NAME });
+      const user = await loginWithCredentals({ email: username, password, rememberMe: true, tenant: process.env.DATABASE_NAME });
       if (!user) { return done(null, false); }
       return done(null, user);
     } catch (e) {

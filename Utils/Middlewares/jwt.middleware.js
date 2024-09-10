@@ -21,8 +21,7 @@ export const validateToken = () => async (req, res, next) => {
       req.user = temp;
 
       req.currentTenant = temp.currentTenant;
-      req.masterTenant = process.env.DATABASE_PREFIX + process.env.DATABASE_NAME;
-      req.isMaster = req.currentTenant === req.masterTenant;
+      req.isMaster = req.currentTenant === process.env.DATABASE_NAME
 
       const db = await getTenantDB(req.currentTenant);
       req.models = db.models;

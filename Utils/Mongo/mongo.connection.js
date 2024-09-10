@@ -45,10 +45,10 @@ process.on('SIGINT', () => {
   process.exit(0);
 });
 
-export const createDbConnection = async (tenant = process.env.DATABASE_PREFIX + process.env.DATABASE_NAME, autoIndex = true) => {
+export const createDbConnection = async (tenant = process.env.DATABASE_NAME, autoIndex = true) => {
   try {
     console.log(`Establishing ${tenant} db connection`);
-    const isMasterConn = tenant === process.env.DATABASE_PREFIX + process.env.DATABASE_NAME;
+    const isMasterConn = tenant === process.env.DATABASE_NAME;
     const DB_URL = process.env.DATABASE_URL;
     const conn = mongoose.createConnection(DB_URL.at(-1) === '/' ? DB_URL + tenant : `${DB_URL}/${tenant}`, { ...clientOption, autoIndex });
     await conn.$initialConnection; // wait for connection to get established
@@ -63,11 +63,13 @@ export const createDbConnection = async (tenant = process.env.DATABASE_PREFIX + 
 };
 
 const registerAllSchema = async (db, isMasterConn = false) => {
+  console.log("Registering Schema")
   try {
     const files = getDirectories('.', 'schema');
-    const onlyMasterSchema = ['customer', 'unverified'];
+    const onlyMasterSchema = ['Customer', 'Unverified'];
     for (const file of files) {
-      if (isMasterConn || onlyMasterSchema.some(el => file.includes(el))) {
+      console.debug(file,onlyMasterSchema.some(el => file.includes(el)))
+      if (isMasterConn || !onlyMasterSchema.some(el => file.includes(el))) {
         const schema = await import(`../../${file}`);
         const defaultFile = schema.default;
 
@@ -96,7 +98,7 @@ const connectionEvents = (conn) => {
   }
 };
 
-export const getTenantDB = async (tenant = process.env.DATABASE_PREFIX + process.env.DATABASE_NAME, autoIndex = true) => {
+export const getTenantDB = async (tenant = process.env.DATABASE_NAME, autoIndex = true) => {
   try {
     const connection = connectionsObj[tenant];
     if (connection) return connection;
@@ -106,7 +108,7 @@ export const getTenantDB = async (tenant = process.env.DATABASE_PREFIX + process
   }
 };
 
-export const removeTenantDB = async (tenant = process.env.DATABASE_PREFIX + process.env.DATABASE_NAME) => {
+export const removeTenantDB = async (tenant = process.env.DATABASE_NAME) => {
   try {
     console.debug('closing connection');
     const connection = connectionsObj[tenant];

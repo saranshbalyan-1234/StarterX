@@ -1,9 +1,9 @@
 import errorContstants from '#constants/error.constant.js';
-import { deleteCustomer } from '#user/Service/database.service.js';
+import { dropDatabase } from '#user/Service/database.service.js';
 import { getCachedKeys } from '#utils/Cache/cache.service.js';
 import cache from '#utils/Cache/index.js';
 import getError from '#utils/error.js';
-import { getTenantDB } from '#utils/Mongo/mongo.connection.js';
+import { removeTenantDB } from '#utils/Mongo/mongo.connection.js';
 
 const getAllTenant = async (req, res) => {
   try {
@@ -35,20 +35,22 @@ const terminateSession = (req, res) => {
   }
 };
 
-const deleteCustomerByAdmin = async (req, res) => {
+const removeTenant = async (req, res) => {
   try {
-    const { email } = req.body;
-    const tenant = process.env.DATABASE_PREFIX + email.replace(/[^a-zA-Z0-9 ]/g, '').toLowerCase();
-    await deleteCustomer(tenant);
-    const db = await getTenantDB();
-    const customer = await db.models.customer.findOne({ email });
+    const { tenant } = req.body;
 
-    if (customer.tenant.length === 1) await db.models.customer.deleteOne({ email });
-    else await db.models.customer.updateMany({ tenant: { $elemMatch: { $eq: tenant } } }, { $pull: { tenant } });
-    return res.status(200).json({ message: 'Deleted customer!' });
+    const customers = await req.models.customer.find({ tenant });
+    if (!customers.length) throw new Error(errorContstants.RECORD_NOT_FOUND);
+
+    await dropDatabase(tenant);
+    await removeTenantDB(tenant);
+
+    await db.models.customer.updateMany({ tenant: { $elemMatch: { $eq: tenant } } }, { $pull: { tenant } },{ session: req.session, });
+    await db.models.customer.deleteMany({ tenant: { $exists: true, $size: 0 } },{ session: req.session, });
+    return res.status(200).json({ message: 'Deleted Tenant!' });
   } catch (error) {
     getError(error, res);
   }
 };
 
-export { deleteCustomerByAdmin, getAllSession, getAllTenant, terminateSession };
+export { removeTenant, getAllSession, getAllTenant, terminateSession };

@@ -14,12 +14,12 @@ const { verify } = pkg;
 const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
-    const tenant = req.headers['x-tenant-id'] || req.masterTenant;
+    const tenant = req.headers['x-tenant-id'] || process.env.DATABASE_NAME
     const unverifiedUser = await req.models.unverified.create(
       [{ email, name, password, tenant }]
     );
 
-    await sendMail({ _id: unverifiedUser.id, email, name }, 'customerRegister');
+    await sendMail({ _id: unverifiedUser[0]._id, email, name }, 'customerRegister');
 
     return res.status(200).json({
       message: 'Registered successfuly, Please check email to verify account.'
@@ -43,7 +43,7 @@ const verifyCustomer = async (req, res) => {
   try {
     const data = verify(req.params.token, process.env.JWT_VERIFICATION_SECRET);
 
-    console.log('Verifying Customer', data.email);
+    console.log('Verifying User', data);
 
     try {
       const unverifiedUser = await req.models.unverified.findOneAndDelete({ _id: data._id }, { session: req.session });
@@ -58,15 +58,17 @@ const verifyCustomer = async (req, res) => {
 
       /*
        * if (process.env.MULTI_TENANT !== 'false') {
-       * createBucket(tenant.replace(process.env.DATABASE_PREFIX, ''))
+       * createBucket(tenant)
        * }
        */
       const db = await getTenantDB(tenant);
+
+      console.debug(db.models)
       await db.models.user.create([{
         _id: customer._id,
         email,
         name,
-        type: process.env.DATABASE_PREFIX + email.replace(/[^a-zA-Z0-9 ]/g, '') === tenant ? 'issuer' : 'user'
+        type: 'issuer'
       }]);
 
       return res.status(200).json({ message: successConstants.EMAIL_VERIFICATION_SUCCESSFULL });
