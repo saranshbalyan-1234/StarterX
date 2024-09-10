@@ -55,7 +55,7 @@ export const createDbConnection = async (tenant = process.env.DATABASE_NAME, aut
     if (autoIndex) await registerAllSchema(conn, isMasterConn);
     connectionEvents(conn);
     connectionsObj[tenant] = conn;
-    console.debug('Active connections', Object.keys(connectionsObj));
+    console.log('Active connections', Object.keys(connectionsObj));
     return conn;
   } catch (error) {
     console.error('Error while connecting to DB', error);
@@ -68,7 +68,6 @@ const registerAllSchema = async (db, isMasterConn = false) => {
     const files = getDirectories('.', 'schema');
     const onlyMasterSchema = ['Customer', 'Unverified'];
     for (const file of files) {
-      console.debug(file, onlyMasterSchema.some(el => file.includes(el)));
       if (isMasterConn || !onlyMasterSchema.some(el => file.includes(el))) {
         const schema = await import(`../../${file}`);
         const defaultFile = schema.default;
@@ -110,12 +109,12 @@ export const getTenantDB = async (tenant = process.env.DATABASE_NAME, autoIndex 
 
 export const removeTenantDB = async (tenant = process.env.DATABASE_NAME) => {
   try {
-    console.debug('closing connection');
+    console.log('closing connection');
     const connection = connectionsObj[tenant];
     if (!connection) throw new Error('No connection found!');
     await connection.close();
     delete connectionsObj[tenant];
-    console.debug('Active connections', Object.keys(connectionsObj));
+    console.log('Active connections', Object.keys(connectionsObj));
 
     return true;
   } catch (err) {

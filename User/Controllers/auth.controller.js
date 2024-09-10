@@ -63,7 +63,6 @@ const verifyCustomer = async (req, res) => {
        */
       const db = await getTenantDB(tenant);
 
-      console.debug(db.models);
       await db.models.user.create([{
         _id: customer._id,
         email,

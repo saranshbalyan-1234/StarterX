@@ -20,13 +20,11 @@ app.use(defaultMiddleware());
 
 overrideConsole();
 
-await getTenantDB().then(() => seedSuperAdmin());
+console.debug('======================ENV======================');
+console.debug(process.env);
+console.debug('======================ENV======================');
 
-if (process.env.PRINT_ENV === 'true') {
-  console.debug('======================ENV======================');
-  console.debug(process.env);
-  console.debug('======================ENV======================');
-}
+await getTenantDB().then(() => seedSuperAdmin());
 
 app.use(parser.json());
 app.use(parser.urlencoded({ extended: false }));
