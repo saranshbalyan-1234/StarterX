@@ -14,9 +14,8 @@ const { verify } = pkg;
 const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
-    const tenant = req.headers['x-tenant-id'] || process.env.DATABASE_NAME;
     const unverifiedUser = await req.models.unverified.create(
-      [{ email, name, password, tenant }]
+      [{ email, name, password, tenant: req.tenant, type: 'issuer' }]
     );
 
     await sendMail({ _id: unverifiedUser[0]._id, email, name }, 'customerRegister');
@@ -32,7 +31,7 @@ const login = async (req, res) => {
   try {
     const { email, password, rememberMe = false } = req.body;
 
-    const loggedInUser = await loginWithCredentals({ email, models: req.models, password, rememberMe, tenant: req.headers['x-tenant-id'] });
+    const loggedInUser = await loginWithCredentals({ email, password, rememberMe, tenant: req.tenant });
     return res.status(200).json(loggedInUser);
   } catch (error) {
     getError(error, res);
@@ -42,33 +41,15 @@ const login = async (req, res) => {
 const verifyCustomer = async (req, res) => {
   try {
     const data = verify(req.params.token, process.env.JWT_VERIFICATION_SECRET);
-
     console.log('Verifying User', data);
 
     try {
       const unverifiedUser = await req.models.unverified.findOneAndDelete({ _id: data._id }, { session: req.session });
       if (!unverifiedUser) throw new Error(errorConstants.RECORD_NOT_FOUND);
 
-      const { email, password, name, tenant } = unverifiedUser;
-
-      const customer = await req.models.customer.findOneAndUpdate({ email },
-        { $push: { tenant }, email, password },
-        { new: true, session: req.session, upsert: true }
-      );
-
-      /*
-       * if (process.env.MULTI_TENANT !== 'false') {
-       * createBucket(tenant)
-       * }
-       */
+      const { tenant } = unverifiedUser;
       const db = await getTenantDB(tenant);
-
-      await db.models.user.create([{
-        _id: customer._id,
-        email,
-        name,
-        type: 'issuer'
-      }]);
+      await db.models.user.create([unverifiedUser]);
 
       return res.status(200).json({ message: successConstants.EMAIL_VERIFICATION_SUCCESSFULL });
     } catch (error) {
@@ -96,7 +77,8 @@ const resendVerificationMail = async (req, res) => {
 const sendResetPasswordMail = async (req, res) => {
   try {
     const { email } = req.body;
-    const customer = await req.models.customer.findOne({ email });
+    const db = await getTenantDB(req.tenant);
+    const customer = await db.models.user.findOne({ email });
     if (!customer) throw new Error(errorConstants.RECORD_NOT_FOUND);
 
     await sendMail({ _id: customer._id, email }, 'reset-password');
@@ -113,13 +95,13 @@ const resetPassword = async (req, res) => {
     try {
       if (!req.body.password) throw new Error(errorConstants.INSUFFICIENT_DETAILS);
       const { _id } = data;
-
-      const customer = await req.models.customer.findOneAndUpdate(
+      const db = await getTenantDB(req.tenant);
+      const user = await db.models.user.findOneAndUpdate(
         { _id },
         { incorrectPasswordCount: 0, password: req.body.password },
         { new: true, session: req.session });
 
-      if (!customer) throw new Error(errorConstants.RECORD_NOT_FOUND);
+      if (!user) throw new Error(errorConstants.RECORD_NOT_FOUND);
 
       return res.status(200).json({ message: successConstants.PASSWORD_RESET_SUCCESSFULL });
     } catch (error) {

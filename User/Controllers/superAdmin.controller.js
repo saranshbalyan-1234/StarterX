@@ -5,10 +5,15 @@ import cache from '#utils/Cache/index.js';
 import getError from '#utils/error.js';
 import { removeTenantDB } from '#utils/Mongo/mongo.connection.js';
 
-const getAllTenant = async (req, res) => {
+const getAllTenant = (_req, res) => {
   try {
-    const tenants = await req.models.customer.distinct('tenant');
-    return res.status(200).json(tenants);
+    /*
+     * const tenants = await req.models.customer.distinct('tenant');
+     * const data = await mongoose.connection.db.admin().command({
+     *   listDatabases: 1,
+     * });
+     * return res.status(200).json(data);
+     */
   } catch (error) {
     getError(error, res);
   }
@@ -39,14 +44,9 @@ const removeTenant = async (req, res) => {
   try {
     const { tenant } = req.body;
 
-    const customers = await req.models.customer.find({ tenant });
-    if (!customers.length) throw new Error(errorContstants.RECORD_NOT_FOUND);
-
     await dropDatabase(tenant);
     await removeTenantDB(tenant);
 
-    await req.models.customer.updateMany({ tenant: { $elemMatch: { $eq: tenant } } }, { $pull: { tenant } }, { session: req.session });
-    await req.models.customer.deleteMany({ tenant: { $exists: true, $size: 0 } }, { session: req.session });
     return res.status(200).json({ message: 'Deleted Tenant!' });
   } catch (error) {
     getError(error, res);

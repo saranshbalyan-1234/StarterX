@@ -27,7 +27,8 @@ overrideConsole();
  * console.debug('======================ENV======================');
  */
 
-await getTenantDB().then(() => seedSuperAdmin());
+await getTenantDB()
+  .then(() => seedSuperAdmin());
 
 app.use(parser.json());
 app.use(parser.urlencoded({ extended: false }));

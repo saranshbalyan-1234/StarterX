@@ -1,13 +1,26 @@
+import { Schema } from 'mongoose';
+
 import BaseSchema from '#utils/Mongo/BaseSchema.js';
 
 const Unverified = BaseSchema({
+  defaultProjectId: {
+    type: Number
+  },
   email: {
+    immutable: true,
     lowercase: true,
     match: [/^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/, 'Enter valid email address'],
     required: 'Email address is required',
     trim: true,
     type: String,
     unique: true
+  },
+  incorrectPasswordCount: {
+    default: 0,
+    type: Number
+  },
+  lastLogin: {
+    type: Date
   },
   name: {
     lowercase: true,
@@ -20,8 +33,36 @@ const Unverified = BaseSchema({
     trim: true,
     type: String
   },
+  profileImage: {
+    type: String
+  },
+  roles: [{ ref: 'roles', type: Schema.Types.ObjectId }],
+  status: {
+    default: 'active',
+    enum: ['active', 'inactive', 'blocked'],
+    lowercase: true,
+    required: 'Status is required',
+    trim: true,
+    type: String
+  },
+  superAdmin: {
+    default: false,
+    immutable: true,
+    required: 'SuperAdmin is required',
+    type: Boolean
+  },
   tenant: {
-    required: 'tenant is required',
+    default: process.env.DATABASE_NAME,
+    lowercase: true,
+    required: 'Tenant is required',
+    trim: true,
+    type: String
+  },
+  type: {
+    default: 'user',
+    enum: ['user', 'admin', 'issuer'],
+    lowercase: true,
+    required: 'Type is required',
     trim: true,
     type: String
   }

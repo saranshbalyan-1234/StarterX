@@ -1,5 +1,4 @@
 import errorContstants from '#constants/error.constant.js';
-import { validateToken } from '#middlewares/jwt.middleware.js';
 import { getDirectories } from '#utils/file.js';
 
 const getRoutes = async (app, type) => {
@@ -27,7 +26,7 @@ const registerUnprotectedRoutes = async (app) => {
 };
 
 const registerProtectedRoutes = async (app) => {
-  await app.use(validateToken());
+  // await app.use(validateToken());
   await getRoutes(app, 'protected.routes');
 };
 

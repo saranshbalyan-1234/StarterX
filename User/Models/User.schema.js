@@ -15,12 +15,21 @@ const User = BaseSchema({
     type: String,
     unique: true
   },
+  incorrectPasswordCount: {
+    default: 0,
+    type: Number
+  },
   lastLogin: {
     type: Date
   },
   name: {
     lowercase: true,
     required: 'Name is required',
+    trim: true,
+    type: String
+  },
+  password: {
+    required: 'Password is required',
     trim: true,
     type: String
   },
@@ -33,6 +42,19 @@ const User = BaseSchema({
     enum: ['active', 'inactive', 'blocked'],
     lowercase: true,
     required: 'Status is required',
+    trim: true,
+    type: String
+  },
+  superAdmin: {
+    default: false,
+    immutable: true,
+    required: 'SuperAdmin is required',
+    type: Boolean
+  },
+  tenant: {
+    default: process.env.DATABASE_NAME,
+    lowercase: true,
+    required: 'Tenant is required',
     trim: true,
     type: String
   },

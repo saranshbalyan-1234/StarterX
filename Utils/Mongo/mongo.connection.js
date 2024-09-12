@@ -55,7 +55,7 @@ export const createDbConnection = async (tenant = process.env.DATABASE_NAME, aut
     if (autoIndex) await registerAllSchema(conn, isMasterConn);
     connectionEvents(conn);
     connectionsObj[tenant] = conn;
-    console.log('Active connections', Object.keys(connectionsObj));
+    console.debug('Active connections', Object.keys(connectionsObj));
     return conn;
   } catch (error) {
     console.error('Error while connecting to DB', error);
@@ -114,7 +114,7 @@ export const removeTenantDB = async (tenant = process.env.DATABASE_NAME) => {
     if (!connection) throw new Error('No connection found!');
     await connection.close();
     delete connectionsObj[tenant];
-    console.log('Active connections', Object.keys(connectionsObj));
+    console.debug('Active connections', Object.keys(connectionsObj));
 
     return true;
   } catch (err) {

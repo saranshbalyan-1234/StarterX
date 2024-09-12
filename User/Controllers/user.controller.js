@@ -1,21 +1,11 @@
 import cache from '#utils/Cache/index.js';
 import getError from '#utils/error.js';
-import { getTenantDB } from '#utils/Mongo/mongo.connection.js';
 
 const getOrUpdateUser = async (req, res) => {
   try {
     const body = { ...req.body };
     delete body.status;
     delete body.type;
-
-    const { password } = body;
-    if (password) {
-      const db = await getTenantDB();
-      await db.models.customer.findOneAndUpdate(
-        { _id: req.body._id },
-        { password }
-      );
-    }
 
     const user = await req.models.user.findOneAndUpdate(
       { _id: req.body._id },

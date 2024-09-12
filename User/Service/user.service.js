@@ -3,52 +3,43 @@ import cache from '#utils/Cache/index.js';
 import { createToken } from '#utils/jwt.js';
 import { getTenantDB } from '#utils/Mongo/mongo.connection.js';
 
-const loginWithCredentals = async ({ email, password, rememberMe, isPassRequired = true, tenant }) => {
+const loginWithCredentals = async ({ email, password, rememberMe = false, isPassRequired = true, tenant }) => {
   try {
-    let db = await getTenantDB();
-    const customer = await db.models.customer.findOne({ email });
+    const db = await getTenantDB(tenant);
+    const user = await db.models.user.findOne({ email }).populate('roles');
 
-    if (customer) {
-      if (customer.blocked) throw new Error(errorContstants.ACCOUNT_BLOCKED);
-      if (process.env.INCORRECT_PASS_LIMIT && customer.incorrectPasswordCount >= parseInt(process.env.INCORRECT_PASS_LIMIT)) throw new Error(errorContstants.PASSWORD_RESET_REQUIRED);
-    } else {
-      const unverifiedUser = await db.models.unverified.findOne({ email });
+    if (!user) {
+      const defaultDb = await getTenantDB();
+      const unverifiedUser = await defaultDb.models.unverified.findOne({ email });
       if (unverifiedUser) throw new Error(errorContstants.EMAIL_NOT_VERIFIED);
       else throw new Error(errorContstants.RECORD_NOT_FOUND);
     }
-    const currentTenant = tenant || customer.tenant[0];
-    if (!currentTenant || !customer.tenant.includes(currentTenant)) throw new Error(errorContstants.UNAUTHORIZED_TENANT);
+    if (user.status !== 'active') throw new Error(`Account is ${user.status}`);
+    if (process.env.INCORRECT_PASS_LIMIT && user.incorrectPasswordCount >= parseInt(process.env.INCORRECT_PASS_LIMIT)) throw new Error(errorContstants.PASSWORD_RESET_REQUIRED);
 
-    const isAuthenticated = !isPassRequired || customer.password === password;
+    const isAuthenticated = !isPassRequired || user.password === password;
 
     if (!isAuthenticated) {
-      try { db.models.customer.findOneAndUpdate({ email }, { $inc: { incorrectPasswordCount: 1 } }, { timestamps: false }); } catch (er) {
-        console.error('error while incrementing incorrectPasswordCount', er);
-      }
+      db.models.user.findOneAndUpdate({ email }, { $inc: { incorrectPasswordCount: 1 } }, { timestamps: false });
+
       throw new Error(errorContstants.INCORRECT_PASSWORD);
     }
 
-    try { db.models.customer.updateOne({ email }, { incorrectPasswordCount: 0, lastLogin: new Date() }, { timestamps: false }); } catch (er) {
-      console.error('error while updating incorrectPasswordCount to 0', er);
-    }
-
-    db = await getTenantDB(currentTenant);
-    const user = await db.models.user.findOne({ email }).populate('roles');
-    if (!user) throw new Error(errorContstants.RECORD_NOT_FOUND);
+    db.models.user.updateOne({ email }, { incorrectPasswordCount: 0, lastLogin: new Date() }, { timestamps: false });
 
     const { _id } = user;
 
     // Below code is to generate token only, no logic
-    const tokenData = { _id, currentTenant, email, tenant: customer.tenant };
+    const tokenData = { _id, email, tenant: user.tenant };
     const accessToken = createToken(
-      { ...tokenData, roles: user.roles, superAdmin: customer.superAdmin },
+      { ...tokenData, roles: user.roles, superAdmin: user.superAdmin },
       process.env.JWT_ACCESS_SECRET,
       rememberMe ? process.env.JWT_ACCESS_REMEMBER_EXPIRATION : process.env.JWT_ACCESS_EXPIRATION
     );
     const refreshToken = createToken(tokenData, process.env.JWT_REFRESH_SECRET, rememberMe ? process.env.JWT_REFRESH_REMEMBER_EXPIRATION : process.env.JWT_REFRESH_EXPIRATION);
     if (process.env.JWT_ACCESS_CACHE) cache.set(`accesstoken_${email}`, accessToken, process.env.JWT_ACCESS_CACHE);
 
-    const combinedUserData = { ...customer, ...user, accessToken, currentTenant, refreshToken };
+    const combinedUserData = { ...user, accessToken, refreshToken };
     delete combinedUserData.password;
     return combinedUserData;
   } catch (e) {
