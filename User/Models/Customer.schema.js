@@ -15,6 +15,15 @@ const customerSchema = BaseSchema({
     type: String,
     unique: true
   },
+  incorrectPasswordCount: {
+    default: 0,
+    type: Number
+  },
+  password: {
+    required: 'Password is required',
+    trim: true,
+    type: String
+  },
   superAdmin: {
     default: false,
     immutable: true,

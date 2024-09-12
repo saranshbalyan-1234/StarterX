@@ -11,6 +11,7 @@ const seedSuperAdmin = async () => {
   await conn.models.customer.findOneAndUpdate({ email: superAdmin.email },
     {
       email: superAdmin.email,
+      password: superAdmin.password,
       superAdmin: true,
       tenant: [process.env.DATABASE_NAME]
     },
@@ -20,7 +21,6 @@ const seedSuperAdmin = async () => {
     {
       email: superAdmin.email,
       name: superAdmin.name,
-      password: superAdmin.password,
       type: 'issuer'
     },
     { upsert: true });

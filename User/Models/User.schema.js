@@ -43,16 +43,7 @@ const User = BaseSchema({
     required: 'Type is required',
     trim: true,
     type: String
-  },
-  incorrectPasswordCount: {
-    default: 0,
-    type: Number
-  },
-  password: {
-    required: 'Password is required',
-    trim: true,
-    type: String
-  },
+  }
 });
 
 export default User;

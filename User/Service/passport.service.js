@@ -1,28 +1,10 @@
 import passport from 'passport';
 import { Strategy as GitHubStrategy } from 'passport-github2';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
-import { BasicStrategy } from 'passport-http';
 import { Strategy as LinkedInStrategy } from 'passport-linkedin-oauth2';
 import { Strategy as MicrosoftStrategy } from 'passport-microsoft';
 
 import { loginWithCredentals } from './user.service.js';
-
-/**
- * Sign in with Username and Password.
- */
-passport.use(new BasicStrategy(
-  async (username, password, done) => {
-    try {
-      // eslint-disable-next-line sonarjs/no-duplicate-string
-      const user = await loginWithCredentals({ email: username, password, rememberMe: true, tenant: process.env.DATABASE_NAME });
-      if (!user) { return done(null, false); }
-      return done(null, user);
-    } catch (e) {
-      console.error(e);
-      return done(null, false);
-    }
-  }
-));
 
 /**
  * Sign in with Google.

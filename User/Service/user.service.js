@@ -19,11 +19,7 @@ const loginWithCredentals = async ({ email, password, rememberMe, isPassRequired
     const currentTenant = tenant || customer.tenant[0];
     if (!currentTenant || !customer.tenant.includes(currentTenant)) throw new Error(errorContstants.UNAUTHORIZED_TENANT);
 
-    const tenantDB = await getTenantDB(currentTenant);
-    const user = await tenantDB.models.user.findOne({ email }).populate('roles');
-    if (!user) throw new Error(errorContstants.RECORD_NOT_FOUND);
-
-    const isAuthenticated = !isPassRequired || user.password === password;
+    const isAuthenticated = !isPassRequired || customer.password === password;
 
     if (!isAuthenticated) {
       try { db.models.customer.findOneAndUpdate({ email }, { $inc: { incorrectPasswordCount: 1 } }, { timestamps: false }); } catch (er) {
@@ -35,7 +31,9 @@ const loginWithCredentals = async ({ email, password, rememberMe, isPassRequired
     try { db.models.customer.updateOne({ email }, { incorrectPasswordCount: 0, lastLogin: new Date() }, { timestamps: false }); } catch (er) {
       console.error('error while updating incorrectPasswordCount to 0', er);
     }
-
+    db = await getTenantDB(currentTenant);
+    const user = await db.models.user.findOne({ email }).populate('roles');
+    if (!user) throw new Error(errorContstants.RECORD_NOT_FOUND);
 
     const { _id } = user;
 
