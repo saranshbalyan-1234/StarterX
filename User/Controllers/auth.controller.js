@@ -52,7 +52,7 @@ const verifyCustomer = async (req, res) => {
       const { email, password, name, tenant } = unverifiedUser;
 
       const customer = await req.models.customer.findOneAndUpdate({ email },
-        { $push: { tenant }, email, password },
+        { $push: { tenant }, email },
         { new: true, session: req.session, upsert: true }
       );
 
@@ -67,6 +67,7 @@ const verifyCustomer = async (req, res) => {
         _id: customer._id,
         email,
         name,
+        password,
         type: 'issuer'
       }]);
 
