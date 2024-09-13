@@ -8,7 +8,6 @@ const errorContstants = {
   ENDPOINT_NOT_FOUND: 'Endpoint Not Found!',
   INCORRECT_PASSWORD: 'Incorrect Password!',
   INSUFFICIENT_DETAILS: 'Insufficient Details!',
-  INVALID_BUCKET: 'Invalid Bucket',
   INVALID_FILE: 'Invalid File',
   INVALID_FOLDER: 'Invalid Folder',
   INVALID_PERMISSION: 'Invalid Permission!',

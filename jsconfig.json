@@ -5,7 +5,6 @@
         "#middlewares/*": ["./Utils/Middlewares/*"],
         "#constants/*": ["./Utils/Constants/*"],
         "#utils/*": ["./Utils/*"],
-        "#storage/*": ["./Storage/*"],
         "#user/*": ["./User/*"],
         "#project/*": ["./Project/*"],
         "#controllers/*": ["./Controllers/*"],

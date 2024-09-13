@@ -2,7 +2,6 @@ import pkg from 'jsonwebtoken';
 
 import errorConstants from '#constants/error.constant.js';
 import successConstants from '#constants/success.contant.js';
-// import { createBucket } from '#storage/Service/awsService.js';
 import getError from '#utils/error.js';
 // import { createToken, getTokenError } from '#utils/jwt.js';
 import { sendMail } from '#utils/Mail/nodeMailer.js';
@@ -56,11 +55,6 @@ const verifyCustomer = async (req, res) => {
         { new: true, session: req.session, upsert: true }
       );
 
-      /*
-       * if (process.env.MULTI_TENANT !== 'false') {
-       * createBucket(tenant)
-       * }
-       */
       const db = await getTenantDB(tenant);
 
       await db.models.user.create([{
