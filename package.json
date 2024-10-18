@@ -54,7 +54,7 @@
     "eslint-plugin-react-redux": "^4.1.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-sonar": "^0.14.1",
-    "eslint-plugin-sonarjs": "^2.0.1",
+    "eslint-plugin-sonarjs": "^2.0.4",
     "eslint-plugin-sort-keys-fix": "^1.1.2",
     "eslint-plugin-unused-imports": "^4.1.4"
   },
