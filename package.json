@@ -49,7 +49,7 @@
     "eslint-plugin-eqeqeq-fix": "^1.0.3",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-promise": "^6.6.0",
-    "eslint-plugin-react": "^7.36.1",
+    "eslint-plugin-react": "^7.37.2",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-redux": "^4.1.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
