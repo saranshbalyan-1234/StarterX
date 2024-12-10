@@ -8,7 +8,7 @@ import {
 
 const Router = express.Router();
 
-Router.post('/', getOrUpdateUser);
+Router.post('/:id', getOrUpdateUser);
 Router.get('/', getAllUsers);
 Router.get('/logout', logout);
 

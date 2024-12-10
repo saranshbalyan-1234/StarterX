@@ -3,8 +3,9 @@ import mongoose from 'mongoose';
 import getError from '#utils/error.js';
 const getCreateOrUpdateRole = async (req, res) => {
   try {
+    const { id } = req.params;
     const role = await req.models.roles.findOneAndUpdate(
-      { _id: req.body._id || new mongoose.Types.ObjectId() },
+      { _id: id || new mongoose.Types.ObjectId() },
       { ...req.body },
       { new: true, upsert: true });
 

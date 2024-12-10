@@ -9,17 +9,18 @@ const getOrUpdateUser = async (req, res) => {
     delete body.type;
 
     const { password } = body;
+    const { id } = req.params;
     if (password) {
       const db = await getTenantDB();
       await db.models.customer.findOneAndUpdate(
-        { _id: req.body._id },
+        { _id: id },
         { password }
       );
     }
 
     const user = await req.models.user.findOneAndUpdate(
-      { _id: req.body._id },
-      { ...req.body },
+      { _id: id },
+      { ...body },
       { new: true });
 
     return res.status(200).json(user);
