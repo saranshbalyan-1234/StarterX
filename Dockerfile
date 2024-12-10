@@ -1,21 +1,13 @@
-FROM node:20
-
-# Create app directory
-WORKDIR /usr/src/app
-
-ENV PORT 8080
-ENV NODE_ENV production
-
-# Install app dependencies
-COPY /package*.json ./
+FROM node:20 AS build-env
+COPY . /app
+WORKDIR /app
+ENV NODE_ENV=production
 RUN npm ci
-# RUN npm install pm2 -g
 
-# Bundle app source
-COPY . ./
-
+FROM gcr.io/distroless/nodejs20-debian12
+COPY --from=build-env /app /app
+WORKDIR /app
+ENV PORT=8080
+ENV NODE_ENV=production
 EXPOSE 8080
-
-#scaling
-# CMD ["pm2-runtime", "index.js", "-i","-0"]
-CMD [ "npm","start" ]
+CMD ["index.js"]
