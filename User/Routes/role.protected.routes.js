@@ -5,7 +5,7 @@ import { deleteRole, getAllRole, getCreateOrUpdateRole } from '../Controllers/ro
 // import { emailBodyValidation, loginValidation, passwordBodyValidation, registerValidation, tokenParamsValidation } from '../Validations/auth.js';
 const Router = express.Router();
 
-Router.post('/:id', getCreateOrUpdateRole);
+Router.post('/', getCreateOrUpdateRole);
 Router.get('/', getAllRole);
 Router.delete('/:id', deleteRole);
 

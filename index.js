@@ -33,6 +33,7 @@ app.use(parser.json());
 app.use(parser.urlencoded({ extended: false }));
 app.use(helmet());
 app.use(fileupload());
+app.enable('strict routing');
 
 setupCors(app);
 setupTimeout(app);

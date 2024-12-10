@@ -63,9 +63,9 @@ export const createDbConnection = async (tenant = process.env.DATABASE_NAME, aut
 };
 
 const registerAllSchema = async (db, isMasterConn = false) => {
-  console.log('Registering Schema');
   try {
     const files = getDirectories('.', 'schema');
+    console.log('Registering Schemas', files.map(el => el.split('/').at(-1).split('.')[0]));
     const onlyMasterSchema = ['Customer', 'Unverified'];
     for (const file of files) {
       if (isMasterConn || !onlyMasterSchema.some(el => file.includes(el))) {
