@@ -29,7 +29,7 @@ const BaseController = (schema) => {
 
   const getAllFromSchema = async (req, res) => {
     try {
-      const result = await req.models[schema].find();
+      const result = await req.models[schema].find({ ...req.body || {} });
       return res.status(200).json(result);
     } catch (err) {
       getError(err, res);
