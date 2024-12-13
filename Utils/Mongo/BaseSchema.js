@@ -1,13 +1,23 @@
 import mongoose from 'mongoose';
 
-const BaseSchema = (schemaDefinition, schemaOptions) =>
-  new mongoose.Schema(
+const userFields = {
+  createdBy: {
+    default: 'System',
+    immutable: true,
+    type: mongoose.Schema.Types.Mixed
+  },
+  updatedBy: {
+    default: 'System',
+    type: mongoose.Schema.Types.Mixed
+  }
+};
+const BaseSchema = (schemaDefinition, schemaOptions = {}) => {
+  const isUserFields = schemaOptions.userFields;
+  delete schemaOptions.userFields;
+  return new mongoose.Schema(
     {
       ...schemaDefinition,
-      createdAt: {
-        immutable: true,
-        type: Date
-      }
+      ...(isUserFields === false ? {} : userFields)
     },
     {
       optimisticConcurrency: true,
@@ -16,4 +26,5 @@ const BaseSchema = (schemaDefinition, schemaOptions) =>
       ...schemaOptions
     }
   );
+};
 export default BaseSchema;

@@ -26,7 +26,7 @@ const permissionsSchema = BaseSchema({
     required: 'View Permission is required',
     type: Boolean
   }
-}, { _id: false });
+}, { _id: false, userFields: false });
 
 const Roles = BaseSchema({
   name: {

@@ -19,6 +19,19 @@ export const validateToken = () => async (req, res, next) => {
       delete temp.iat;
       delete temp.exp;
       req.user = temp;
+      if (req.body) {
+        if (Array.isArray(req.body)) {
+          req.body.map(el => ({ ...el, createdBy: req.user._id, updatedBy: req.user._id }));
+        } else {
+          req.body.createdBy = req.user._id;
+          req.body.updatedBy = req.user._id;
+        }
+      } else {
+        req.body = {
+          createdBy: req.user._id,
+          updatedBy: req.user._id
+        };
+      }
 
       req.currentTenant = temp.currentTenant;
       req.isMaster = req.currentTenant === process.env.DATABASE_NAME;
