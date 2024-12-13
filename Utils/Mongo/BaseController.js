@@ -19,8 +19,7 @@ const BaseController = (schema) => {
 
   const deleteFromSchema = async (req, res) => {
     try {
-      const { id } = req.body;
-      const result = await req.models[schema].findOneAndDelete({ _id: id });
+      const result = await req.models[schema].findOneAndDelete(req.body);
       return res.status(200).json(result);
     } catch (error) {
       getError(error, res);
