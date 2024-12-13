@@ -5,9 +5,8 @@ import getError from '#utils/error.js';
 const BaseController = (schema) => {
   const getCreateOrUpdateFromSchema = async (req, res) => {
     try {
-      const { id } = req.body;
       const result = await req.models[schema].findOneAndUpdate(
-        { _id: id || new mongoose.Types.ObjectId() },
+        { _id: req.body._id || new mongoose.Types.ObjectId() },
         { ...req.body },
         { new: true, upsert: true });
 
