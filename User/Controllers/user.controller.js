@@ -5,8 +5,6 @@ import { getTenantDB } from '#utils/Mongo/mongo.connection.js';
 const getOrUpdateUser = async (req, res) => {
   try {
     const body = { ...req.body };
-    delete body.status;
-    delete body.type;
 
     const { password } = body;
     const { id } = req.params;

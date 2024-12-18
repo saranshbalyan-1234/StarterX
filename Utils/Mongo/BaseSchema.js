@@ -2,13 +2,15 @@ import mongoose from 'mongoose';
 
 const userFields = {
   createdBy: {
-    default: 'System',
+    ref: 'users',
+    default: null,
     immutable: true,
-    type: mongoose.Schema.Types.Mixed
+    type: mongoose.Schema.Types.ObjectId
   },
   updatedBy: {
-    default: 'System',
-    type: mongoose.Schema.Types.Mixed
+    ref: 'user',
+    default: null,
+    type: mongoose.Schema.Types.ObjectId
   }
 };
 const BaseSchema = (schemaDefinition, schemaOptions = {}) => {
