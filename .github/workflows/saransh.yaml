@@ -1,21 +1,21 @@
-name: saransh
+name: Saransh
 
 on:
   pull_request:
     branches:
       - main
-    workflow_dispatch:
+  workflow_dispatch: {}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-    saransh:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v4
-              name: echo
-            
-            - uses: ./.github/actions/first
-              name: custom javascript 
+  saransh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Custom JavaScript Action
+        uses: ./.github/actions/first
