@@ -35,9 +35,6 @@
     "node-cache": "^5.1.2",
     "nodemailer": "^6.9.14",
     "passport": "^0.7.0",
-    "passport-github2": "^0.1.12",
-    "passport-google-oauth20": "^2.0.0",
-    "passport-microsoft": "^2.1.0",
     "passport-openidconnect": "^0.1.2",
     "passport-saml": "^3.2.4",
     "patch-package": "^8.0.0"
