@@ -41,7 +41,7 @@ export const validateToken = () => async (req, res, next) => {
 
       const session = await db.startSession();
       session.startTransaction();
-      req.session = session;
+      req.mongosession = session;
 
       next();
     }

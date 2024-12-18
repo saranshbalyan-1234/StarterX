@@ -27,12 +27,4 @@ if (process.env.GITHUB_ID && process.env.GITHUB_SECRET) {
     return res.redirect(`${process.env.WEBSITE_HOME}/login?accessToken=${accessToken}&refreshToken=${refreshToken}`);
   });
 }
-
-if (process.env.LINKEDIN_ID && process.env.LINKEDIN_SECRET) {
-  Router.get('/linkedin', passport.authenticate('linkedin'));
-  Router.get('/linkedin/callback', passport.authenticate('linkedin', { failureRedirect: '/auth/linkedin', session: false }), (req, res) => {
-    const { accessToken, refreshToken } = req.user;
-    return res.redirect(`${process.env.WEBSITE_HOME}/login?accessToken=${accessToken}&refreshToken=${refreshToken}`);
-  });
-}
 export default Router;

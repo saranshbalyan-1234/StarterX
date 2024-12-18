@@ -45,14 +45,14 @@ const verifyCustomer = async (req, res) => {
     console.log('Verifying User', data);
 
     try {
-      const unverifiedUser = await req.models.unverified.findOneAndDelete({ _id: data._id }, { session: req.session });
+      const unverifiedUser = await req.models.unverified.findOneAndDelete({ _id: data._id }, { session: req.mongosession });
       if (!unverifiedUser) throw new Error(errorConstants.RECORD_NOT_FOUND);
 
       const { email, password, name, tenant } = unverifiedUser;
 
       const customer = await req.models.customer.findOneAndUpdate({ email },
         { $push: { tenant }, email, password },
-        { new: true, session: req.session, upsert: true }
+        { new: true, session: req.mongosession, upsert: true }
       );
 
       const db = await getTenantDB(tenant);
@@ -111,7 +111,7 @@ const resetPassword = async (req, res) => {
       const customer = await req.models.customer.findOneAndUpdate(
         { _id },
         { incorrectPasswordCount: 0, password: req.body.password },
-        { new: true, session: req.session });
+        { new: true, session: req.mongosession });
 
       if (!customer) throw new Error(errorConstants.RECORD_NOT_FOUND);
 

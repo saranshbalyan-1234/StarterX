@@ -1,13 +1,13 @@
 const abortSession = (req) => {
-  if (!req.session) return;
-  req.session.abortTransaction().then(() => req.session.endSession()).catch((er) => {
+  if (!req.mongosession) return;
+  req.mongosession.abortTransaction().then(() => req.mongosession.endSession()).catch((er) => {
     console.error(er);
   });
 };
 
 const commitSession = (req) => {
-  if (!req.session) return;
-  req.session.commitTransaction().then(() => req.session.endSession()).catch((er) => {
+  if (!req.mongosession) return;
+  req.mongosession.commitTransaction().then(() => req.mongosession.endSession()).catch((er) => {
     console.error(er);
   });
 };

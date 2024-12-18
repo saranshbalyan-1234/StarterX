@@ -13,7 +13,7 @@ const defaultMiddleware = () => async (req, _res, next) => {
 
     const session = await db.startSession();
     session.startTransaction();
-    req.session = session;
+    req.mongosession = session;
 
     next();
   } catch (err) {

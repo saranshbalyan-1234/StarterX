@@ -2,14 +2,14 @@ import mongoose from 'mongoose';
 
 const userFields = {
   createdBy: {
-    ref: 'users',
     default: null,
     immutable: true,
+    ref: 'users',
     type: mongoose.Schema.Types.ObjectId
   },
   updatedBy: {
-    ref: 'user',
     default: null,
+    ref: 'user',
     type: mongoose.Schema.Types.ObjectId
   }
 };
