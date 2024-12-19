@@ -33,10 +33,11 @@ const callbackStrategy = async (req, res, next) => {
     }
 
     return passport.authenticate(strategy, {
+      session:false,
       failWithError: true,
       failureMessage: true,
       failureRedirect: `/passport/${config.type}/start`,
-      successRedirect: `/passport/${config.type}/callback`
+      successRedirect: `/passport/${config.type}/saransh`
     })(req, res, next);
   } catch (error) {
     getError(error, res);
