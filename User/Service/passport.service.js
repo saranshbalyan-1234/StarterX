@@ -30,7 +30,7 @@ const createStrategy = (config) => {
       callbackURL: config.callbackURL,
       clientID: config.clientID,
       clientSecret: config.clientSecret,
-      issuer: config.tenant,
+      issuer: config.issuer,
       scope: config.scope,
       tokenURL: config.tokenURL,
       userInfoURL: config.userInfoURL,

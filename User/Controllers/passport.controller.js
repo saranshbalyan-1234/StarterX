@@ -2,7 +2,7 @@ import passport from 'passport';
 
 import errorContstants from '#constants/error.constant.js';
 import createStrategy from '#user/Service/passport.service.js';
-import getError from '#utils/error';
+import getError from '#utils/error.js';
 
 const startStrategy = async (req, res, next) => {
   try {
