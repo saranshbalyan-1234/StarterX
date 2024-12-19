@@ -28,7 +28,7 @@ const permissionsSchema = BaseSchema({
   }
 }, { _id: false, userFields: false });
 
-const Roles = BaseSchema({
+const Role = BaseSchema({
   name: {
     required: 'Role is required',
     trim: true,
@@ -37,4 +37,4 @@ const Roles = BaseSchema({
   permissions: [permissionsSchema]
 });
 
-export default Roles;
+export default Role;

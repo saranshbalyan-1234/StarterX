@@ -27,7 +27,7 @@ const User = BaseSchema({
   profileImage: {
     type: String
   },
-  roles: [{ ref: 'roles', type: Schema.Types.ObjectId }],
+  roles: [{ ref: 'role', type: Schema.Types.ObjectId }],
   status: {
     default: 'active',
     enum: ['active', 'inactive', 'blocked'],
