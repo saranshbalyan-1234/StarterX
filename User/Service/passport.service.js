@@ -33,7 +33,8 @@ const createStrategy = (config) => {
       issuer: config.tenant,
       scope: config.scope,
       tokenURL: config.tokenURL,
-      userInfoURL: config.userInfoURL
+      userInfoURL: config.userInfoURL,
+      passReqToCallback:true
     },
     async (req, _, profile, cb) => {
       try {
