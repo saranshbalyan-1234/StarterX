@@ -31,10 +31,10 @@ const createStrategy = (config) => {
       clientID: config.clientID,
       clientSecret: config.clientSecret,
       issuer: config.issuer,
+      passReqToCallback: true,
       scope: config.scope,
       tokenURL: config.tokenURL,
-      userInfoURL: config.userInfoURL,
-      passReqToCallback:true
+      userInfoURL: config.userInfoURL
     },
     async (req, _, profile, cb) => {
       try {

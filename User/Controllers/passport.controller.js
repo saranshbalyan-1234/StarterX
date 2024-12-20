@@ -32,13 +32,17 @@ const callbackStrategy = async (req, res, next) => {
       return res.status(404).json(errorContstants.RECORD_NOT_FOUND);
     }
 
-    return passport.authenticate(strategy, {
-      session:false,
-      failWithError: true,
-      failureMessage: true,
-      failureRedirect: `/passport/${config.type}/start`,
-      successRedirect: `/passport/${config.type}/saransh`
-    })(req, res, next);
+    return passport.authenticate(strategy,
+      {
+        failWithError: true,
+        failureMessage: true,
+        failureRedirect: `/passport/${config.type}/start`,
+        session: false
+      },
+      (err, user) => {
+        if (err) throw err;
+        return res.redirect(`${config.redirectionURL}?accessToken=${user.accessToken}&refreshToken=${user.refreshToken}`);
+      })(req, res, next);
   } catch (error) {
     getError(error, res);
   }

@@ -29,11 +29,8 @@ app.use(
       secure: false // 1 day expiration
     },
 
-    // Use a strong secret key
     resave: false,
-
-    // Don't resave unchanged sessions
-    saveUninitialized: true,
+    saveUninitialized: false,
     secret: 'saransh'
   })
 );

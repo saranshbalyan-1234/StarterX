@@ -3,6 +3,7 @@
     "tenant": "automation_master",
     "authorizationURL": "https://accounts.google.com/o/oauth2/auth",
     "callbackURL": "/passport/openidconnect/callback",
+    "redirectionURL":"",
     "clientID": "",
     "clientSecret": "",
     "scope": [ "email" ],
