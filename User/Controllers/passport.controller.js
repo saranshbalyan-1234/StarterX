@@ -6,11 +6,12 @@ import getError from '#utils/error.js';
 
 const startStrategy = async (req, res, next) => {
   try {
-    const config = await req.models.config.findOne({ tenant: req.currentTenant });
+    const config = await req.models.config.findOne({ type: req.params.type });
     if (!config) {
       return res.status(404).json(errorContstants.RECORD_NOT_FOUND);
     }
     const strategy = createStrategy(config);
+
     if (!strategy) {
       return res.status(404).json(errorContstants.RECORD_NOT_FOUND);
     }
@@ -23,7 +24,7 @@ const startStrategy = async (req, res, next) => {
 
 const callbackStrategy = async (req, res, next) => {
   try {
-    const config = await req.models.config.findOne({ tenant: req.currentTenant });
+    const config = await req.models.config.findOne({ type: req.params.type });
     if (!config) {
       return res.status(404).json(errorContstants.RECORD_NOT_FOUND);
     }
