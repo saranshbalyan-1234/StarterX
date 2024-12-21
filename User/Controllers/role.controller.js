@@ -3,7 +3,8 @@ import BaseController from '#utils/Mongo/BaseController.js';
 const {
   deleteFromSchema: deleteRole,
   getAllFromSchema: getAllRole,
-  getCreateOrUpdateFromSchema: getCreateOrUpdateRole
+  createOrUpdateFromSchema: createOrUpdateRole,
+  findOneFromSchema: findRole
 } = BaseController('role');
 
-export { deleteRole, getAllRole, getCreateOrUpdateRole };
+export { createOrUpdateRole, deleteRole, findRole, getAllRole };
