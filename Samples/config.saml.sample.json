@@ -1,0 +1,8 @@
+{
+"cert": "cert",
+"entityId": "entityId",
+"entryPoint": "authorizationURL",
+"issuer": "issuer",
+"passReqToCallback": true,
+"path": "callback"
+}

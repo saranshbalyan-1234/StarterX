@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node --env-file=env/.env --env-file=env/.env.database --env-file=env/.env.logger --env-file=env/.env.server --env-file=env/.env.token --env-file=env/.env.mailer --env-file=env/.env.passport --no-warnings --trace-warnings --experimental-permission --allow-child-process --allow-fs-read=/ --watch index.js",
+    "start": "node --env-file=env/.env --env-file=env/.env.database --env-file=env/.env.logger --env-file=env/.env.server --env-file=env/.env.token --env-file=env/.env.mailer --no-warnings --trace-warnings --experimental-permission --allow-child-process --allow-fs-read=/ --watch index.js",
     "swagger": "node ./Utils/Swagger/swagger.js",
     "lint": "eslint . --quiet --cache --cache-location=node_modules/.cache/eslint",
     "lint-fix": "eslint . --fix",

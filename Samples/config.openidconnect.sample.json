@@ -1,0 +1,13 @@
+{
+    "name":"Google OpenId Connect Sample",
+    "authorizationURL": "https://accounts.google.com/o/oauth2/auth",
+    "callbackURL": "/passport/openidconnect/callback",
+    "redirectionURL":"",
+    "clientID": "",
+    "clientSecret": "",
+    "scope": [ "email" ],
+    "tokenURL": "https://www.googleapis.com/oauth2/v3/token",
+    "userInfoURL": "https://www.googleapis.com/oauth2/v1/tokeninfo",
+    "type": "openidconnect",
+    "issuer": "accounts.google.com"
+  }

@@ -64,6 +64,7 @@
         "require-atomic-updates":"off",
         "no-inline-comments":"off",
         "line-comment-position":"off",
+        "no-new":"off",
         "sort-imports": ["error", {
             "ignoreCase": true,
             "ignoreDeclarationSort": true,

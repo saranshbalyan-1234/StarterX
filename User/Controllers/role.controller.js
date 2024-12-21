@@ -4,6 +4,6 @@ const {
   deleteFromSchema: deleteRole,
   getAllFromSchema: getAllRole,
   getCreateOrUpdateFromSchema: getCreateOrUpdateRole
-} = BaseController('roles');
+} = BaseController('role');
 
 export { deleteRole, getAllRole, getCreateOrUpdateRole };

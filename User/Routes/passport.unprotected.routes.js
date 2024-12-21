@@ -1,30 +1,28 @@
 import express from 'express';
-import passport from 'passport';
+// import MongoStore from 'connect-mongo';
+import session from 'express-session';
 
-import {} from '#user/Service/passport.service.js';
+import { callbackStrategy, startStrategy } from '../Controllers/passport.controller.js';
+
 const Router = express.Router();
 
-if (process.env.GOOGLE_ID && process.env.GOOGLE_SECRET) {
-  Router.get('/google', passport.authenticate('google', { scope: ['email'], session: false }));
-  Router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/auth/google', session: false }), (req, res) => {
-    const { accessToken, refreshToken } = req.user;
-    return res.redirect(`${process.env.WEBSITE_HOME}/login?accessToken=${accessToken}&refreshToken=${refreshToken}`);
-  });
-}
+const middleware = session({
+  cookie: {
+    httpOnly: true,
+    maxAge: 60 * 1000,
+    secure: false
+  },
+  resave: false,
+  saveUninitialized: false,
+  secret: 'saransh'
+/*
+ *     store: MongoStore.create({
+ *       mongoUrl: 'mongodb+srv://saransh:ysoserious@saransh.jvitvgq.mongodb.net/passport-session'
+ *   })
+ */
+});
 
-if (process.env.MICROSOFT_ID && process.env.MICROSOFT_SECRET) {
-  Router.get('/microsoft', passport.authenticate('microsoft'));
-  Router.get('/microsoft/callback', passport.authenticate('microsoft', { failureRedirect: '/auth/microsoft', session: false }), (req, res) => {
-    const { accessToken, refreshToken } = req.user;
-    return res.redirect(`${process.env.WEBSITE_HOME}/login?accessToken=${accessToken}&refreshToken=${refreshToken}`);
-  });
-}
+Router.get('/:type/start', middleware, startStrategy);
+Router.get('/:type/callback', middleware, callbackStrategy);
 
-if (process.env.GITHUB_ID && process.env.GITHUB_SECRET) {
-  Router.get('/github', passport.authenticate('github'));
-  Router.get('/github/callback', passport.authenticate('github', { failureRedirect: '/auth/github', session: false }), (req, res) => {
-    const { accessToken, refreshToken } = req.user;
-    return res.redirect(`${process.env.WEBSITE_HOME}/login?accessToken=${accessToken}&refreshToken=${refreshToken}`);
-  });
-}
 export default Router;
