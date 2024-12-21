@@ -1,28 +1,26 @@
 import express from 'express';
+// import MongoStore from 'connect-mongo';
+import session from 'express-session';
 
 import { callbackStrategy, startStrategy } from '../Controllers/passport.controller.js';
 
 const Router = express.Router();
 
-Router.get('/:type/start', startStrategy);
-Router.get('/:type/callback', callbackStrategy);
+const middleware = session({
+    cookie: {
+      httpOnly: true,
+      maxAge: 60 * 1000,
+      secure: false
+    },
+    resave: false,
+    saveUninitialized: false,
+    secret: 'saransh',
+//     store: MongoStore.create({
+//       mongoUrl: 'mongodb+srv://saransh:ysoserious@saransh.jvitvgq.mongodb.net/passport-session'
+//   })
+  })
+
+Router.get('/:type/start', middleware,startStrategy);
+Router.get('/:type/callback', middleware,callbackStrategy);
 
 export default Router;
-
-/*
- * Router.get('/saml', passport.authenticate('saml'));
- * Router.post('/saml/callback', passport.authenticate('saml', { failureRedirect: '/auth/saml', session: false }), (req, res) => {
- *   console.log('saransh', req);
- *   const { accessToken, refreshToken } = req.user;
- *   return res.redirect(`${process.env.WEBSITE_HOME}/login?accessToken=${accessToken}&refreshToken=${refreshToken}`);
- * });
- */
-
-/*
- * Router.get('/oidc', passport.authenticate('openidconnect'));
- * Router.get('/oidc/callback', passport.authenticate('openidconnect', { failWithError: true, failureMessage: true, session: false }), (req, res) => {
- *   console.log('saransh', req);
- *   const { accessToken, refreshToken } = req.user;
- *   return res.redirect(`${process.env.WEBSITE_HOME}/login?accessToken=${accessToken}&refreshToken=${refreshToken}`);
- * });
- */

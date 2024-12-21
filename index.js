@@ -5,7 +5,6 @@ import express from 'express';
 import fileupload from 'express-fileupload';
 // Import { scheduleInit } from "#scheduler/Service/schedulerService.js";
 import expressListRoutes from 'express-list-routes';
-import session from 'express-session';
 import helmet from 'helmet';
 
 import defaultMiddleware from '#middlewares/default.middleware.js';
@@ -17,23 +16,6 @@ import { getTenantDB } from '#utils/Mongo/mongo.connection.js';
 import registerRoutes from '#utils/registerRoutes.js';
 
 const app = express();
-app.use(
-  session({
-
-    // Save new sessions
-    cookie: {
-      // Set to true for HTTPS in production
-      httpOnly: true,
-      // Protect session cookie from client-side JS
-      maxAge: 24 * 60 * 60 * 1000,
-      secure: false // 1 day expiration
-    },
-
-    resave: false,
-    saveUninitialized: false,
-    secret: 'saransh'
-  })
-);
 
 app.use(defaultMiddleware());
 
