@@ -4,7 +4,7 @@ const userFields = {
   createdBy: {
     default: null,
     immutable: true,
-    ref: 'users',
+    ref: 'user',
     type: mongoose.Schema.Types.ObjectId
   },
   updatedBy: {
@@ -14,12 +14,12 @@ const userFields = {
   }
 };
 const BaseSchema = (schemaDefinition, schemaOptions = {}) => {
-  const isUserFields = schemaOptions.userFields;
-  delete schemaOptions.userFields;
+  const isNestedField = !schemaOptions.nestedField;
+  delete schemaOptions.nestedField;
   return new mongoose.Schema(
     {
       ...schemaDefinition,
-      ...(isUserFields === false ? {} : userFields)
+      ...(isNestedField === false ? {} : userFields)
     },
     {
       optimisticConcurrency: true,
