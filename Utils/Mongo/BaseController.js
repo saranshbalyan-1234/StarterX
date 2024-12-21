@@ -1,43 +1,36 @@
-import mongoose from 'mongoose';
-
 import getError from '#utils/error.js';
 
 const BaseController = (schema) => {
-  const createOrUpdateFromSchema = async (req, res) => {
+  const createFromSchema = async (req, res) => {
     try {
-      const body = req.body;
-      const id = body._id || new mongoose.Types.ObjectId();
-      const shouldUpdateMeta = Object.keys(body).length > 2;
+      const result = await req.models[schema].create(req.body);
+      return res.status(200).json(result);
+    } catch (err) {
+      getError(err, res);
+    }
+  };
 
-      const result = await req.models[schema].findOneAndUpdate(
-        { _id: id },
-        shouldUpdateMeta ? { ...body } : {},
-        { new: true, upsert: true });
-
+  const deleteManyFromSchema = async (req, res) => {
+    try {
+      const result = await req.models[schema].deleteMany(req.params);
       return res.status(200).json(result);
     } catch (error) {
       getError(error, res);
     }
   };
 
-  const deleteFromSchema = async (req, res) => {
+  const deleteOneFromSchema = async (req, res) => {
     try {
-      const body = { ...req.body };
-      delete body.createdBy;
-      delete body.updatedBy;
-
-      if (Object.keys(body || {}).length === 0) throw new Error('Insufficient conditions');
-
-      const result = await req.models[schema].findOneAndDelete(body);
+      const result = await req.models[schema].deleteOne(req.params);
       return res.status(200).json(result);
     } catch (error) {
       getError(error, res);
     }
   };
 
-  const getAllFromSchema = async (req, res) => {
+  const findManyFromSchema = async (req, res) => {
     try {
-      const result = await req.models[schema].find({ ...req.body || {} });
+      const result = await req.models[schema].find(req.params);
       return res.status(200).json(result);
     } catch (err) {
       getError(err, res);
@@ -46,14 +39,40 @@ const BaseController = (schema) => {
 
   const findOneFromSchema = async (req, res) => {
     try {
-      const result = await req.models[schema].findOne({ ...req.params || {} });
+      const result = await req.models[schema].findOne(req.params);
       return res.status(200).json(result);
     } catch (err) {
       getError(err, res);
     }
   };
 
-  return { createOrUpdateFromSchema, deleteFromSchema, findOneFromSchema, getAllFromSchema };
+  const updateManyFromSchema = async (req, res) => {
+    try {
+      const result = await req.models[schema].updateMany(req.params, req.body);
+      return res.status(200).json(result);
+    } catch (err) {
+      getError(err, res);
+    }
+  };
+
+  const updateOneFromSchema = async (req, res) => {
+    try {
+      const result = await req.models[schema].updateOne(req.params, req.body);
+      return res.status(200).json(result);
+    } catch (err) {
+      getError(err, res);
+    }
+  };
+
+  return {
+    createFromSchema,
+    deleteManyFromSchema,
+    deleteOneFromSchema,
+    findManyFromSchema,
+    findOneFromSchema,
+    updateManyFromSchema,
+    updateOneFromSchema
+  };
 };
 
 export default BaseController;

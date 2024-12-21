@@ -1,10 +1,11 @@
 import BaseController from '#utils/Mongo/BaseController.js';
 
 const {
-  getCreateOrUpdateFromSchema: createOrUpdateConfig,
+  createFromSchema: createConfig,
+  updateOneFromSchema: updateConfig,
   findOneFromSchema: findConfig,
-  getAllFromSchema: getAllConfigs,
-  deleteFromSchema: deleteConfig
+  findManyFromSchema: findManyConfig,
+  deleteOneFromSchema: deleteConfig
 } = BaseController('config');
 
-export { createOrUpdateConfig, deleteConfig, findConfig, getAllConfigs };
+export { createConfig, deleteConfig, findConfig, findManyConfig, updateConfig };

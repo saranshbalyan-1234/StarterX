@@ -1,10 +1,11 @@
 import BaseController from '#utils/Mongo/BaseController.js';
 
 const {
-  deleteFromSchema: deleteRole,
-  getAllFromSchema: getAllRole,
-  createOrUpdateFromSchema: createOrUpdateRole,
-  findOneFromSchema: findRole
+  deleteOneFromSchema: deleteRole,
+  findManyFromSchema: findManyRole,
+  findOneFromSchema: findRole,
+  createFromSchema: createRole,
+  updateOneFromSchema: updateRole
 } = BaseController('role');
 
-export { createOrUpdateRole, deleteRole, findRole, getAllRole };
+export { createRole, deleteRole, findManyRole, findRole, updateRole };
