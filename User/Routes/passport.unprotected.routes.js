@@ -1,25 +1,14 @@
+import cookieSession from 'cookie-session';
 import express from 'express';
-// import MongoStore from 'connect-mongo';
-import session from 'express-session';
 
 import { callbackStrategy, startStrategy } from '../Controllers/passport.controller.js';
 
 const Router = express.Router();
 
-const middleware = session({
-  cookie: {
-    httpOnly: true,
-    maxAge: 60 * 1000,
-    secure: false
-  },
-  resave: false,
-  saveUninitialized: false,
-  secret: 'saransh'
-/*
- *     store: MongoStore.create({
- *       mongoUrl: 'mongodb+srv://saransh:ysoserious@saransh.jvitvgq.mongodb.net/passport-session'
- *   })
- */
+const middleware = cookieSession({
+  keys: ['cookie-secret'],
+  maxAge: 10 * 60 * 1000,
+  name: 'session'
 });
 
 Router.get('/:type/start', middleware, startStrategy);
