@@ -1,20 +1,23 @@
-import http from 'k6/http';
 import { sleep } from 'k6';
+import http from 'k6/http';
 
-export let options = {
-    vus: 50, // Number of virtual users
-    duration: '30s', // Test duration
+export const options = {
+  // Number of virtual users
+  duration: '30s',
+  vus: 50 // Test duration
 };
 
-export default function () {
-    // Replace with the API you want to test
-    const url = 'http://localhost:3001/health';
-    const params = {
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    };
+const test = () => {
+  // Replace with the API you want to test
+  const url = 'http://localhost:3001/health';
+  const params = {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  };
 
-    http.get(url, params);
-    sleep(2);
-}
+  http.get(url, params);
+  sleep(1);
+};
+
+export default test;
