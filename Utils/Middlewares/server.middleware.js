@@ -57,6 +57,7 @@ const setupRateLimiter = (app) => {
 };
 
 const setupCors = (app) => {
+  if (!process.env.CORS) return;
   const whitelist = process.env.CORS.split(',');
   // Var whitelist = ['http://localhost:8000', 'http://localhost:8080']; //white list consumers
   const corsOptions = {
