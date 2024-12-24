@@ -3,7 +3,6 @@ import express from 'express';
 const Router = express.Router();
 
 Router.get('/load-test', (_req, res) => {
-  console.log('saransh');
   const k6Command = 'k6 run ./K6/load-test.js';
 
   exec(k6Command, (error, stdout, stderr) => {
