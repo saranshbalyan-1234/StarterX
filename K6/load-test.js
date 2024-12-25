@@ -9,7 +9,7 @@ export const options = {
 
 const test = () => {
   // Replace with the API you want to test
-  const url = 'http://localhost:3001/health';
+  const url = 'https://starterx.onrender.com/health';
   const params = {
     headers: {
       'Content-Type': 'application/json'
