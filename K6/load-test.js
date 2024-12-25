@@ -3,8 +3,8 @@ import http from 'k6/http';
 
 export const options = {
   // Number of virtual users
-  duration: '10s',
-  vus: 50 // Test duration
+  duration: '30s',
+  vus: 500 // Test duration
 };
 
 const test = () => {
