@@ -15,9 +15,9 @@ WORKDIR /app
 # RUN k6 version
 #K6
 
-RUN apk add --no-cache bash curl && \
+RUN apk add --no-cache bash curl gnupg && \
     curl -s https://dl.k6.io/key.gpg | gpg --import - && \
-    echo "https://dl.k6.io/alpine/v0.44.1" >> /etc/apk/repositories && \
+    echo "https://dl.k6.io/alpine/v0.44.1/community" >> /etc/apk/repositories && \
     apk add --no-cache k6
 
 ENV PORT=8080
