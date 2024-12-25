@@ -7,6 +7,11 @@ RUN npm ci
 # FROM gcr.io/distroless/nodejs20-debian12
 FROM node:22 
 COPY --from=build-env /app /app
+
+RUN curl -L https://github.com/grafana/k6/releases/download/v0.44.1/k6-v0.44.1-linux-amd64.tar.gz | tar xvz && \
+    mv k6-v0.44.1-linux-amd64/k6 /usr/bin/k6 && \
+    rm -rf k6-v0.44.1-linux-amd64
+
 WORKDIR /app
 
 #K6
@@ -15,10 +20,7 @@ WORKDIR /app
 # RUN k6 version
 #K6
 
-RUN apk add --no-cache bash curl gnupg && \
-    curl -s https://dl.k6.io/key.gpg | gpg --import - && \
-    echo "https://dl.k6.io/alpine/v0.44.1/community" >> /etc/apk/repositories && \
-    apk add --no-cache k6
+
 
 ENV PORT=8080
 ENV NODE_ENV=production
