@@ -7,7 +7,7 @@ const morgalApiLogger = (app) => {
     includeNewLine: true,
     logReqHeaderList: ['x-project-id'],
     prettify: false,
-    skip: (req) => req.url.includes('favicon') || req.method === 'OPTIONS',
+    skip: (req) => req.method === 'OPTIONS',
     timezone: 'Asia/Kolkata'
   });
 };

@@ -38,8 +38,7 @@
     "passport": "^0.7.0",
     "passport-openidconnect": "^0.1.2",
     "passport-saml": "^3.2.4",
-    "patch-package": "^8.0.0",
-    "serve-favicon": "^2.5.0"
+    "patch-package": "^8.0.0"
   },
   "devDependencies": {
     "eslint": "^8.57.0",
