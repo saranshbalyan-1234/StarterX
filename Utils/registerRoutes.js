@@ -21,11 +21,11 @@ const getRoutes = async (app, type) => {
 };
 
 const registerUnprotectedRoutes = async (app) => {
+  setupPrometheus(app);
   await getRoutes(app, 'unprotected.routes');
   app.use('/health', (_req, res) =>
     res.json('Server is Working')
   );
-  setupPrometheus(app);
 };
 
 const registerProtectedRoutes = async (app) => {
