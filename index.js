@@ -6,6 +6,9 @@ import fileupload from 'express-fileupload';
 // Import { scheduleInit } from "#scheduler/Service/schedulerService.js";
 import expressListRoutes from 'express-list-routes';
 import helmet from 'helmet';
+import path from 'path';
+import favicon from 'serve-favicon';
+import { fileURLToPath } from 'url';
 
 import defaultMiddleware from '#middlewares/default.middleware.js';
 import { setupCors, setupHtmlErrorInterceptor, setupRateLimiter, setupResponseInterceptor, setupTimeout, setupValidationErrorInterceptor } from '#middlewares/server.middleware.js';
@@ -14,18 +17,13 @@ import morgalApiLogger from '#utils/Logger/api.logger.js';
 import overrideConsole from '#utils/Logger/console.logger.js';
 import { getTenantDB } from '#utils/Mongo/mongo.connection.js';
 import registerRoutes from '#utils/registerRoutes.js';
-import favicon from 'serve-favicon'
-
-import path from 'path';
-import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-
 const app = express();
 
-app.use(favicon(path.join(__dirname, 'assets', 'favicon.ico')))
+app.use(favicon(path.join(__dirname, 'assets', 'favicon.ico')));
 
 app.use(defaultMiddleware());
 
