@@ -1,12 +1,11 @@
 import cors from 'cors';
+import promMid from 'express-prometheus-middleware';
 import { rateLimit } from 'express-rate-limit';
 import { ValidationError } from 'express-validation';
 
 import errorContstants from '#constants/error.constant.js';
 import { encryptWithAES } from '#encryption/Service/aes.service.js';
 import { abortSession, commitSession } from '#utils/Mongo/mongo.service.js';
-
-import promMid from 'express-prometheus-middleware'
 
 const setupTimeout = (app) => {
   if (!process.env.TIMEOUT) return console.log('Timeout is turned OFF');
@@ -130,9 +129,9 @@ const setupValidationErrorInterceptor = (app) => {
 
 const setupPrometheus = (app) => {
   app.use(promMid({
-    metricsPath: '/metrics',
     collectDefaultMetrics: true,
-    requestDurationBuckets: [0.1, 0.5, 1, 3, 5, 10],
+    metricsPath: '/metrics',
+    requestDurationBuckets: [0.1, 0.5, 1, 3, 5, 10]
     /**
      * Uncomenting the `authenticate` callback will make the `metricsPath` route
      * require authentication. This authentication callback can make a simple
@@ -144,7 +143,7 @@ const setupPrometheus = (app) => {
     /**
      * Uncommenting the `extraMasks` config will use the list of regexes to
      * reformat URL path names and replace the values found with a placeholder value
-    */
+     */
     // extraMasks: [/..:..:..:..:..:../],
     /**
      * The prefix option will cause all metrics to have the given prefix.
@@ -154,14 +153,15 @@ const setupPrometheus = (app) => {
     /**
      * Can add custom labels with customLabels and transformLabels options
      */
-    // customLabels: ['contentType'],
-    // transformLabels(labels, req) {
-    //   // eslint-disable-next-line no-param-reassign
-    //   labels.contentType = req.headers['content-type'];
-    // },
-   }));
-}
-
+    /*
+     * customLabels: ['contentType'],
+     * transformLabels(labels, req) {
+     *   // eslint-disable-next-line no-param-reassign
+     *   labels.contentType = req.headers['content-type'];
+     * },
+     */
+  }));
+};
 
 const getErrorObj = (req, res) => ({
   method: req.method,
@@ -169,4 +169,4 @@ const getErrorObj = (req, res) => ({
   status: res.statusCode
 });
 
-export { setupCors, setupHtmlErrorInterceptor, setupRateLimiter, setupResponseInterceptor, setupTimeout, setupValidationErrorInterceptor,setupPrometheus };
+export { setupCors, setupHtmlErrorInterceptor, setupPrometheus, setupRateLimiter, setupResponseInterceptor, setupTimeout, setupValidationErrorInterceptor };

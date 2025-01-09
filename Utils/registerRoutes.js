@@ -1,5 +1,6 @@
 import errorContstants from '#constants/error.constant.js';
 import { validateToken } from '#middlewares/jwt.middleware.js';
+import { setupPrometheus } from '#middlewares/server.middleware.js';
 import { getDirectories } from '#utils/file.js';
 
 const getRoutes = async (app, type) => {
@@ -24,6 +25,7 @@ const registerUnprotectedRoutes = async (app) => {
   app.use('/health', (_req, res) =>
     res.json('Server is Working')
   );
+  setupPrometheus(app);
 };
 
 const registerProtectedRoutes = async (app) => {

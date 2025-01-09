@@ -8,15 +8,24 @@ import expressListRoutes from 'express-list-routes';
 import helmet from 'helmet';
 
 import defaultMiddleware from '#middlewares/default.middleware.js';
-import { setupCors, setupHtmlErrorInterceptor, setupRateLimiter, setupResponseInterceptor, setupTimeout, setupValidationErrorInterceptor,setupPrometheus } from '#middlewares/server.middleware.js';
+import { setupCors, setupHtmlErrorInterceptor, setupRateLimiter, setupResponseInterceptor, setupTimeout, setupValidationErrorInterceptor } from '#middlewares/server.middleware.js';
 import seedSuperAdmin from '#user/Seed/superadmin.seed.js';
 import morgalApiLogger from '#utils/Logger/api.logger.js';
 import overrideConsole from '#utils/Logger/console.logger.js';
 import { getTenantDB } from '#utils/Mongo/mongo.connection.js';
 import registerRoutes from '#utils/registerRoutes.js';
+import favicon from 'serve-favicon'
+
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 
 const app = express();
-setupPrometheus(app)
+
+app.use(favicon(path.join(__dirname, 'assets', 'favicon.ico')))
 
 app.use(defaultMiddleware());
 
