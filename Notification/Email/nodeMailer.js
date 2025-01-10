@@ -3,22 +3,6 @@ import nodemailer from 'nodemailer';
 import getError from '#utils/error.js';
 import { createToken } from '#utils/jwt.js';
 
-const smtp = {
-  auth: {
-    pass: process.env.MAILER_PASS,
-    user: process.env.MAILER_USER
-  }
-};
-if (process.env.MAILER_SERVICE) {
-  smtp.service = process.env.MAILER_SERVICE;
-} else if (process.env.MAILER_HOST && process.env.MAILER_PORT) {
-  smtp.host = process.env.MAILER_HOST;
-  smtp.port = process.env.MAILER_PORT;
-} else {
-  console.error('Unable to connect to SMTP');
-}
-// const transporter =
-
 const transporters = {
 
 };
@@ -29,7 +13,7 @@ const sendMailApi = async (req, res) => {
     const transporter = transporters[tenant];
 
     if (!transporter) {
-      const mailConfig = await req.models.config.findOne({ type: 'mail' });
+      const mailConfig = await req.models.config.findOne({ type: 'mailer' });
       if (!mailConfig) throw new Error('No SMTP found!', 404);
       if(mailConfig.cache) transporters[tenant] = nodemailer.createTransport(mailConfig);
     }

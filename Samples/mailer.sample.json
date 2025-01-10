@@ -1,0 +1,12 @@
+{
+  "name": "SAML Sample",
+  "type": "mailer",
+  "service": "gmail",
+  "host": "hostname",
+  "port": "port",
+  "auth": {
+    "user": "username",
+    "pass": "password"
+  },
+  "cache": true
+}
