@@ -41,4 +41,4 @@ const sendMail = async (data, type, tenant) => {
     throw new Error('Failed to send mail');
   }
 };
-export { sendMail, sendMailApi };
+export { sendMail };
