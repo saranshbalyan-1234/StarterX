@@ -1,8 +1,11 @@
 {
-"cert": "cert",
-"entityId": "entityId",
-"entryPoint": "authorizationURL",
-"issuer": "issuer",
-"passReqToCallback": true,
-"path": "callback"
+  "cert": "cert",
+  "entityId": "entityId",
+  "entryPoint": "authorizationURL",
+  "issuer": "issuer",
+  "passReqToCallback": true,
+  "path": "callback",
+  "type": "saml",
+  "name": "SAML Sample",
+  "cache": false
 }

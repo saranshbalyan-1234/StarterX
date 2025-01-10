@@ -17,7 +17,7 @@ import registerRoutes from '#utils/registerRoutes.js';
 
 const app = express();
 
-app.use(express.static('assets'))
+app.use(express.static('assets'));
 app.use(defaultMiddleware());
 
 overrideConsole();

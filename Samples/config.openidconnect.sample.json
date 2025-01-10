@@ -9,5 +9,6 @@
     "tokenURL": "https://www.googleapis.com/oauth2/v3/token",
     "userInfoURL": "https://www.googleapis.com/oauth2/v1/tokeninfo",
     "type": "openidconnect",
-    "issuer": "accounts.google.com"
+    "issuer": "accounts.google.com",
+    "cache":false
   }
