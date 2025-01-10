@@ -2,8 +2,6 @@ import nodemailer from 'nodemailer';
 
 import getError from '#utils/error.js';
 import { createToken } from '#utils/jwt.js';
-import registerHTML from '#utils/Mail/HTML/register.js';
-import resetPasswordHtml from '#utils/Mail/HTML/resetPassword.js';
 
 const smtp = {
   auth: {
@@ -32,9 +30,9 @@ const sendMailApi = async (req, res) => {
 
     if (!transporter) {
       const mailConfig = await req.models.config.findOne({ type: 'mail' });
-      transporters[tenant] = nodemailer.createTransport(mailConfig);
+      if (!mailConfig) throw new Error('No SMTP found!', 404);
+      if(mailConfig.cache) transporters[tenant] = nodemailer.createTransport(mailConfig);
     }
-    if (!transporter) throw new Error('No SMTP found!', 404);
 
     transporter.sendMail(req.body, (error, info) => {
       if (error) {
@@ -46,7 +44,7 @@ const sendMailApi = async (req, res) => {
     getError(err, res);
   }
 };
-const sendMail = (data, type) => {
+const sendMail = async (data, type, tenant) => {
   try {
     let mailOption = {
       html: '',
@@ -61,7 +59,7 @@ const sendMail = (data, type) => {
         token = createToken({ _id: data._id }, process.env.JWT_VERIFICATION_SECRET);
         link = `${process.env.WEBSITE_HOME}/auth/verify-customer/${token}`;
         mailOption = {
-          html: registerHTML(data.name, link),
+          text: link,
           subject: 'Customer Registration Successfull',
           to: data.email
         };
@@ -70,7 +68,7 @@ const sendMail = (data, type) => {
         token = createToken({ _id: data._id }, process.env.JWT_RESET_SECRET, process.env.JWT_RESET_EXPIRATION);
         link = `${process.env.WEBSITE_HOME}/reset-password/${token}`;
         mailOption = {
-          html: resetPasswordHtml(data.email, link),
+          text: link,
           subject: 'Password Reset',
           to: data.email
         };
@@ -78,7 +76,8 @@ const sendMail = (data, type) => {
       default:
         break;
     }
-    // await transporter.sendMail({ ...mailOption, from: process.env.MAILER_FROM });
+      const transporter = transporters[tenant];
+    await transporter.sendMail({ ...mailOption, from: process.env.MAILER_FROM });
     console.success('Mail send', mailOption);
     return true;
   } catch (err) {
