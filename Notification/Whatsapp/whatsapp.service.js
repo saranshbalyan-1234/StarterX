@@ -14,6 +14,14 @@ client.on('qr', (qr) => {
     qrcode.generate(qr, {small: true});
 });
 
+client.on('message', (message) => {
+    console.log(1, message.body)
+})
+
+client.on('message_create', (message) => {
+    console.log(2, message.body)
+})
+
 // Start your client
 try {
     client.initialize();
