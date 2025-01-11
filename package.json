@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node --env-file=env/.env --env-file=env/.env.database --env-file=env/.env.logger --env-file=env/.env.server --env-file=env/.env.token --env-file=env/.env.mailer --no-warnings --trace-warnings --experimental-permission --allow-child-process --allow-fs-read=/ --watch index.js",
+    "start": "node --env-file=env/.env --env-file=env/.env.database --env-file=env/.env.logger --env-file=env/.env.server --env-file=env/.env.token --env-file=env/.env.mailer --no-warnings --trace-warnings --experimental-permission --allow-child-process --allow-fs-read=/ --allow-fs-write=/ --watch index.js",
     "swagger": "node ./Utils/Swagger/swagger.js",
     "lint": "eslint . --quiet --cache --cache-location=node_modules/.cache/eslint",
     "lint-fix": "eslint . --fix",
@@ -38,7 +38,9 @@
     "passport": "^0.7.0",
     "passport-openidconnect": "^0.1.2",
     "passport-saml": "^3.2.4",
-    "patch-package": "^8.0.0"
+    "patch-package": "^8.0.0",
+    "qrcode-terminal": "^0.12.0",
+    "whatsapp-web.js": "^1.26.0"
   },
   "devDependencies": {
     "eslint": "^8.57.0",
@@ -74,6 +76,7 @@
     "#routes/*": "./Routes/*",
     "#encryption/*": "./Encryption/*",
     "#scheduler/*": "./Scheduler/*",
+    "#notification/*": "./Notification/*",
     "#root/*": "./*"
   }
 }

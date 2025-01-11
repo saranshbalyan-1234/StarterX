@@ -6,6 +6,7 @@ import fileupload from 'express-fileupload';
 // Import { scheduleInit } from "#scheduler/Service/schedulerService.js";
 import expressListRoutes from 'express-list-routes';
 import helmet from 'helmet';
+import '#notification/Whatsapp/whatsapp.service.js'
 
 import defaultMiddleware from '#middlewares/default.middleware.js';
 import { setupCors, setupHtmlErrorInterceptor, setupRateLimiter, setupResponseInterceptor, setupTimeout, setupValidationErrorInterceptor } from '#middlewares/server.middleware.js';

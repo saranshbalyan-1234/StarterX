@@ -1,5 +1,5 @@
 import { createToken } from '#utils/jwt.js';
-import {transporters} from './nodemailer.controller'
+import {transporters} from './nodemailer.controller.js'
 const sendMail = async (data, type, tenant) => {
   try {
     let mailOption = {
