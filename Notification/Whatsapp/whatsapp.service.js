@@ -2,7 +2,7 @@ import { Client } from 'whatsapp-web.js'
 import qrcode from 'qrcode-terminal'
 
 // Create a new client instance
-const client = new Client();
+const client = new Client({ puppeteer: { headless: true,args: ['--no-sandbox', '--disable-setuid-sandbox']}, });
 
 // When the client is ready, run this code (only once)
 client.once('ready', () => {
@@ -15,4 +15,8 @@ client.on('qr', (qr) => {
 });
 
 // Start your client
-client.initialize();
+try {
+    client.initialize();
+} catch (err) { 
+    console.error("whatsapp error",err)
+}

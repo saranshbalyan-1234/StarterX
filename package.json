@@ -6,7 +6,6 @@
   "type": "module",
   "scripts": {
     "start": "node --env-file=env/.env --env-file=env/.env.database --env-file=env/.env.logger --env-file=env/.env.server --env-file=env/.env.token --env-file=env/.env.mailer --no-warnings --trace-warnings --experimental-permission --allow-child-process --allow-fs-read=/ --allow-fs-write=/ --watch index.js",
-    "swagger": "node ./Utils/Swagger/swagger.js",
     "lint": "eslint . --quiet --cache --cache-location=node_modules/.cache/eslint",
     "lint-fix": "eslint . --fix",
     "clean": "rimraf node_modules && npm ci",
@@ -20,6 +19,7 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.3",
     "chalk": "^5.3.0",
+    "chromium": "^3.0.3",
     "cookie-session": "^2.1.0",
     "cors": "^2.8.5",
     "express": "^4.21.2",
