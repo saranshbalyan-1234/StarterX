@@ -22,12 +22,12 @@ client.on('qr', (qr) => {
     qrcode.generate(qr, {small: true});
 });
 
-client.on('message', (message) => {
-    console.log(1, message.body)
-})
-
 client.on('message_create', (message) => {
-    console.log(2, message.body)
+    console.log( message.body)
+    if (message.body === 'ping') {
+		// send back "pong" to the chat the message was sent in
+		message.reply('pong');
+	}
 })
 
 // Start your client
