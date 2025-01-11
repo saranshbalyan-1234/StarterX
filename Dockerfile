@@ -12,7 +12,7 @@ RUN curl -L https://github.com/grafana/k6/releases/download/v0.44.1/k6-v0.44.1-l
     mv k6-v0.44.1-linux-amd64/k6 /usr/bin/k6 && \
     rm -rf k6-v0.44.1-linux-amd64
 
-    RUN apt-get update \
+RUN apt-get update \
     && apt-get install -y \
     gconf-service \
     libgbm-dev \
@@ -55,6 +55,7 @@ RUN curl -L https://github.com/grafana/k6/releases/download/v0.44.1/k6-v0.44.1-l
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
+RUN npx puppeteer browsers install chrome
 
 #K6
 # RUN curl -s https://k6.io/releases/latest/k6-latest-linux-amd64.tar.gz \
