@@ -12,6 +12,10 @@ RUN curl -L https://github.com/grafana/k6/releases/download/v0.44.1/k6-v0.44.1-l
     mv k6-v0.44.1-linux-amd64/k6 /usr/bin/k6 && \
     rm -rf k6-v0.44.1-linux-amd64
 
+RUN apt-get update && apt-get install -y libnss3 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 
 #K6
