@@ -1,8 +1,16 @@
-import { Client } from 'whatsapp-web.js'
+import pkg from 'whatsapp-web.js'
 import qrcode from 'qrcode-terminal'
+const { Client, LocalAuth } = pkg;
 
 // Create a new client instance
-const client = new Client({ puppeteer: { headless: true,args: ['--no-sandbox', '--disable-setuid-sandbox']}, });
+const client = new Client({
+    puppeteer:
+    {
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+    },
+    authStrategy: new LocalAuth()
+});
 
 // When the client is ready, run this code (only once)
 client.once('ready', () => {
