@@ -1,90 +1,61 @@
-FROM node:22 AS build-env
+FROM node:18
 
-COPY . /app
-WORKDIR /app
-# RUN npm install puppeteer-core
+# Create app directory
+WORKDIR /usr/src/app
 
-# Install necessary packages and Google Chrome for amd64
-RUN apt-get update && apt-get install -y \
-    wget \
-    gnupg \
-    apt-transport-https \
-    ca-certificates \
-    && wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
-    && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list \
-    && apt-get update && apt-get install -y google-chrome-stable \
-    && rm -rf /var/lib/apt/lists/*
-
-# Set the Puppeteer to use installed Chrome
-# ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
-# ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable
-
-ENV NODE_ENV=production
-RUN npm ci
-
-# FROM gcr.io/distroless/nodejs20-debian12
-# FROM node:22 
-# COPY --from=build-env /app /app
-
-# RUN curl -L https://github.com/grafana/k6/releases/download/v0.44.1/k6-v0.44.1-linux-amd64.tar.gz | tar xvz && \
-#     mv k6-v0.44.1-linux-amd64/k6 /usr/bin/k6 && \
-#     rm -rf k6-v0.44.1-linux-amd64
-
-RUN apt-get update \
-    && apt-get install -y \
-    gconf-service \
-    libgbm-dev \
-    libasound2 \
-    libatk1.0-0 \
-    libc6 \
-    libcairo2 \
-    libcups2 \
-    libdbus-1-3 \
-    libexpat1 \
-    libfontconfig1 \
-    libgcc1 \
-    libgconf-2-4 \
-    libgdk-pixbuf2.0-0 \
-    libglib2.0-0 \
-    libgtk-3-0 \
-    libnspr4 \
-    libpango-1.0-0 \
-    libpangocairo-1.0-0 \
-    libstdc++6 \
-    libx11-6 \
-    libx11-xcb1 \
-    libxcb1 \
-    libxcomposite1 \
-    libxcursor1 \
-    libxdamage1 \
-    libxext6 \
-    libxfixes3 \
-    libxi6 \
-    libxrandr2 \
-    libxrender1 \
-    libxss1 \
-    libxtst6 \
-    ca-certificates \
-    fonts-liberation \
-    libappindicator1 \
-    libnss3 \
-    lsb-release \
-    xdg-utils \
-    && rm -rf /var/lib/apt/lists/*
-
-# WORKDIR /app
-# RUN npx puppeteer browsers install chrome
-
-#K6
-# RUN curl -s https://k6.io/releases/latest/k6-latest-linux-amd64.tar.gz \
-#     | tar -xz -C /usr/local/bin
-# RUN k6 version
-#K6
+ENV PORT 8080
 
 
-ENV DATABASE_URL=mongodb+srv://saransh:ysoserious@saransh.jvitvgq.mongodb.net
-ENV DATABASE_NAME=automation_master
-ENV PORT=8080
-ENV NODE_ENV=production
+# Install app dependencies
+COPY /package*.json ./
+RUN npm install --silent
+# RUN npm install pm2 -g
+
+# Bundle app source
+COPY . .
+
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \ 
+    && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list
+RUN apt-get update && apt-get -y install google-chrome-stable
+
+RUN npm install -g puppeteer --unsafe-perm=true -allow-root
+RUN apt install -y gconf-service libgbm-dev libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget
+
+# RUN npm i -g webdriver-manager
+# RUN webdriver-manager update
+# RUN webdriver-manager status
+RUN mkdir /nonexistent
+RUN chmod -R 777 /nonexistent
+
 EXPOSE 8080
-CMD ["index.js"]
+USER root
+
+    
+#scaling
+# CMD ["pm2-runtime", "index.js","--no-daemon", "-i","-0"]
+CMD [ "node", "index.js" ]
+
+
+
+# FROM ubuntu:22.04
+
+# RUN apt-get update && apt-get upgrade -y
+# RUN apt-get install -y curl
+# RUN curl -sL https://deb.nodesource.com/setup_16.x | bash
+# RUN apt-get install -y nodejs
+
+# # RUN apt install chromium-browser -y
+# RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+# RUN apt install ./google-chrome-stable_current_amd64.deb
+# RUN apt update
+
+
+
+# WORKDIR /usr/src/app
+# COPY . .
+# ENV NODE_ENV=production
+# RUN npm install --production
+# RUN chmod 777 /usr/src/app/dockerentrypoint.sh
+
+# EXPOSE 80
+# ENTRYPOINT ["/usr/src/app/dockerentrypoint.sh"]
