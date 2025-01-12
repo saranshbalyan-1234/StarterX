@@ -6,7 +6,7 @@ const { Client, LocalAuth } = pkg;
 const client = new Client({
     puppeteer:
     {
-        headless: true,
+        headless: false,
         args: ['--no-sandbox', '--disable-setuid-sandbox']
     },
     authStrategy: new LocalAuth()

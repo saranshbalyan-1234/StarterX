@@ -55,7 +55,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-RUN npx puppeteer browsers install chrome
+# RUN npx puppeteer browsers install chrome
 
 #K6
 # RUN curl -s https://k6.io/releases/latest/k6-latest-linux-amd64.tar.gz \
