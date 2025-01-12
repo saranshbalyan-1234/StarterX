@@ -17,6 +17,6 @@ rm -rf ~/.config/google-chrome
 
 
 # Start the application (npm start)
-pkill chrome
-pkill chromium
+# pkill chrome
+# pkill chromium
 exec npm start
