@@ -101,7 +101,7 @@ export default overrideConsole;
 
 const getFileNameFromError = (error) => {
   let file = error.stack.split('\n')[2].split('/').at(-1).replace(/\)/, '');
-  if (file === 'error.js:3:11') file = error.stack.split('\n')[3].split('/').at(-1).replace(/\)/, '');
+  if (file.includes('error.js')) file = error.stack.split('\n')[3].split('/').at(-1).replace(/\)/, '');
   const str = `[${file}]${
     Array(30).fill('\xa0').join('')}`;
   return str.substring(0, 30);
