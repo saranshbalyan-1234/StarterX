@@ -14,11 +14,13 @@ import morgalApiLogger from '#utils/Logger/api.logger.js';
 import overrideConsole from '#utils/Logger/console.logger.js';
 import { getTenantDB } from '#utils/Mongo/mongo.connection.js';
 import registerRoutes from '#utils/registerRoutes.js';
+import expressStatusMonitor from 'express-status-monitor'
 
 const app = express();
 
 app.use(express.static('assets'));
 app.use(defaultMiddleware());
+app.use(expressStatusMonitor({path:'/health/stats'}))
 
 overrideConsole();
 
