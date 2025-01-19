@@ -23,7 +23,7 @@ const getRoutes = async (app, type) => {
 const registerUnprotectedRoutes = async (app) => {
   setupPrometheus(app);
   await getRoutes(app, 'unprotected.routes');
-  app.use('/health', (_req, res) =>
+  app.use('/health/status', (_req, res) =>
     res.json('Server is Working')
   );
 };
