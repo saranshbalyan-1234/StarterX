@@ -5,6 +5,7 @@ import express from 'express';
 import fileupload from 'express-fileupload';
 // Import { scheduleInit } from "#scheduler/Service/schedulerService.js";
 import expressListRoutes from 'express-list-routes';
+import expressStatusMonitor from 'express-status-monitor';
 import helmet from 'helmet';
 
 import defaultMiddleware from '#middlewares/default.middleware.js';
@@ -14,13 +15,12 @@ import morgalApiLogger from '#utils/Logger/api.logger.js';
 import overrideConsole from '#utils/Logger/console.logger.js';
 import { getTenantDB } from '#utils/Mongo/mongo.connection.js';
 import registerRoutes from '#utils/registerRoutes.js';
-import expressStatusMonitor from 'express-status-monitor'
 
 const app = express();
 
 app.use(express.static('assets'));
 app.use(defaultMiddleware());
-app.use(expressStatusMonitor({path:'/health/stats'}))
+app.use(expressStatusMonitor({ path: '/health/stats' }));
 
 overrideConsole();
 
