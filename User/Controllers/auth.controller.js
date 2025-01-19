@@ -2,9 +2,9 @@ import pkg from 'jsonwebtoken';
 
 import errorConstants from '#constants/error.constant.js';
 import successConstants from '#constants/success.contant.js';
-import getError from '#utils/error.js';
 // import { createToken, getTokenError } from '#utils/jwt.js';
 import { sendMail } from '#notification/Email/nodemailer.service.js';
+import getError from '#utils/error.js';
 import { getTenantDB } from '#utils/Mongo/mongo.connection.js';
 
 import { loginWithCredentals } from '../Service/user.service.js';

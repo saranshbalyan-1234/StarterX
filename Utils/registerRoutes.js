@@ -15,27 +15,15 @@ const getRoutes = async (app, type) => {
     const tempAr1 = tempAr[tempAr.length - 4].split('/');
     const name = tempAr1[tempAr1.length - 1];
 
-    app.use(`/${name}`, defaultFile);
+    if (element.includes('unprotected')) app.use(`/${name}`, defaultFile);
+    else if (element.includes('protected')) app.use(`/${name}`, validateToken(), defaultFile);
   };
   console.log(type, 'registered');
 };
 
-const registerUnprotectedRoutes = async (app) => {
-  setupPrometheus(app);
-  await getRoutes(app, 'unprotected.routes');
-  app.use('/health/status', (_req, res) =>
-    res.json('Server is Working')
-  );
-};
-
-const registerProtectedRoutes = async (app) => {
-  await app.use(validateToken());
-  await getRoutes(app, 'protected.routes');
-};
-
 const registerRoutes = async (app) => {
-  await registerUnprotectedRoutes(app);
-  await registerProtectedRoutes(app);
+  setupPrometheus(app);
+  await getRoutes(app, 'routes');
   app.use((_req, res) => res.status(404).json({ error: errorContstants.ENDPOINT_NOT_FOUND }));
   return console.success('Routes Registered');
 };

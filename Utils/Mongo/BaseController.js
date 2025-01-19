@@ -28,7 +28,7 @@ const BaseController = (schema) => {
     }
   };
 
-  const findManyFromSchema = async (req, res) => {
+  const findManyFromSchema = (req, res) => {
     try {
       res.setHeader('Content-Type', 'application/json');
       res.write('['); // Start of JSON array
@@ -56,7 +56,6 @@ const BaseController = (schema) => {
       req.on('close', () => {
         cursor.close();
       });
-
     } catch (err) {
       getError(err, res);
     }
