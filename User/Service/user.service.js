@@ -10,7 +10,13 @@ const loginWithCredentals = async ({ email, password, rememberMe, isPassRequired
 
     if (customer) {
       if (customer.blocked) throw new Error(errorContstants.ACCOUNT_BLOCKED);
-      if (process.env.INCORRECT_PASS_LIMIT && customer.incorrectPasswordCount >= parseInt(process.env.INCORRECT_PASS_LIMIT)) throw new Error(errorContstants.PASSWORD_RESET_REQUIRED);
+      if (process.env.INCORRECT_PASS_LIMIT && customer.incorrectPasswordCount >= parseInt(process.env.INCORRECT_PASS_LIMIT)) {
+        await db.models.customer.updateOne({ email }, { incorrectPasswordCount: 0 }, { timestamps: false });
+        await db.models.userlocked.create([{ customer: customer._id }]);
+        throw new Error(errorContstants.PASSWORD_RESET_REQUIRED);
+      }
+      const userlocked = await db.models.userlocked.findOne({ customer: customer._id });
+      if (userlocked) throw new Error(errorContstants.PASSWORD_RESET_REQUIRED);
     } else {
       const unverifiedUser = await db.models.unverified.findOne({ email });
       if (unverifiedUser) throw new Error(errorContstants.EMAIL_NOT_VERIFIED);
@@ -22,13 +28,20 @@ const loginWithCredentals = async ({ email, password, rememberMe, isPassRequired
     const isAuthenticated = !isPassRequired || customer.password === password;
 
     if (!isAuthenticated) {
-      try { db.models.customer.findOneAndUpdate({ email }, { $inc: { incorrectPasswordCount: 1 } }, { timestamps: false }); } catch (er) {
+      try {
+        console.log('incrementing incorrectPasswordCount');
+        await db.models.customer.findOneAndUpdate({ email }, { $inc: { incorrectPasswordCount: 1 } }, { timestamps: false });
+      } catch (er) {
         console.error('error while incrementing incorrectPasswordCount', er);
       }
+
       throw new Error(errorContstants.INCORRECT_PASSWORD);
     }
 
-    try { db.models.customer.updateOne({ email }, { incorrectPasswordCount: 0, lastLogin: new Date() }, { timestamps: false }); } catch (er) {
+    try {
+      await db.models.userlocked.deleteMany({ customer: customer._id });
+      await db.models.customer.updateOne({ email }, { incorrectPasswordCount: 0, lastLogin: new Date() }, { timestamps: false });
+    } catch (er) {
       console.error('error while updating incorrectPasswordCount to 0', er);
     }
     db = await getTenantDB(currentTenant);

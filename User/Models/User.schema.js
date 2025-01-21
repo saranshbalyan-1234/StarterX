@@ -15,9 +15,6 @@ const User = BaseSchema({
     type: String,
     unique: true
   },
-  lastLogin: {
-    type: Date
-  },
   name: {
     lowercase: true,
     required: 'Name is required',

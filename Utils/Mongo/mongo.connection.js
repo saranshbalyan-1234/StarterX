@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-import { getDirectories } from '#utils/file.js';
+import { registerAllPlugins, registerAllSchema } from './mongo.service.js';
 
 const clientOption = {
   /*
@@ -12,21 +12,6 @@ const clientOption = {
 };
 const connectionsObj = {};
 mongoose.set('debug', true);
-
-const registerAllPlugins = async () => {
-  try {
-    const files = getDirectories('.', 'plugin');
-
-    for (const file of files) {
-      const schema = await import(`../../${file}`);
-      const defaultFile = schema.default;
-      mongoose.plugin(defaultFile);
-    };
-    console.log('Registered All Plugins');
-  } catch (err) {
-    console.error(err);
-  }
-};
 
 registerAllPlugins();
 
@@ -59,28 +44,6 @@ export const createDbConnection = async (tenant = process.env.DATABASE_NAME, aut
     return conn;
   } catch (error) {
     console.error('Error while connecting to DB', error);
-  }
-};
-
-const registerAllSchema = async (db, isMasterConn = false) => {
-  try {
-    const files = getDirectories('.', 'schema');
-    console.log('Registering Schemas', files.map(el => el.split('/').at(-1).split('.')[0]));
-    const onlyMasterSchema = ['Customer', 'Unverified'];
-    for (const file of files) {
-      if (isMasterConn || !onlyMasterSchema.some(el => file.includes(el))) {
-        const schema = await import(`../../${file}`);
-        const defaultFile = schema.default;
-
-        const tempAr = file.split('.');
-        const tempAr1 = tempAr[tempAr.length - 3].split('/');
-        const name = tempAr1[tempAr1.length - 1];
-
-        await db.model(name.toLowerCase(), defaultFile);
-      }
-    };
-  } catch (err) {
-    console.error(err);
   }
 };
 
