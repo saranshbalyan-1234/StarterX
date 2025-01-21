@@ -2,6 +2,7 @@ const errorContstants = {
   ACCESS_TOKEN_NOT_FOUND: 'Access Token Not Found',
   ACCOUNT_BLOCKED: 'Account Blocked!',
   ACCOUNT_INACTIVE: 'Account Inactive!',
+  ACCOUNT_LOCKED: 'Account Locked!, please try again later.',
   CUSTOMER_DATABASE_ALREADY_EXIST: 'Customer Database Already Exists',
   EMAIL_ALREADY_VERIFIED: 'Email Already Verified',
   EMAIL_NOT_VERIFIED: 'Email Not Verified',

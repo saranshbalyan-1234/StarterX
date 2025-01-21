@@ -7,16 +7,16 @@ const loginWithCredentals = async ({ email, password, rememberMe, isPassRequired
   try {
     let db = await getTenantDB();
     const customer = await db.models.customer.findOne({ email });
-
+    const remainingLoginAttempts = process.env.INCORRECT_PASS_LIMIT ? parseInt(process.env.INCORRECT_PASS_LIMIT) - customer.incorrectPasswordCount - 1 : 1;
     if (customer) {
       if (customer.blocked) throw new Error(errorContstants.ACCOUNT_BLOCKED);
-      if (process.env.INCORRECT_PASS_LIMIT && customer.incorrectPasswordCount >= parseInt(process.env.INCORRECT_PASS_LIMIT)) {
+      if (remainingLoginAttempts <= 0) {
         await db.models.customer.updateOne({ email }, { incorrectPasswordCount: 0 }, { timestamps: false });
         await db.models.userlocked.create([{ customer: customer._id }]);
-        throw new Error(errorContstants.PASSWORD_RESET_REQUIRED);
+        throw new Error(errorContstants.ACCOUNT_LOCKED);
       }
       const userlocked = await db.models.userlocked.findOne({ customer: customer._id });
-      if (userlocked) throw new Error(errorContstants.PASSWORD_RESET_REQUIRED);
+      if (userlocked) throw new Error(errorContstants.ACCOUNT_LOCKED);
     } else {
       const unverifiedUser = await db.models.unverified.findOne({ email });
       if (unverifiedUser) throw new Error(errorContstants.EMAIL_NOT_VERIFIED);
@@ -28,14 +28,8 @@ const loginWithCredentals = async ({ email, password, rememberMe, isPassRequired
     const isAuthenticated = !isPassRequired || customer.password === password;
 
     if (!isAuthenticated) {
-      try {
-        console.log('incrementing incorrectPasswordCount');
-        await db.models.customer.findOneAndUpdate({ email }, { $inc: { incorrectPasswordCount: 1 } }, { timestamps: false });
-      } catch (er) {
-        console.error('error while incrementing incorrectPasswordCount', er);
-      }
-
-      throw new Error(errorContstants.INCORRECT_PASSWORD);
+      await db.models.customer.findOneAndUpdate({ email }, { $inc: { incorrectPasswordCount: 1 } }, { timestamps: false });
+      throw new Error(`${errorContstants.INCORRECT_PASSWORD}, remaining attempts ${remainingLoginAttempts}`);
     }
 
     try {
