@@ -41,6 +41,7 @@ const loginWithCredentals = async ({ email, password, rememberMe, isPassRequired
     db = await getTenantDB(currentTenant);
     const user = await db.models.user.findOne({ email }).populate('roles');
     if (!user) throw new Error(errorContstants.RECORD_NOT_FOUND);
+    if(!user.active) throw new Error(errorContstants.ACCOUNT_INACTIVE);
 
     const { _id } = user;
 

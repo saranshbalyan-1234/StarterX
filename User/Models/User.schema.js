@@ -25,13 +25,10 @@ const User = BaseSchema({
     type: String
   },
   roles: [{ ref: 'role', type: Schema.Types.ObjectId }],
-  status: {
-    default: 'active',
-    enum: ['active', 'inactive', 'blocked'],
-    lowercase: true,
-    required: 'Status is required',
-    trim: true,
-    type: String
+  active: {
+    default: true,
+    required: 'Active Status is required',
+    type: Boolean
   },
   type: {
     default: 'user',
