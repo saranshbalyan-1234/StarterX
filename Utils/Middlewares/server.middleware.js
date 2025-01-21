@@ -130,7 +130,7 @@ const setupValidationErrorInterceptor = (app) => {
 const setupPrometheus = (app) => {
   app.use(promMid({
     collectDefaultMetrics: true,
-    metricsPath: '/metrics',
+    metricsPath: '/health/metrics',
     requestDurationBuckets: [0.1, 0.5, 1, 3, 5, 10]
     /**
      * Uncomenting the `authenticate` callback will make the `metricsPath` route

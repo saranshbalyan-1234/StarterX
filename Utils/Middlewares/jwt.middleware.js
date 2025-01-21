@@ -8,6 +8,7 @@ import { getTenantDB } from '#utils/Mongo/mongo.connection.js';
 const { verify } = pkg;
 export const validateToken = () => async (req, res, next) => {
   try {
+    if (req.path === '/socket.io/') return next();
     const token = req.headers.authorization;
     if (!token) throw new Error(errorContstants.ACCESS_TOKEN_NOT_FOUND, 401, 'JsonWebTokenError');
     const data = verify(token, process.env.JWT_ACCESS_SECRET);
@@ -43,7 +44,7 @@ export const validateToken = () => async (req, res, next) => {
       session.startTransaction();
       req.mongosession = session;
 
-      next();
+      return next();
     }
   } catch (e) {
     getError(e, res);

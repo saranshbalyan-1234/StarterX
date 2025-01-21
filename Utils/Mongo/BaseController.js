@@ -28,10 +28,34 @@ const BaseController = (schema) => {
     }
   };
 
-  const findManyFromSchema = async (req, res) => {
+  const findManyFromSchema = (req, res) => {
     try {
-      const result = await req.models[schema].find(req.params);
-      return res.status(200).json(result);
+      res.setHeader('Content-Type', 'application/json');
+      res.write('['); // Start of JSON array
+
+      let isFirst = true;
+      const cursor = req.models[schema].find(req.params).cursor();
+
+      cursor.on('data', (doc) => {
+        if (!isFirst) {
+          res.write(','); // Add a comma between JSON objects
+        }
+        res.write(JSON.stringify(doc));
+        isFirst = false;
+      });
+
+      cursor.on('end', () => {
+        res.write(']'); // End of JSON array
+        res.end();
+      });
+
+      cursor.on('error', (err) => {
+        res.status(500).json({ error: err.message });
+      });
+
+      req.on('close', () => {
+        cursor.close();
+      });
     } catch (err) {
       getError(err, res);
     }
