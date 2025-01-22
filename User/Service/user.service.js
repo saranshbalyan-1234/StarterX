@@ -29,7 +29,7 @@ const loginWithCredentals = async ({ email, password, rememberMe, isPassRequired
 
     if (!isAuthenticated) {
       await db.models.customer.findOneAndUpdate({ email }, { $inc: { incorrectPasswordCount: 1 } }, { timestamps: false });
-      throw new Error(`${errorContstants.INCORRECT_PASSWORD}, remaining attempts ${remainingLoginAttempts}`);
+      throw new Error(errorContstants.INCORRECT_PASSWORD(remainingLoginAttempts));
     }
 
     try {
