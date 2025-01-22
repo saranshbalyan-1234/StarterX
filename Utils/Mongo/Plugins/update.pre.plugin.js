@@ -1,5 +1,4 @@
-const autoIncrementV = function autoIncrementV (schema) {
-  // Version update
+const preUpdatePlugin = function preUpdatePlugin (schema) {
   schema.pre(/updateOne|updateMany|findOneAndUpdate/, function pre (next) {
     this.options.runValidators = true; // trigger validation on update
     this.options.context = 'query'; // trigger validation on upsert
@@ -10,6 +9,7 @@ const autoIncrementV = function autoIncrementV (schema) {
 
     if (!isTimeStampUpdate || isUpsert || isVersionModified) return next();
     try {
+      // Version update
       this.getUpdate().$inc = { ...(this.getUpdate().$inc || {}), __v: 1 };
       next();
     } catch (error) {
@@ -19,4 +19,4 @@ const autoIncrementV = function autoIncrementV (schema) {
   });
 };
 
-export default autoIncrementV;
+export default preUpdatePlugin;
