@@ -89,6 +89,7 @@
                     ["#routes", "./Routes"],
                     ["#encryption", "./Encryption"],
                     ["#scheduler", "./Scheduler"],
+                    ["#notification", "./Notification"],
                     ["#root", "."]
                 ]
             }

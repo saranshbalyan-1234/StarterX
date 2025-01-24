@@ -3,6 +3,11 @@ import { Schema } from 'mongoose';
 import BaseSchema from '#utils/Mongo/BaseSchema.js';
 
 const User = BaseSchema({
+  active: {
+    default: true,
+    required: 'Active Status is required',
+    type: Boolean
+  },
   defaultProjectId: {
     type: Number
   },
@@ -25,11 +30,6 @@ const User = BaseSchema({
     type: String
   },
   roles: [{ ref: 'role', type: Schema.Types.ObjectId }],
-  active: {
-    default: true,
-    required: 'Active Status is required',
-    type: Boolean
-  },
   type: {
     default: 'user',
     enum: ['user', 'admin', 'issuer'],

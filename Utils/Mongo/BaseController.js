@@ -1,40 +1,53 @@
 import getError from '#utils/error.js';
 
-const BaseController = (schema) => {
-  const createFromSchema = async (req, res) => {
+class BaseController {
+  constructor (schema) {
+    this.schema = schema;
+
+    // Automatically bind methods to this instance
+    this.createFromSchema = this.createFromSchema.bind(this);
+    this.deleteManyFromSchema = this.deleteManyFromSchema.bind(this);
+    this.deleteOneFromSchema = this.deleteOneFromSchema.bind(this);
+    this.findManyFromSchema = this.findManyFromSchema.bind(this);
+    this.findOneFromSchema = this.findOneFromSchema.bind(this);
+    this.updateManyFromSchema = this.updateManyFromSchema.bind(this);
+    this.updateOneFromSchema = this.updateOneFromSchema.bind(this);
+  }
+
+  async createFromSchema (req, res) {
     try {
-      const result = await req.models[schema].create(req.body);
+      const result = await req.models[this.schema].create(req.body);
       return res.status(200).json(result);
     } catch (err) {
       getError(err, res);
     }
-  };
+  }
 
-  const deleteManyFromSchema = async (req, res) => {
+  async deleteManyFromSchema (req, res) {
     try {
-      const result = await req.models[schema].deleteMany(req.params);
+      const result = await req.models[this.schema].deleteMany(req.params);
       return res.status(200).json(result);
     } catch (error) {
       getError(error, res);
     }
-  };
+  }
 
-  const deleteOneFromSchema = async (req, res) => {
+  async deleteOneFromSchema (req, res) {
     try {
-      const result = await req.models[schema].deleteOne(req.params);
+      const result = await req.models[this.schema].deleteOne(req.params);
       return res.status(200).json(result);
     } catch (error) {
       getError(error, res);
     }
-  };
+  }
 
-  const findManyFromSchema = (req, res) => {
+  findManyFromSchema (req, res) {
     try {
       res.setHeader('Content-Type', 'application/json');
       res.write('['); // Start of JSON array
 
       let isFirst = true;
-      const cursor = req.models[schema].find(req.params).cursor();
+      const cursor = req.models[this.schema].find(req.params).cursor();
 
       cursor.on('data', (doc) => {
         if (!isFirst) {
@@ -59,44 +72,34 @@ const BaseController = (schema) => {
     } catch (err) {
       getError(err, res);
     }
-  };
+  }
 
-  const findOneFromSchema = async (req, res) => {
+  async findOneFromSchema (req, res) {
     try {
-      const result = await req.models[schema].findOne(req.params);
+      const result = await req.models[this.schema].findOne(req.params);
       return res.status(200).json(result);
     } catch (err) {
       getError(err, res);
     }
-  };
+  }
 
-  const updateManyFromSchema = async (req, res) => {
+  async updateManyFromSchema (req, res) {
     try {
-      const result = await req.models[schema].updateMany(req.params, req.body);
+      const result = await req.models[this.schema].updateMany(req.params, req.body);
       return res.status(200).json(result);
     } catch (err) {
       getError(err, res);
     }
-  };
+  }
 
-  const updateOneFromSchema = async (req, res) => {
+  async updateOneFromSchema (req, res) {
     try {
-      const result = await req.models[schema].updateOne(req.params, req.body);
+      const result = await req.models[this.schema].updateOne(req.params, req.body);
       return res.status(200).json(result);
     } catch (err) {
       getError(err, res);
     }
-  };
-
-  return {
-    createFromSchema,
-    deleteManyFromSchema,
-    deleteOneFromSchema,
-    findManyFromSchema,
-    findOneFromSchema,
-    updateManyFromSchema,
-    updateOneFromSchema
-  };
-};
+  }
+}
 
 export default BaseController;

@@ -7,7 +7,8 @@ const errorContstants = {
   EMAIL_ALREADY_VERIFIED: 'Email Already Verified',
   EMAIL_NOT_VERIFIED: 'Email Not Verified',
   ENDPOINT_NOT_FOUND: 'Endpoint Not Found!',
-  INCORRECT_PASSWORD:(count)=> 'Incorrect Password, Remaining count: ' + count,
+  // eslint-disable-next-line sonar/function-name
+  INCORRECT_PASSWORD: (count) => `Incorrect Password, Remaining count: ${count}`,
   INSUFFICIENT_DETAILS: 'Insufficient Details!',
   INVALID_FILE: 'Invalid File',
   INVALID_FOLDER: 'Invalid Folder',

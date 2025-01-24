@@ -1,4 +1,6 @@
+// eslint-disable-next-line import/no-unresolved
 import { sleep } from 'k6';
+// eslint-disable-next-line import/no-unresolved
 import http from 'k6/http';
 
 export const options = {
