@@ -65,6 +65,7 @@
         "no-inline-comments":"off",
         "line-comment-position":"off",
         "no-new":"off",
+        "func-name-matching":"off",
         "sort-imports": ["error", {
             "ignoreCase": true,
             "ignoreDeclarationSort": true,
