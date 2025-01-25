@@ -1,6 +1,7 @@
 const errorContstants = {
   ACCESS_TOKEN_NOT_FOUND: 'Access Token Not Found',
   ACCOUNT_BLOCKED: 'Account Blocked!',
+  ACCOUNT_DORMANT: 'Account Dormant, please check with admin.',
   ACCOUNT_INACTIVE: 'Account Inactive!',
   ACCOUNT_LOCKED: 'Account Locked!, please try again later.',
   CUSTOMER_DATABASE_ALREADY_EXIST: 'Customer Database Already Exists',
