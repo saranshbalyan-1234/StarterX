@@ -69,8 +69,7 @@ const checkIfCustomerPasswordCorrect = async (customer, email, password, isPassR
       await db.models.customer.updateOne({ email }, { incorrectPasswordCount: 0 }, { timestamps: false });
       await db.models.userlocked.create([{ customer: customer._id }]);
       throw new Error(errorContstants.ACCOUNT_LOCKED);
-    }
-    if (remainingLoginAttempts === 0) {
+    } else {
       const userlocked = await db.models.userlocked.findOne({ customer: customer._id });
       if (userlocked) throw new Error(errorContstants.ACCOUNT_LOCKED);
     }
