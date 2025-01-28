@@ -15,8 +15,8 @@ const loginWithCredentals = async ({ email, password, rememberMe, isPassRequired
     checkIfCustomerTenantAuthroized(customer, currentTenant);
 
     db = await getTenantDB(currentTenant);
-    await checkIfCustomerPasswordCorrect(customer, email, password, isPassRequired, db);
     const user = await db.models.user.findOne({ email }).populate('roles');
+    await checkIfCustomerPasswordCorrect(user, customer, email, password, isPassRequired, db);
     checkIfUserActive(user);
 
     const { accessToken, refreshToken } = generateTokens(customer, user, currentTenant, email, rememberMe);
@@ -61,21 +61,21 @@ const checkIfCustomerUnverified = async (customer, email, db) => {
   }
 };
 
-const checkIfCustomerPasswordCorrect = async (customer, email, password, isPassRequired, db) => {
+const checkIfCustomerPasswordCorrect = async (user, customer, email, password, isPassRequired, db) => {
   try {
-    const remainingLoginAttempts = process.env.INCORRECT_PASS_LIMIT ? parseInt(process.env.INCORRECT_PASS_LIMIT) - customer.incorrectPasswordCount - 1 : 1;
+    const remainingLoginAttempts = process.env.INCORRECT_PASS_LIMIT ? parseInt(process.env.INCORRECT_PASS_LIMIT) - user.incorrectPasswordCount - 1 : 1;
     const isAuthenticated = !isPassRequired || customer.password === password;
     if (remainingLoginAttempts <= 0) {
       await db.models.user.updateOne({ email }, { incorrectPasswordCount: 0 }, { timestamps: false });
-      await db.models.userlocked.create([{ customer: customer._id }]);
+      await db.models.userlocked.create([{ customer: user._id }]);
       throw new Error(errorContstants.ACCOUNT_LOCKED);
     } else {
-      const userlocked = await db.models.userlocked.findOne({ customer: customer._id });
+      const userlocked = await db.models.userlocked.findOne({ customer: user._id });
       if (userlocked) throw new Error(errorContstants.ACCOUNT_LOCKED);
     }
 
     if (isAuthenticated) {
-      await db.models.userlocked.deleteMany({ customer: customer._id });
+      await db.models.userlocked.deleteMany({ customer: user._id });
       await db.models.user.updateOne({ email }, { incorrectPasswordCount: 0, lastLogin: new Date() }, { timestamps: false });
     } else {
       await db.models.user.findOneAndUpdate({ email }, { $inc: { incorrectPasswordCount: 1 } }, { timestamps: false });
