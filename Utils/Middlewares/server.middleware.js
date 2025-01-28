@@ -58,14 +58,12 @@ const setupRateLimiter = (app) => {
 };
 
 const setupCors = (app) => {
-  if (!process.env.CORS) return;
-  const whitelist = process.env.CORS.split(',');
-  // Var whitelist = ['http://localhost:8000', 'http://localhost:8080']; //white list consumers
+  const corsArr = process.env.CORS?.length ? process.env.CORS?.split(',') : [];
   const corsOptions = {
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'device-remember-token', 'Access-Control-Allow-Origin', 'Origin', 'Accept', 'x-project-id"'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Access-Control-Allow-Origin', 'Origin', 'Accept', 'x-project-id"'],
     methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
     origin: function origin (og, callback) {
-      if (whitelist.indexOf(og) !== -1 || !process.env.CORS) {
+      if (corsArr.indexOf(og) !== -1 || corsArr.length === 0) {
         callback(null, true);
       } else {
         callback(new Error('Not allowed by CORS'));
