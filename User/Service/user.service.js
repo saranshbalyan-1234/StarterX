@@ -13,9 +13,9 @@ const loginWithCredentals = async ({ email, password, rememberMe, isPassRequired
     checkIfCustomerDormant(customer);
     const currentTenant = tenant || customer.tenant[0];
     checkIfCustomerTenantAuthroized(customer, currentTenant);
-    await checkIfCustomerPasswordCorrect(customer, email, password, isPassRequired, db);
 
     db = await getTenantDB(currentTenant);
+    await checkIfCustomerPasswordCorrect(customer, email, password, isPassRequired, db);
     const user = await db.models.user.findOne({ email }).populate('roles');
     checkIfUserActive(user);
 
@@ -66,7 +66,7 @@ const checkIfCustomerPasswordCorrect = async (customer, email, password, isPassR
     const remainingLoginAttempts = process.env.INCORRECT_PASS_LIMIT ? parseInt(process.env.INCORRECT_PASS_LIMIT) - customer.incorrectPasswordCount - 1 : 1;
     const isAuthenticated = !isPassRequired || customer.password === password;
     if (remainingLoginAttempts <= 0) {
-      await db.models.customer.updateOne({ email }, { incorrectPasswordCount: 0 }, { timestamps: false });
+      await db.models.user.updateOne({ email }, { incorrectPasswordCount: 0 }, { timestamps: false });
       await db.models.userlocked.create([{ customer: customer._id }]);
       throw new Error(errorContstants.ACCOUNT_LOCKED);
     } else {
@@ -76,9 +76,9 @@ const checkIfCustomerPasswordCorrect = async (customer, email, password, isPassR
 
     if (isAuthenticated) {
       await db.models.userlocked.deleteMany({ customer: customer._id });
-      await db.models.customer.updateOne({ email }, { incorrectPasswordCount: 0, lastLogin: new Date() }, { timestamps: false });
+      await db.models.user.updateOne({ email }, { incorrectPasswordCount: 0, lastLogin: new Date() }, { timestamps: false });
     } else {
-      await db.models.customer.findOneAndUpdate({ email }, { $inc: { incorrectPasswordCount: 1 } }, { timestamps: false });
+      await db.models.user.findOneAndUpdate({ email }, { $inc: { incorrectPasswordCount: 1 } }, { timestamps: false });
       throw new Error(errorContstants.INCORRECT_PASSWORD(remainingLoginAttempts));
     }
   } catch (e) {
