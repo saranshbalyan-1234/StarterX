@@ -1,10 +1,10 @@
-import cors from 'cors';
 import promMid from 'express-prometheus-middleware';
 import { rateLimit } from 'express-rate-limit';
 import { ValidationError } from 'express-validation';
 
 import errorContstants from '#constants/error.constant.js';
 import { encryptWithAES } from '#encryption/Service/aes.service.js';
+import getError from '#utils/error.js';
 import { abortSession, commitSession } from '#utils/Mongo/mongo.service.js';
 
 const setupTimeout = (app) => {
@@ -58,20 +58,44 @@ const setupRateLimiter = (app) => {
 };
 
 const setupCors = (app) => {
-  const corsArr = process.env.CORS?.length ? process.env.CORS?.split(',') : [];
-  const corsOptions = {
-    allowedHeaders: ['Content-Type', 'Authorization', 'Access-Control-Allow-Origin', 'Origin', 'Accept', 'x-project-id"'],
-    methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
-    origin: function origin (og, callback) {
-      if (corsArr.indexOf(og) !== -1 || corsArr.length === 0) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    }
-  };
+  app.use((req, res, next) => {
+    try {
+      console.time();
+      const { method } = req;
+      const origin = req.headers.origin;
+      const envHeader = process.env.HEADERS;
+      const resHeader = {
+        'Access-Control-Allow-Headers': '*',
+        'Access-Control-Allow-Methods': '*',
+        'Access-Control-Allow-Origin': '*'
+      };
+      envHeader.split('|').forEach(el => {
+        const temp = el.split(':');
+        if (temp[0])resHeader[temp[0]] = temp[1];
+      });
+      const allowedOrigins = new Set([...resHeader['Access-Control-Allow-Origin'].split(',')]);
+      const allowedMethods = new Set([...resHeader['Access-Control-Allow-Methods'].split(',')]);
 
-  app.use(cors(corsOptions));
+      // Validate origin
+      if (resHeader['Access-Control-Allow-Origin'] !== '*') {
+        if (allowedOrigins.has(origin)) resHeader['Access-Control-Allow-Origin'] = origin;
+        else throw new Error('Blocked By Cors', 403, 'CORS');
+      }
+
+      // Validate method
+      if (resHeader['Access-Control-Allow-Methods'] !== '*') {
+        if (allowedMethods.has(method)) resHeader['Access-Control-Allow-Methods'] = method;
+        else throw new Error('Method Not Allowed', 405, 'CORS');
+      }
+      res.set(resHeader);
+
+      // Handle preflight requests
+      if (method === 'OPTIONS') return res.sendStatus(204);
+      next();
+    } catch (e) {
+      getError(e, res);
+    }
+  });
 };
 
 const setupResponseInterceptor = (app) => {

@@ -50,8 +50,8 @@ await registerRoutes(app);
 expressListRoutes(app);
 setupValidationErrorInterceptor(app);
 
-app.listen(process.env.PORT, () => {
-  console.success(`Server started on PORT ${process.env.PORT} PROCESS_ID ${process.pid}`);
+app.listen(process.env.PORT || 3000, () => {
+  console.success(`Server started on PORT ${process.env.PORT || 3000} PROCESS_ID ${process.pid}`);
   // ScheduleInit();
 });
 
