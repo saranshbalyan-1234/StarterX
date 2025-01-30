@@ -9,7 +9,14 @@ import expressStatusMonitor from 'express-status-monitor';
 import helmet from 'helmet';
 
 import defaultMiddleware from '#middlewares/default.middleware.js';
-import { setupCors, setupHtmlErrorInterceptor, setupRateLimiter, setupResponseInterceptor, setupTimeout, setupValidationErrorInterceptor } from '#middlewares/server.middleware.js';
+import {
+  setupCors,
+  // setupHtmlErrorInterceptor,
+  setupRateLimiter,
+  setupResponseInterceptor,
+  setupTimeout,
+  setupValidationErrorInterceptor
+} from '#middlewares/server.middleware.js';
 import seedSuperAdmin from '#user/Seed/superadmin.seed.js';
 import morgalApiLogger from '#utils/Logger/api.logger.js';
 import overrideConsole from '#utils/Logger/console.logger.js';
@@ -42,7 +49,7 @@ setupCors(app);
 setupTimeout(app);
 setupRateLimiter(app);
 morgalApiLogger(app);
-setupHtmlErrorInterceptor(app);
+// setupHtmlErrorInterceptor(app);
 setupResponseInterceptor(app);
 
 await registerRoutes(app);
