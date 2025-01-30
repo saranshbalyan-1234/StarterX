@@ -74,7 +74,6 @@ const setupCors = (app) => {
         if (temp[0])resHeader[temp[0]] = temp[1];
       });
       const allowedOrigins = new Set([...resHeader['Access-Control-Allow-Origin'].split(',')]);
-      const allowedMethods = new Set([...resHeader['Access-Control-Allow-Methods'].split(',')]);
 
       // Validate origin
       if (resHeader['Access-Control-Allow-Origin'] !== '*') {
@@ -82,11 +81,6 @@ const setupCors = (app) => {
         else throw new Error('Blocked By Cors', 403, 'CORS');
       }
 
-      // Validate method
-      if (resHeader['Access-Control-Allow-Methods'] !== '*') {
-        if (allowedMethods.has(method)) resHeader['Access-Control-Allow-Methods'] = method;
-        else throw new Error('Method Not Allowed', 405, 'CORS');
-      }
       res.set(resHeader);
 
       // Handle preflight requests
