@@ -58,28 +58,28 @@ const setupRateLimiter = (app) => {
 };
 
 const setupCors = (app) => {
+  const envHeader = process.env.HEADERS;
+  if (!envHeader) return;
+  console.log('Custom Headers Enabled', envHeader);
   app.use((req, res, next) => {
     try {
       const { method } = req;
       // const origin = req.headers.origin;
-      const envHeader = process.env.HEADERS;
-      const resHeader = {
-        'Access-Control-Allow-Headers': '*',
-        'Access-Control-Allow-Methods': '*',
-        'Access-Control-Allow-Origin': '*'
-      };
+      const resHeader = {};
       envHeader.split('|').forEach(el => {
         const temp = el.split(':');
         if (temp[0])resHeader[temp[0]] = temp[1];
       });
-      // const allowedOrigins = new Set([...resHeader['Access-Control-Allow-Origin'].split(',')]);
 
-      // // Validate origin
-      // if (resHeader['Access-Control-Allow-Origin'] !== '*') {
-      //   if (allowedOrigins.has(origin)) resHeader['Access-Control-Allow-Origin'] = origin;
-      //   else throw new Error('Blocked By Cors', 403, 'CORS');
-      // }
-
+    /* 
+      const allowedOrigins = new Set([...resHeader['Access-Control-Allow-Origin'].split(',')]);
+      // Validate origin
+      if (resHeader['Access-Control-Allow-Origin'] !== '*') {
+        if (allowedOrigins.has(origin)) resHeader['Access-Control-Allow-Origin'] = origin;
+        else throw new Error('Blocked By Cors', 403, 'CORS');
+      }  
+    */
+  
       res.set(resHeader);
 
       // Handle preflight requests
@@ -119,17 +119,19 @@ const setupResponseInterceptor = (app) => {
   });
 };
 
-// const setupHtmlErrorInterceptor = (app) => {
-//   app.use((err, req, res, next) => {
-//     abortSession(req);
-//     const errorObj = getErrorObj(req, res);
-//     return res.status(403).json({
-//       error: err.message, type: err.message.includes('CORS') ? 'CORS' : err.name, ...errorObj, status: 403
-//     });
-//     // eslint-disable-next-line no-unreachable
-//     next(err);
-//   });
-// };
+/*
+ * const setupHtmlErrorInterceptor = (app) => {
+ *   app.use((err, req, res, next) => {
+ *     abortSession(req);
+ *     const errorObj = getErrorObj(req, res);
+ *     return res.status(403).json({
+ *       error: err.message, type: err.message.includes('CORS') ? 'CORS' : err.name, ...errorObj, status: 403
+ *     });
+ *     // eslint-disable-next-line no-unreachable
+ *     next(err);
+ *   });
+ * };
+ */
 
 const setupValidationErrorInterceptor = (app) => {
   app.use((err, req, res, next) => {
