@@ -44,7 +44,7 @@
     "patch-package": "^8.0.0"
   },
   "devDependencies": {
-    "eslint": "^8.57.0",
+    "eslint": "^9.19.0",
     "eslint-config-standard": "^17.1.0",
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-plugin-autofix": "^2.1.0",
