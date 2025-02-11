@@ -71,15 +71,15 @@ const setupCors = (app) => {
         if (temp[0])resHeader[temp[0]] = temp[1];
       });
 
-    /* 
-      const allowedOrigins = new Set([...resHeader['Access-Control-Allow-Origin'].split(',')]);
-      // Validate origin
-      if (resHeader['Access-Control-Allow-Origin'] !== '*') {
-        if (allowedOrigins.has(origin)) resHeader['Access-Control-Allow-Origin'] = origin;
-        else throw new Error('Blocked By Cors', 403, 'CORS');
-      }  
-    */
-  
+      /*
+       *const allowedOrigins = new Set([...resHeader['Access-Control-Allow-Origin'].split(',')]);
+       * // Validate origin
+       *if (resHeader['Access-Control-Allow-Origin'] !== '*') {
+       *  if (allowedOrigins.has(origin)) resHeader['Access-Control-Allow-Origin'] = origin;
+       *  else throw new Error('Blocked By Cors', 403, 'CORS');
+       *}
+       */
+
       res.set(resHeader);
 
       // Handle preflight requests

@@ -25,7 +25,7 @@ const seedSuperAdmin = async () => {
     },
     { upsert: true });
 
-  return console.success('super admin seeded');
+  console.success('super admin seeded');
 };
 
 export default seedSuperAdmin;

@@ -40,7 +40,7 @@ const registerAllSchema = async (db, isMasterConn = false) => {
 
 const registerAllPlugins = async () => {
   try {
-    const files =await getDirectories('.', 'plugin');
+    const files = await getDirectories('.', 'plugin');
 
     for (const file of files) {
       const schema = await import(`../../${file}`);

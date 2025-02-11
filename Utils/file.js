@@ -1,6 +1,6 @@
-import glob from "fast-glob";
+import glob from 'fast-glob';
 
-export const getDirectories = async (src = ".", filetype) => {
+export const getDirectories = async (src = '.', filetype) => {
   try {
     const files = await glob(`${src}/**/*.${filetype}.js`);
     return files || [];
