@@ -22,7 +22,7 @@ const getRoutes = async (app, type) => {
 };
 
 const registerRoutes = async (app) => {
-  setupPrometheus(app);
+  // setupPrometheus(app);
   await getRoutes(app, 'routes');
   app.use((_req, res) => res.status(404).json({ error: errorContstants.ENDPOINT_NOT_FOUND }));
   return console.success('Routes Registered');

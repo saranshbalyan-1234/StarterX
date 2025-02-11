@@ -5,11 +5,11 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node --env-file=env/.env --env-file=env/.env.database --env-file=env/.env.logger --env-file=env/.env.server --env-file=env/.env.token --env-file=env/.env.mailer --no-warnings --trace-warnings --experimental-permission --allow-child-process --allow-fs-read=/ --allow-fs-write=/ --watch index.js",
+    "start": "bun --env-file=env/.env --env-file=env/.env.database --env-file=env/.env.logger --env-file=env/.env.server --env-file=env/.env.token --env-file=env/.env.mailer --no-warnings --trace-warnings --experimental-permission --allow-child-process --allow-fs-read=/ --allow-fs-write=/ --watch index.js",
     "lint": "eslint . --quiet --cache --cache-location=node_modules/.cache/eslint",
     "lint-fix": "eslint . --fix",
-    "clean": "rimraf node_modules && npm ci",
-    "test": "node Test/Api/index.js",
+    "clean": "rimraf node_modules && bun ci",
+    "test": "bun Test/Api/index.js",
     "postinstall": "patch-package"
   },
   "author": "",
@@ -28,6 +28,7 @@
     "express-rate-limit": "^7.4.0",
     "express-status-monitor": "^1.3.4",
     "express-validation": "^4.1.1",
+    "fast-glob": "^3.3.3",
     "helmet": "^8.0.0",
     "i": "^0.3.7",
     "jsonwebtoken": "^9.0.2",
