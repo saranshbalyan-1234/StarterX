@@ -2,7 +2,7 @@ FROM oven/bun:1 AS build-env
 COPY . /app
 WORKDIR /app
 ENV NODE_ENV=production
-RUN bun install --production
+RUN bun install --production --frozen-lockfile
 
 FROM oven/bun:1
 COPY --from=build-env /app /app
