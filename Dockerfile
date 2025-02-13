@@ -1,8 +1,8 @@
-FROM oven/bun:1 AS build-env
+FROM node:20 AS build-env
 COPY . /app
 WORKDIR /app
 ENV NODE_ENV=production
-RUN bun install --production --frozen-lockfile
+RUN npm ci
 
 FROM oven/bun:1
 COPY --from=build-env /app /app
