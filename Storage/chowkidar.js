@@ -1,5 +1,9 @@
+import fs from 'fs';
+import chokidar from 'chokidar';
 
-const chokidar = require('chokidar');
+if (!fs.existsSync(UPLOAD_FOLDER)) {
+    fs.mkdirSync(UPLOAD_FOLDER);
+}
 
 // Cloud Upload Function
 const uploadToCloud = (filePath) => {
@@ -14,10 +18,13 @@ chokidar.watch('./uploads',
         ignored: ['*.log'],
 
     }
-).on('add', (filePath) => {
-    console.log(`📂 New file detected: ${filePath}`);
-    uploadToCloud(filePath);
-});
+)
+    .on('add', (filePath) => {
+            console.log(`📂 New file detected: ${filePath}`);
+            uploadToCloud(filePath);
+    })
+    .on('error', (error) => console.error(`❌ Watcher Error: ${error.message}`))
+    .on('ready', () => console.log('🚀 Continuous sync started...'));;
 
 // ✅ add → When a new file is added.
 // ✅ change → When an existing file is modified.
