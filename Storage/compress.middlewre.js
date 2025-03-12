@@ -3,7 +3,7 @@ const sharp = require('sharp');
 
 // Image Optimization Middleware
 const optimizeImage = async (req, res, next) => {
-    if (!req.file) {
+    if (!(req.file || req.files?.length > 0)) {
         return res.status(400).send('No file uploaded.');
     }
 
