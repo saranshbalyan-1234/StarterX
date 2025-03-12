@@ -4,7 +4,7 @@ WORKDIR /app
 ENV NODE_ENV=production
 RUN npm ci
 
-FROM oven/bun:1
+FROM node:20
 COPY --from=build-env /app /app
 WORKDIR /app
 
@@ -17,4 +17,4 @@ WORKDIR /app
 ENV PORT=8080
 ENV NODE_ENV=production
 EXPOSE 8080
-CMD ["bun","index.js"]
+CMD ["npm","start"]

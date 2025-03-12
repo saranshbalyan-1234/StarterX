@@ -5,11 +5,11 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "bun --env-file=env/.env --env-file=env/.env.database --env-file=env/.env.logger --env-file=env/.env.server --env-file=env/.env.token --env-file=env/.env.mailer --no-warnings --trace-warnings --experimental-permission --allow-child-process --allow-fs-read=/ --allow-fs-write=/ --watch index.js",
+    "start": "node --env-file=env/.env --env-file=env/.env.database --env-file=env/.env.logger --env-file=env/.env.server --env-file=env/.env.token --env-file=env/.env.mailer --no-warnings --trace-warnings --experimental-permission --allow-child-process --allow-fs-read=/ --allow-fs-write=/ --watch index.js",
     "lint": "eslint . --quiet --cache --cache-location=node_modules/.cache/eslint",
     "lint-fix": "eslint . --fix",
-    "clean": "rimraf node_modules && bun ci",
-    "test": "bun Test/Api/index.js",
+    "clean": "rimraf node_modules && node ci",
+    "test": "node Test/Api/index.js",
     "postinstall": "patch-package"
   },
   "author": "",
