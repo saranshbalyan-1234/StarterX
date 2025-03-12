@@ -10,6 +10,10 @@ const uploadToCloud = (filePath) => {
     // read file and sync here
 };
 
+const initialSyncFromCloud = async () => { 
+    //read files from cloud and sync here
+}
+
 // Watch for new files in `/uploads` folder
 chokidar.watch('./uploads',
     {
