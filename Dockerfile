@@ -15,6 +15,8 @@ RUN npm ci --only=production --no-audit --no-fund
 # Copy remaining application files
 COPY . .
 
+RUN npm patch-package
+
 # ==================================
 # Stage 2: Final Production Image
 # ==================================
