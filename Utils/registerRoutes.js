@@ -1,7 +1,7 @@
 import errorContstants from '#constants/error.constant.js';
 import { validateToken } from '#middlewares/jwt.middleware.js';
+import { setupPrometheus } from '#middlewares/server.middleware.js';
 import { getDirectories } from '#utils/file.js';
-import { setupPrometheus } from '#middlewares/server.middleware';
 const getRoutes = async (app, type) => {
   const files = getDirectories('.', type);
 
