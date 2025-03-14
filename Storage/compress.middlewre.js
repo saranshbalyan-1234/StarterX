@@ -1,10 +1,11 @@
 import sharp from 'sharp';
-import errorContstants from '../constants/error.constants.js';
+
+import errorConstants from '#constants/error.constant.js';
 
 // Image Optimization Middleware
 export const optimizeImage = async (req, res, next) => {
   if (!(req.file || req.files?.length > 0)) {
-    return res.status(400).send(errorContstants.NO_FILES_UPLOADED);
+    return res.status(400).send(errorConstants.NO_FILES_UPLOADED);
   }
 
   try {
@@ -42,21 +43,21 @@ export const optimizeImage = async (req, res, next) => {
   }
 };
 
-export const collectFilesBeforeMulter = (req, res, next) => {
+export const collectFilesBeforeMulter = (req, _res, next) => {
   const files = []; // Initialize `req.files`
 
   // Collect files from different field keys into `req.files`
   if (req.body) {
-      for (const field in req.body) {
-          if (Array.isArray(req.body[field])) {
-              files.push(...req.body[field]); // For multiple files in one key
-          } else {
-              files.push(req.body[field]); // For single file
-          }
+    for (const field in req.body) {
+      if (Array.isArray(req.body[field])) {
+        files.push(...req.body[field]); // For multiple files in one key
+      } else {
+        files.push(req.body[field]); // For single file
       }
+    }
   }
 
-  req.files = files
+  req.files = files;
 
   next();
 };

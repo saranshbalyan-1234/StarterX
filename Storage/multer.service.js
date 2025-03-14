@@ -12,7 +12,7 @@ const storage = multer.diskStorage({
 });
 
 // File Filter (For limiting file types)
-const fileFilter = (req, file, cb) => {
+const fileFilter = (_req, file, cb) => {
   const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
   if (allowedTypes.includes(file.mimetype)) {
     cb(null, true);
@@ -21,11 +21,12 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-
 const upload = multer({
-  storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // Limit file size to 5MB
-  fileFilter
+  // Limit file size to 5MB
+  fileFilter,
+
+  limits: { fileSize: 5 * 1024 * 1024 },
+  storage
 });
 
 export default upload;

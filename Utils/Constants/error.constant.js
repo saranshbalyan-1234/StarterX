@@ -15,6 +15,7 @@ const errorContstants = {
   INVALID_FOLDER: 'Invalid Folder',
   INVALID_PERMISSION: 'Invalid Permission!',
   NOT_AN_ACTIVE_SESSION: 'Not An Active Session!',
+  NO_FILES_UPLOADED: 'No Files Uploaded!',
   PASSWORD_RESET_REQUIRED: 'Password Reset Required',
   RECORD_NOT_FOUND: 'Record Not Found!',
   SESSION_OFF: 'Session Is OFF!',
@@ -25,7 +26,6 @@ const errorContstants = {
   UNABLE_TO_DELETE_MASTER_DATABASE: 'Unable To Delete Master Database!',
   UNAUTHORIZED: 'Unauthorized!',
   UNAUTHORIZED_ORIGIN: 'Unauthorized Origin',
-  UNAUTHORIZED_TENANT: 'Unauthorized Tenant!',
-  NO_FILES_UPLOADED: 'No Files Uploaded!',
+  UNAUTHORIZED_TENANT: 'Unauthorized Tenant!'
 };
 export default errorContstants;
