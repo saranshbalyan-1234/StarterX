@@ -25,7 +25,7 @@ RUN npm ci --only=production --no-audit --no-fund \
 COPY . .
 
 # Apply patch-package changes
-RUN npm run patch-package
+RUN npx patch-package
 
 # ==================================
 # Stage 2: Final Production Image
