@@ -10,11 +10,11 @@
         "eslint:all",
         "plugin:promise/recommended",
         "plugin:eqeqeq-fix/recommended",
-        "plugin:react/all",
-        "plugin:react-hooks/recommended",
+        // "plugin:react/all",
+        // "plugin:react-hooks/recommended",
         // "plugin:sonarjs/recommended",
         "plugin:sonar/recommended",
-        "plugin:react-redux/recommended",
+        // "plugin:react-redux/recommended",
         "plugin:import/recommended"
     ],
     "parserOptions": {
@@ -74,9 +74,9 @@
         }]
     },
     "settings": {
-        "react": {
-         "version": "detect"
-        },
+        // "react": {
+        //  "version": "detect"
+        // },
         "import/resolver": {
             "alias": {
                 "map": [
@@ -97,10 +97,9 @@
         }
       },
     "plugins":[
-        "react",
+        // "react",
         "promise",
-        "react",
-        "react-hooks",
+        // "react-hooks",
         "eqeqeq-fix",
         "sort-keys-fix",
         "unused-imports",
@@ -108,7 +107,7 @@
         "autofix",
         "sonarjs",
         "sonar",
-        "react-redux",
+        // "react-redux",
         "import"
     ]
 }

@@ -28,7 +28,6 @@
     "express-rate-limit": "^7.4.0",
     "express-status-monitor": "^1.3.4",
     "express-validation": "^4.1.1",
-    "fast-glob": "^3.3.3",
     "helmet": "^8.0.0",
     "i": "^0.3.7",
     "jsonwebtoken": "^9.0.2",
