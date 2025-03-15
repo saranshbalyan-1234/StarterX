@@ -4,7 +4,7 @@
   "description": "now with mongo",
   "main": "index.js",
   "scripts": {
-    "start": "node --env-file=env/.env --env-file=env/.env.database --env-file=env/.env.logger --env-file=env/.env.server --env-file=env/.env.token --env-file=env/.env.mailer --no-warnings --trace-warnings --experimental-permission --allow-child-process --allow-fs-read=/ --allow-fs-write=/ --watch index.js",
+    "start": "node --env-file=env/.env --env-file=env/.env.database --env-file=env/.env.logger --env-file=env/.env.server --env-file=env/.env.token --env-file=env/.env.mailer --no-warnings --trace-warnings --watch index.js",
     "lint": "eslint . --quiet --cache --cache-location=node_modules/.cache/eslint",
     "lint-fix": "eslint . --fix",
     "clean": "rimraf node_modules && node ci",
@@ -46,7 +46,8 @@
     "passport-openidconnect": "^0.1.2",
     "passport-saml": "^3.2.4",
     "patch-package": "^8.0.0",
-    "prom-client": "^13.0.0"
+    "prom-client": "^13.0.0",
+    "sharp": "^0.33.5"
   },
   "devDependencies": {
     "eslint": "^8.57.0",
