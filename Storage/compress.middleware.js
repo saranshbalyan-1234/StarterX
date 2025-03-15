@@ -13,7 +13,7 @@ export const optimizeImage = async (req, res, next) => {
         const inputPath = file.path;    // Original uploaded file
         const outputDir = `./public/`; // Output folder
 
-        await imagemin([inputPath], {
+        await imagemin(['images/*.{jpg,jpeg,png}'], {
             destination: outputDir,
             plugins: [
                 imageminMozjpeg({ quality: 75 }),
