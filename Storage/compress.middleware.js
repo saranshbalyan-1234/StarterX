@@ -1,6 +1,5 @@
-import sharp from 'sharp';
 import fs from 'fs';
-import path from 'path';
+import sharp from 'sharp';
 
 import errorConstants from '#constants/error.constant.js';
 
@@ -29,11 +28,13 @@ export const optimizeImage = async (req, res, next) => {
       fs.unlinkSync(inputPath);
       fs.renameSync(outputPath, inputPath);
 
-      // Update file details for further processing
-      // file.path = inputPath;
-      // file.mimetype = 'image/webp';
-      // file.size = fs.statSync(inputPath).size;
-      // file.originalname = file.originalname.replace(/\.\w+$/, '.webp');
+      /*
+       * Update file details for further processing
+       * file.path = inputPath;
+       * file.mimetype = 'image/webp';
+       * file.size = fs.statSync(inputPath).size;
+       * file.originalname = file.originalname.replace(/\.\w+$/, '.webp');
+       */
     };
 
     // Handle multiple files
@@ -52,20 +53,3 @@ export const optimizeImage = async (req, res, next) => {
     res.status(500).send('Error optimizing the image(s).');
   }
 };
-
-// // Collect files before Multer Middleware
-// export const collectFilesBeforeMulter = (req, _res, next) => {
-//   // Initialize `req.files`
-//   if (req.body) {
-//     const files = [];
-//     for (const field in req.body) {
-//       if (Array.isArray(req.body[field])) {
-//         files.push(...req.body[field]); // For multiple files in one key
-//       } else {
-//         files.push(req.body[field]); // For single file
-//       }
-//     }
-//     req.files = files;
-//   }
-//   next();
-// };
