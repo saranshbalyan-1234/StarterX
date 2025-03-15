@@ -4,7 +4,7 @@
   "description": "now with mongo",
   "main": "index.js",
   "scripts": {
-    "start": "node --env-file=env/.env --env-file=env/.env.database --env-file=env/.env.logger --env-file=env/.env.server --env-file=env/.env.token --env-file=env/.env.mailer --no-warnings --trace-warnings --watch index.js",
+    "start": "node --env-file=env/.env --env-file=env/.env.database --env-file=env/.env.logger --env-file=env/.env.server --env-file=env/.env.token --env-file=env/.env.mailer --no-warnings --trace-warnings --experimental-permission --allow-child-process --allow-fs-read=/ --allow-fs-write=/ --allow-addons --watch index.js",
     "lint": "eslint . --quiet --cache --cache-location=node_modules/.cache/eslint",
     "lint-fix": "eslint . --fix",
     "clean": "rimraf node_modules && node ci",
@@ -29,6 +29,10 @@
     "express-validation": "^4.1.1",
     "helmet": "^8.0.0",
     "i": "^0.3.7",
+    "imagemin": "^9.0.1",
+    "imagemin-mozjpeg": "^10.0.0",
+    "imagemin-pngquant": "^10.0.0",
+    "imagemin-webp": "^8.0.0",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "mongoose": "^8.10.0",
@@ -42,8 +46,7 @@
     "passport-openidconnect": "^0.1.2",
     "passport-saml": "^3.2.4",
     "patch-package": "^8.0.0",
-    "prom-client": "^13.0.0",
-    "sharp": "^0.33.5"
+    "prom-client": "^13.0.0"
   },
   "devDependencies": {
     "eslint": "^8.57.0",
