@@ -17,7 +17,9 @@ export const optimizeImage = async (req, res, next) => {
 
       // Compress image and write to outputPath
       await sharp(inputPath)
-        .resize(800, 600, {
+        .resize({
+          height:800,
+          width:600,
           fit: sharp.fit.inside,
           withoutEnlargement: true
         })
