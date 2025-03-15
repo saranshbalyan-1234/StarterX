@@ -1,4 +1,4 @@
-import sharp from 'sharp';
+// import sharp from 'sharp';
 
 import errorConstants from '#constants/error.constant.js';
 
@@ -10,19 +10,23 @@ export const optimizeImage = async (req, res, next) => {
 
   try {
     // Function to optimize individual image
-    const optimizeSingleImage = async (file) => {
-      const compressedBuffer = await sharp(file.buffer)
-        .resize(800, 600, {
-          fit: sharp.fit.inside,
-          withoutEnlargement: true
-        })
-        .webp({ effort: 6, quality: 75 }) // Optimal compression settings
-        .toBuffer();
+    const optimizeSingleImage = (file) => {
+      /*
+       * const compressedBuffer = await sharp(file.buffer)
+       *   .resize(800, 600, {
+       *     fit: sharp.fit.inside,
+       *     withoutEnlargement: true
+       *   })
+       *   .webp({ effort: 6, quality: 75 }) // Optimal compression settings
+       *   .toBuffer();
+       */
 
-      // Update file details
-      file.buffer = compressedBuffer;
+      /*
+       * Update file details
+       * file.buffer = compressedBuffer;
+       */
       file.mimetype = 'image/webp';
-      file.size = compressedBuffer.length;
+      // file.size = compressedBuffer.length;
       file.originalname = file.originalname.replace(/\.\w+$/, '.webp'); // Change file extension to .webp
     };
 
@@ -44,10 +48,11 @@ export const optimizeImage = async (req, res, next) => {
 };
 
 export const collectFilesBeforeMulter = (req, _res, next) => {
-  const files = []; // Initialize `req.files`
+  // Initialize `req.files`
 
   // Collect files from different field keys into `req.files`
   if (req.body) {
+    const files = [];
     for (const field in req.body) {
       if (Array.isArray(req.body[field])) {
         files.push(...req.body[field]); // For multiple files in one key
@@ -55,9 +60,7 @@ export const collectFilesBeforeMulter = (req, _res, next) => {
         files.push(req.body[field]); // For single file
       }
     }
+    req.files = files;
   }
-
-  req.files = files;
-
   next();
 };
