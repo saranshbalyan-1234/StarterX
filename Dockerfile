@@ -6,20 +6,11 @@ FROM node:20-alpine AS build-env
 # Set working directory
 WORKDIR /app
 
-# Install dependencies required for `sharp` on Alpine (musl-based)
-RUN apk add --no-cache \
-    vips \
-    vips-dev \
-    fftw-dev \
-    build-base \
-    python3
-
 # Copy dependency files first (caching optimization)
 COPY package.json package-lock.json ./
 
 # Install only production dependencies for minimal build size
-RUN npm ci --only=production --no-audit --no-fund \
-    && npm rebuild sharp  # Ensures correct native bindings for Alpine
+RUN npm ci --only=production --no-audit --no-fund
 
 # Copy remaining application files
 COPY . .
