@@ -17,7 +17,6 @@ const createStrategy = (config) => {
       async (req, _accessToken, _refreshToken, profile, done) => {
         try {
           const email = profile.emails[0]?.value;
-          // eslint-disable-next-line sonarjs/no-duplicate-string
           const loggedInUser = await loginWithCredentals({ email, isPassRequired: false, rememberMe: true, tenant: req.headers['x-tenant-id'] });
           return done(null, loggedInUser);
         } catch (err) {
@@ -39,7 +38,6 @@ const createStrategy = (config) => {
     async (req, _, profile, cb) => {
       try {
         const email = profile.emails[0]?.value;
-        // eslint-disable-next-line sonarjs/no-duplicate-string
         const loggedInUser = await loginWithCredentals({ email, isPassRequired: false, rememberMe: true, tenant: req.headers['x-tenant-id'] });
         return cb(null, loggedInUser);
       } catch (err) {

@@ -13,7 +13,7 @@
         // "plugin:react/all",
         // "plugin:react-hooks/recommended",
         // "plugin:sonarjs/recommended",
-        "plugin:sonar/recommended",
+        // "plugin:sonar/recommended",
         // "plugin:react-redux/recommended",
         "plugin:import/recommended"
     ],
@@ -50,7 +50,7 @@
         "no-await-in-loop":"off",
         "unused-imports/no-unused-imports": "error",
         "autofix/no-unused-vars": "error",
-        "sonar/deprecation": 2,
+        // "sonar/deprecation": 2,
         "sonarjs/cognitive-complexity":"off",
         "no-underscore-dangle":"off",
         "no-invalid-this":"off",
@@ -98,15 +98,15 @@
       },
     "plugins":[
         // "react",
-        "promise",
+        // "promise",
         // "react-hooks",
         "eqeqeq-fix",
         "sort-keys-fix",
         "unused-imports",
         "simple-import-sort",
         "autofix",
-        "sonarjs",
-        "sonar",
+        // "sonarjs",
+        // "sonar",
         // "react-redux",
         "import"
     ]
