@@ -1,6 +1,6 @@
 import fs from 'fs';
 import sharp from 'sharp';
-
+import path from 'path'
 import errorConstants from '#constants/error.constant.js';
 
 // Image Optimization Middleware
@@ -13,7 +13,10 @@ export const optimizeImage = async (req, res, next) => {
     // Function to optimize individual image and replace the original file
     const optimizeSingleImage = async (file) => {
       const inputPath = file.path; // Original file path
-      const outputPath = inputPath.replace(/\.\w+$/, '.webp'); // New file with .webp extension
+      const { dir, name } = path.parse(inputPath);
+
+      // Add "-optimized" before the extension
+      const outputPath = path.join(dir, `${name}-optimized.webp`);// New file with .webp extension
 
       // Compress image and write to outputPath
       await sharp(inputPath)
