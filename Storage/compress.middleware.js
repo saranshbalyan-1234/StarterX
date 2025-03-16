@@ -25,10 +25,11 @@ export const optimizeImage = async (req, res, next) => {
         })
         .webp({ effort: 6, quality: 75 }) // Optimal compression settings
         .toFile(outputPath);
-
+      
       // Delete the original file and replace it with the optimized one
       fs.unlinkSync(inputPath);
-      fs.renameSync(outputPath, inputPath);
+      console.debug(inputPath,outputPath)
+      // fs.renameSync(outputPath, inputPath); //rename file to original name
 
       /*
        * Update file details for further processing
