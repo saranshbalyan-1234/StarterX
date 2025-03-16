@@ -1,16 +1,19 @@
 import multer from 'multer';
 import path from 'path';
-import fs from 'fs';
+import fs from 'fs'
 // Multer Storage (Saves in /uploads folder)
+
+const uploadDir = './uploads';
+if (!fs.existsSync(uploadDir)) {
+  console.error("Uploads directory does not exist. Creating it now...");
+  fs.mkdirSync(uploadDir);
+} else { 
+  console.log("Uploads directory exists. Proceeding...");
+}
+
+
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const dir = './uploads/';
-    if (!fs.existsSync(dir)) {
-      console.error('Uploads folder doesn\'t exist. Creating it now...');
-      fs.mkdirSync(dir); // Create the folder if it doesn't exist
-    }
-    cb(null, dir);
-  },
+  destination: uploadDir,
   filename: (_req, file, cb) => {
     const ext = path.extname(file.originalname);
     const name = path.basename(file.originalname, ext);
@@ -29,9 +32,8 @@ const fileFilter = (_req, file, cb) => {
 };
 
 const upload = multer({
-  // Limit file size to 5MB
   fileFilter,
-  limits: { fileSize: 5 * 1024 * 1024 },
+  limits: { fileSize: 5 * 1024 * 1024 }, // Limit file size to 5MB
   storage
 });
 
