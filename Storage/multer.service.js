@@ -1,9 +1,16 @@
 import multer from 'multer';
 import path from 'path';
-
+import fs from 'fs';
 // Multer Storage (Saves in /uploads folder)
 const storage = multer.diskStorage({
-  destination: './uploads',
+  destination: (req, file, cb) => {
+    const dir = './uploads/';
+    if (!fs.existsSync(dir)) {
+      console.error('Uploads folder doesn\'t exist. Creating it now...');
+      fs.mkdirSync(dir); // Create the folder if it doesn't exist
+    }
+    cb(null, dir);
+  },
   filename: (_req, file, cb) => {
     const ext = path.extname(file.originalname);
     const name = path.basename(file.originalname, ext);
