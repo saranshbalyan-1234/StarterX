@@ -1,5 +1,6 @@
 {
   "name": "startex",
+  "type": "module",
   "version": "2.1",
   "description": "now with mongo",
   "main": "index.js",
