@@ -23,9 +23,6 @@ RUN npx patch-package
 # ==================================
 FROM node:20-alpine
 
-# Install necessary runtime dependencies for `sharp`
-RUN apk add --no-cache vips
-
 # Copy built application and dependencies from the build stage
 COPY --from=build-env /app /app
 WORKDIR /app
