@@ -9,7 +9,9 @@ export const uploadFile = (req, res) => {
     return res.status(200).json({
       files: req.files.map(file => ({
         filename: file.filename,
-        path: file.path
+        path: file.path,
+        size: file.size,
+        mimetype: file.mimetype,
       })),
       message: successConstants.FILE_UPLOADED
     });

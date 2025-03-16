@@ -31,13 +31,13 @@ export const optimizeImage = async (req, res, next) => {
       console.debug(inputPath,outputPath)
       // fs.renameSync(outputPath, inputPath); //rename file to original name
 
-      /*
-       * Update file details for further processing
-       * file.path = inputPath;
-       * file.mimetype = 'image/webp';
-       * file.size = fs.statSync(inputPath).size;
-       * file.originalname = file.originalname.replace(/\.\w+$/, '.webp');
-       */
+      
+      //  Update file details for further processing
+        file.path = outputPath;
+        file.mimetype = 'image/webp';
+        file.size = fs.statSync(outputPath).size;
+        file.originalname = file.originalname.replace(/\.\w+$/, '.webp');
+       
     };
 
     // Handle multiple files
