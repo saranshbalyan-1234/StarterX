@@ -2,8 +2,6 @@ import '#utils/ApiError.js';
 
 import parser from 'body-parser';
 import express from 'express';
-import fileupload from 'express-fileupload';
-// Import { scheduleInit } from "#scheduler/Service/schedulerService.js";
 import expressListRoutes from 'express-list-routes';
 import expressStatusMonitor from 'express-status-monitor';
 import helmet from 'helmet';
@@ -42,7 +40,6 @@ await getTenantDB().then(() => seedSuperAdmin());
 app.use(parser.json());
 app.use(parser.urlencoded({ extended: true }));
 app.use(helmet());
-app.use(fileupload());
 app.enable('strict routing');
 
 setupCors(app);
