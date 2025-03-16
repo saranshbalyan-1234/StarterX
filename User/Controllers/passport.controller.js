@@ -1,15 +1,15 @@
-import passport from "passport";
+import passport from 'passport';
 
-import errorContstants from "#constants/error.constant.js";
-import createStrategy from "#user/Service/passport.service.js";
-import getError from "#utils/error.js";
+import errorContstants from '#constants/error.constant.js';
+import createStrategy from '#user/Service/passport.service.js';
+import getError from '#utils/error.js';
 
 export const passportTransporters = {};
 
 const startStrategy = async (req, res, next) => {
   try {
-    const tenant = req.headers["x-tenant-id"];
-    const transporter = passportTransporters[tenant];
+    const tenant = req.headers['x-tenant-id'];
+    let transporter = passportTransporters[tenant];
 
     if (!transporter) {
       const config = await req.models.config.findOne({ type: req.params.type });
@@ -48,7 +48,7 @@ const callbackStrategy = async (req, res, next) => {
         failWithError: true,
         failureMessage: true,
         failureRedirect: `/passport/${config.type}/start`,
-        session: false,
+        session: false
       },
       (err, user) => {
         if (err) throw err;

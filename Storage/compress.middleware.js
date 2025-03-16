@@ -1,6 +1,7 @@
 import fs from 'fs';
+import path from 'path';
 import sharp from 'sharp';
-import path from 'path'
+
 import errorConstants from '#constants/error.constant.js';
 
 // Image Optimization Middleware
@@ -12,6 +13,7 @@ export const optimizeImage = async (req, res, next) => {
   try {
     // Function to optimize individual image and replace the original file
     const optimizeSingleImage = async (file) => {
+      if (!file.mimetype.includes('image')) return;
       const inputPath = file.path; // Original file path
       const { dir, name } = path.parse(inputPath);
 
@@ -21,26 +23,24 @@ export const optimizeImage = async (req, res, next) => {
       // Compress image and write to outputPath
       await sharp(inputPath)
         .resize({
-          height:800,
-          width:600,
           fit: sharp.fit.inside,
+          height: 800,
+          width: 600,
           withoutEnlargement: true
         })
         .webp({ effort: 6, quality: 75 }) // Optimal compression settings
         .toFile(outputPath);
-      
+
       // Delete the original file and replace it with the optimized one
       fs.unlinkSync(inputPath);
-      console.debug(inputPath,outputPath)
+      console.debug(inputPath, outputPath);
       // fs.renameSync(outputPath, inputPath); //rename file to original name
 
-      
       //  Update file details for further processing
-        file.path = outputPath;
-        file.mimetype = 'image/webp';
-        file.size = fs.statSync(outputPath).size;
-        file.originalname = file.originalname.replace(/\.\w+$/, '.webp');
-       
+      file.path = outputPath;
+      file.mimetype = 'image/webp';
+      file.size = fs.statSync(outputPath).size;
+      file.originalname = file.originalname.replace(/\.\w+$/, '.webp');
     };
 
     // Handle multiple files
@@ -56,6 +56,5 @@ export const optimizeImage = async (req, res, next) => {
     next();
   } catch (err) {
     console.error('Image Optimization Error:', err);
-    res.status(500).send('Error optimizing the image(s).');
   }
 };
