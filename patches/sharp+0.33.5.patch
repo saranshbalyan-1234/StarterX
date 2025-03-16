@@ -1,0 +1,13 @@
+diff --git a/node_modules/sharp/lib/output.js b/node_modules/sharp/lib/output.js
+index 137932c..26f1e0e 100644
+--- a/node_modules/sharp/lib/output.js
++++ b/node_modules/sharp/lib/output.js
+@@ -87,7 +87,7 @@ function toFile (fileOut, callback) {
+     }
+   } else {
+     this.options.fileOut = fileOut;
+-    const stack = Error();
++    const stack = new Error();
+     return this._pipeline(callback, stack);
+   }
+   return this;
