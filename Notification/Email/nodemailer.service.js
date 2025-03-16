@@ -1,6 +1,6 @@
 import { createToken } from '#utils/jwt.js';
 
-import { transporters } from './nodemailer.controller.js';
+import { nodeMailerTransporters } from './nodemailer.controller.js';
 const sendMail = async (data, type, tenant) => {
   try {
     let mailOption = {
@@ -33,7 +33,7 @@ const sendMail = async (data, type, tenant) => {
       default:
         break;
     }
-    const transporter = transporters[tenant];
+    const transporter = nodeMailerTransporters[tenant];
     await transporter.sendMail({ ...mailOption, from: process.env.MAILER_FROM });
     console.success('Mail send', mailOption);
     return true;
