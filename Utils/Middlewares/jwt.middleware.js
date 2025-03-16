@@ -1,7 +1,7 @@
 import pkg from 'jsonwebtoken';
 
 import errorContstants from '#constants/error.constant.js';
-import cache from '#utils/Cache/index.js';
+import cache from '#utils/cache.js';
 import getError from '#utils/error.js';
 import { getTenantDB } from '#utils/Mongo/mongo.connection.js';
 

@@ -1,7 +1,6 @@
 import errorContstants from '#constants/error.constant.js';
 import { dropDatabase } from '#user/Service/database.service.js';
-import { getCachedKeys } from '#utils/Cache/cache.service.js';
-import cache from '#utils/Cache/index.js';
+import cache from '#utils/cache.js';
 import getError from '#utils/error.js';
 import { removeTenantDB } from '#utils/Mongo/mongo.connection.js';
 
@@ -16,7 +15,7 @@ const getAllTenant = async (req, res) => {
 
 const getAllSession = (_req, res) => {
   try {
-    const sessions = getCachedKeys();
+    const sessions = cache.keys();
     return res.status(200).json(sessions);
   } catch (error) {
     getError(error, res);

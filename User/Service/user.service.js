@@ -1,5 +1,5 @@
 import errorContstants from '#constants/error.constant.js';
-import cache from '#utils/Cache/index.js';
+import cache from '#utils/cache.js';
 import { createToken } from '#utils/jwt.js';
 import { getTenantDB } from '#utils/Mongo/mongo.connection.js';
 
