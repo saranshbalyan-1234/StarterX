@@ -2,13 +2,13 @@ import fs from 'fs';
 import path from 'path';
 import sharp from 'sharp';
 
-import errorConstants from '#constants/error.constant.js';
-
 // Image Optimization Middleware
 export const optimizeImage = async (req, res, next) => {
-  if (!(req.file || req.files?.length > 0)) {
-    return res.status(400).send(errorConstants.NO_FILES_UPLOADED);
-  }
+  /*
+   * if (!(req.file || req.files?.length > 0)) {
+   *   return res.status(400).send(errorConstants.NO_FILES_UPLOADED);
+   * }
+   */
 
   try {
     // Function to optimize individual image and replace the original file
