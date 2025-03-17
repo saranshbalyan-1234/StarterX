@@ -51,4 +51,15 @@ export const validateToken = () => async (req, res, next) => {
   }
 };
 
+export const validateStorageTenant = () => (req, res, next) => {
+  try {
+    const accessTenant = req.path.split('-')[0].replace(/^\//, '');
+    const currentTenant = req.currentTenant;
+    if (accessTenant === currentTenant) return next();
+    throw new Error(errorContstants.UNAUTHORIZED_TENANT, 401);
+  } catch (e) {
+    getError(e, res);
+  }
+};
+
 const handleCachedTokenCheck = (email, token) => !(process.env.JWT_ACCESS_CACHE && cache.get(`accesstoken_${email}`) !== token);
