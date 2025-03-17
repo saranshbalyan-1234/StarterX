@@ -35,6 +35,8 @@ WORKDIR /app
 # RUN k6 version
 #K6
 
+RUN chown -R node:node /app
+
 # Environment and Port
 ENV PORT=8080
 EXPOSE 8080
