@@ -27,6 +27,7 @@ app.use(express.static('assets'));
 app.use(express.static('uploads/public'));
 app.use(defaultMiddleware());
 app.use(expressStatusMonitor({ path: '/health/stats' }));
+app.set('trust proxy', true);
 
 overrideConsole();
 

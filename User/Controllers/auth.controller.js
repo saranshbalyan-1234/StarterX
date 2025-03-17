@@ -21,7 +21,8 @@ const register = async (req, res) => {
     await sendMail({ _id: unverifiedUser[0]._id, email, name }, 'customerRegister');
 
     return res.status(200).json({
-      message: 'Registered successfuly, Please check email to verify account.'
+      message: 'Registered successfuly, Please check email to verify account.',
+      user: unverifiedUser
     });
   } catch (error) {
     getError(error, res);
@@ -95,7 +96,7 @@ const sendResetPasswordMail = async (req, res) => {
 
     await sendMail({ _id: customer._id, email }, 'reset-password');
 
-    return res.status(200).json({ message: 'Password rest mail sent.' });
+    return res.status(200).json({ email, message: 'Password rest mail sent.' });
   } catch (error) {
     getError(error, res);
   }
