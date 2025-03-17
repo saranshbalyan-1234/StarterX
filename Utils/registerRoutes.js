@@ -4,6 +4,7 @@ import errorContstants from '#constants/error.constant.js';
 import { validateToken } from '#middlewares/jwt.middleware.js';
 import { setupPrometheus } from '#middlewares/server.middleware.js';
 import { getDirectories } from '#utils/file.js';
+
 const getRoutes = async (app, type) => {
   app.use('/storage/asset', express.static('assets'));
   app.use('/storage/public', express.static('uploads/public'));
