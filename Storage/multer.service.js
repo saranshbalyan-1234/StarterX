@@ -28,25 +28,25 @@ subDirs.forEach((subDir) => {
 });
 
 // Function to create Multer storage configuration
-const createStorage = (subDir) => multer.diskStorage({
-  destination: path.join(uploadDir, subDir),
-  filename: (_req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    const name = path.basename(file.originalname, ext);
-    cb(null, `${name}-${Date.now()}${ext}`);
-  }
-});
+ const createStorage = (subDir, fileSize = 5 * 1024 * 1024) => {
+ const storage = multer.diskStorage({
+    destination: path.join(uploadDir, subDir),
+    filename: (_req, file, cb) => {
+      const ext = path.extname(file.originalname);
+      const name = path.basename(file.originalname, ext);
+      cb(null, `${name}-${Date.now()}${ext}`);
+    }
+  });
+  return multer({
+    limits: { fileSize },
+    storage: storage
+  });
+ }
+
+export default createStorage;
 
 // Create Multer instances for each subdirectory
-export const uploadPublic = multer({
-  limits: { fileSize: 5 * 1024 * 1024 },
-  storage: createStorage('public') // Limit file size to 5MB
-});
-
-export const uploadPrivate = multer({
-  limits: { fileSize: 5 * 1024 * 1024 },
-  storage: createStorage('private') // Limit file size to 5MB
-});
+// export const uploadPublic = 
 
 /*
  * File Filter (For limiting file types)
