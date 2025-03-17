@@ -24,7 +24,7 @@ import registerRoutes from '#utils/registerRoutes.js';
 const app = express();
 
 app.use(express.static('assets'));
-app.use(express.static("uploads/public"));
+app.use(express.static('uploads/public'));
 app.use(defaultMiddleware());
 app.use(expressStatusMonitor({ path: '/health/stats' }));
 
