@@ -22,12 +22,15 @@ import { getTenantDB } from '#utils/Mongo/mongo.connection.js';
 import registerRoutes from '#utils/registerRoutes.js';
 
 const app = express();
+app.set('trust proxy', true);
 
-app.use(express.static('assets'));
-app.use(express.static('uploads/public'));
+/*
+ * app.use('/storage/asset',express.static('assets'));
+ * app.use('/storage/public', express.static('uploads/public'));
+ */
+
 app.use(defaultMiddleware());
 app.use(expressStatusMonitor({ path: '/health/stats' }));
-app.set('trust proxy', true);
 
 overrideConsole();
 
