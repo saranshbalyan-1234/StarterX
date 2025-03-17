@@ -53,7 +53,7 @@ export const validateToken = () => async (req, res, next) => {
 
 export const validateStorageTenant = () => (req, res, next) => {
   try {
-    const accessTenant = req.path.split('-')[0].replace(/^\//, '');
+    const accessTenant = req.path.split('/')[1];
     const currentTenant = req.currentTenant;
     if (accessTenant === currentTenant) return next();
     throw new Error(errorContstants.UNAUTHORIZED_TENANT, 401);
