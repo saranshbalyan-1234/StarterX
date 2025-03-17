@@ -3,13 +3,27 @@ import multer from 'multer';
 import path from 'path';
 // Multer Storage (Saves in /uploads folder)
 
-const uploadDir = './uploads';
-if (fs.existsSync(uploadDir)) {
-  console.log('Uploads directory exists. Proceeding...');
-} else {
-  console.error('Uploads directory does not exist. Creating it now...');
+const uploadDir = "./uploads";
+const subDirs = ["public", "private"];
+
+if (!fs.existsSync(uploadDir)) {
+  console.error(
+    `Base uploads directory does not exist. Creating "${uploadDir}" now...`
+  );
   fs.mkdirSync(uploadDir);
 }
+
+subDirs.forEach((subDir) => {
+  const fullPath = path.join(uploadDir, subDir);
+  if (!fs.existsSync(fullPath)) {
+    console.error(
+      `Subdirectory "${fullPath}" does not exist. Creating it now...`
+    );
+    fs.mkdirSync(fullPath);
+  } else {
+    console.log(`Subdirectory "${fullPath}" already exists. Proceeding...`);
+  }
+});
 
 const storage = multer.diskStorage({
   destination: uploadDir,
