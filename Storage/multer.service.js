@@ -6,10 +6,9 @@ import path from 'path';
 const uploadDir = './uploads';
 
 // Function to create Multer storage configuration
-const createStorage = ({
-  fileSize = 5 * 1024 * 1024,
-  folder = ''
-} = {}
+const createStorage = (
+  folder = '',
+  fileSize = 5 * 1024 * 1024
 ) => {
   const storage = multer.diskStorage({
     destination: (req, _file, cb) => {
