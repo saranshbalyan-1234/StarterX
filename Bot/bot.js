@@ -48,12 +48,16 @@ export async function startBot() {
         const text = message.message.conversation || 
             message.message.extendedTextMessage?.text;
         
-            if (containsSubstring(text.toLocaleLowerCase(),galiMatches )) {
+        if (text) {
+            if (containsSubstring(text.toLocaleLowerCase(), galiMatches)) {
                 console.log("The message contains a gaali");
                 await addToQueue(sender, getRandomElement(gaali));
             } else {
                 console.log("No match found.");
             }
+        } else { 
+            console.log("Not a text message.");
+        }
 
         // else if (text.toLowerCase().includes("hello")) {
         //     await addToQueue(sock, sender, "Hey there! How can I assist you?");
