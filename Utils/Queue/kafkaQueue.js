@@ -8,11 +8,11 @@ const kafka = new Kafka({
 const producer = kafka.producer();
 const consumer = kafka.consumer({ groupId: 'whatsapp-group' });
 
- async function addToQueue(sock, recipient, message) {
+ async function addToQueue(recipient, message) {
     await producer.connect();
     await producer.send({
         topic: process.env.KAFKA_TOPIC,
-        messages: [{ value: JSON.stringify({ sock, recipient, message }) }]
+        messages: [{ value: JSON.stringify({ recipient, message }) }]
     });
     console.log(`✅ [KAFKA] Message added to queue for ${recipient}`);
 }
@@ -23,7 +23,7 @@ const consumer = kafka.consumer({ groupId: 'whatsapp-group' });
 
     await consumer.run({
         eachMessage: async ({ message }) => {
-            const { sock, recipient, message: text } = JSON.parse(message.value.toString());
+            const { recipient, message: text } = JSON.parse(message.value.toString());
             try {
                 await sock.sendMessage(recipient, { text });
                 console.log(`✅ [KAFKA] Message sent to ${recipient}: ${text}`);

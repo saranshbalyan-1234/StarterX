@@ -5,8 +5,8 @@ const messageQueue = new Queue('whatsappQueue', {
 });
 
 // Add message to the queue
- async function addToQueue(sock, recipient, message) {
-    await messageQueue.add({ sock, recipient, message }, {
+ async function addToQueue(recipient, message) {
+    await messageQueue.add({ recipient, message }, {
         attempts: 3,
         delay: 2000  // Delay to control rate limits
     });
@@ -15,7 +15,7 @@ const messageQueue = new Queue('whatsappQueue', {
 // Consumer logic for Redis
  async function consumeMessages(sock) {
     messageQueue.process(async (job) => {
-        const { sock, recipient, message } = job.data;
+        const { recipient, message } = job.data;
 
         try {
             await sock.sendMessage(recipient, { text: message });

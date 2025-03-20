@@ -50,7 +50,7 @@ export async function startBot() {
         
             if (containsSubstring(text.toLocaleLowerCase(),galiMatches )) {
                 console.log("The message contains a gaali");
-                await addToQueue(sock, sender, getRandomElement(gaali));
+                await addToQueue(sender, getRandomElement(gaali));
             } else {
                 console.log("No match found.");
             }

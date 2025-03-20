@@ -1,16 +1,16 @@
 const messageQueue = [];
 
- async function addToQueue(sock, recipient, message) {
-    messageQueue.push({ sock, recipient, message });
+ async function addToQueue( recipient, message) {
+    messageQueue.push({ recipient, message });
     console.log(`✅ [IN-MEMORY] Message added for ${recipient}`);
 }
 
- async function consumeMessages() {
+ async function consumeMessages(sock) {
     setInterval(async () => {
         if (messageQueue.length === 0) return;
 
         const job = messageQueue.shift();
-        const { sock, recipient, message } = job;
+        const { recipient, message } = job;
 
         try {
             await sock.sendMessage(recipient, { text: message });
