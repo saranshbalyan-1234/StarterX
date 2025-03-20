@@ -467,6 +467,7 @@ const gaali = ["Teri gand mein itna chhed, saala rocket bhi na usmein sedh",
     "Teri behen ka bhosda hai khiska, har lauda usmein karta siska",
     "Lauda tera zindagi ka bheega, har baat mein tatti ka teega",
     "Harami ka baccha tu bhatka, dimag mein bas gand ka latka",
-    "Teri gand pe laat ka bikhra, saala cheekh se toot jaye sikra"
+    "Teri gand pe laat ka bikhra, saala cheekh se toot jaye sikra",
+    "Hari Hari ghas pe chidiya ka ghosla sale teri maa bhosda"
 ]
 export default gaali;

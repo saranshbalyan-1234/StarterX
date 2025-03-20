@@ -1,4 +1,5 @@
 const gaaliMatches = [
+    "bc",
     "bsdk",
     "bhosdike",
     "mkc",
@@ -19,7 +20,10 @@ const gaaliMatches = [
     "randike",
     "randibaz",
     "randibaaz",
-    "randi"
+    "randi",
+    "bhadve",
+    "bhosda",
+    "chut mari ke"
 ]
 
 export default gaaliMatches;
