@@ -10,7 +10,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 
 # Install only production dependencies for minimal build size
-RUN npm ci --only=production --no-audit --no-fund
+RUN npm ci --legacy-peer-deps --only=production --no-audit --no-fund --legacy-peer-deps
 
 # Copy remaining application files
 COPY . .
