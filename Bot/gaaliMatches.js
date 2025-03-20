@@ -23,7 +23,8 @@ const gaaliMatches = [
     "randi",
     "bhadve",
     "bhosda",
-    "chut mari ke"
+    "chut mari ke",
+    "bahinchod"
 ]
 
 export default gaaliMatches;
