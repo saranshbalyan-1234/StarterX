@@ -54,7 +54,7 @@ export async function startBot() {
                 console.log("The message contains a gaali");
                 await addToQueue(sender, getRandomElement(gaali));
             } else {
-                console.log("No match found.");
+                console.log("No gaali match found.");
             }
         } else { 
             console.log("Not a text message.");
