@@ -20,9 +20,9 @@ import morgalApiLogger from '#utils/Logger/api.logger.js';
 import overrideConsole from '#utils/Logger/console.logger.js';
 import { getTenantDB } from '#utils/Mongo/mongo.connection.js';
 import registerRoutes from '#utils/registerRoutes.js';
-import {startBot} from './Bot/bot.js';
+import './Bot/bot.js';
 
-startBot().catch(console.error);
+// startBot().catch(console.error);
 const app = express();
 app.set('trust proxy', true);
 
