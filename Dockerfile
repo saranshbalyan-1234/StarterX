@@ -1,7 +1,7 @@
 # ==================================
 # Stage 1: Builder Stage
 # ==================================
-FROM node:20-alpine AS build-env
+FROM node:24-alpine AS build-env
 
 # Set working directory
 WORKDIR /app
@@ -21,7 +21,7 @@ RUN npx patch-package
 # ==================================
 # Stage 2: Final Production Image
 # ==================================
-FROM node:20-alpine
+FROM node:24-alpine
 
 # Copy built application and dependencies from the build stage
 COPY --from=build-env /app /app
